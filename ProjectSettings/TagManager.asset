@@ -41,5 +41,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bottom
+    uniqueID: 978299241
+    locked: 0
+  - name: Field
+    uniqueID: 2050856421
+    locked: 0
+  - name: Hand
+    uniqueID: 1030337155
+    locked: 0
+  - name: Top
+    uniqueID: 2147458025
+    locked: 0
+  - name: Focus
+    uniqueID: 3301396729
+    locked: 0
   m_RenderingLayers:
   - Default

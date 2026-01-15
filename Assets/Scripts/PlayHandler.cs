@@ -125,6 +125,7 @@ public class PlayHandler : MonoBehaviour
             dCard.destinationsBuffer.Enqueue((drawFocusPos, dealTime, dealEase));
             AddCardToHand(dCard);
             dCard.transform.parent = Hand.transform;
+            dCard.spriteRenderer.sortingLayerName = "Hand";
 
             yield return new WaitForSeconds(timeBetweenDeals);
         }
@@ -153,9 +154,9 @@ public class PlayHandler : MonoBehaviour
                     hand[i].card.spriteRenderer.sortingOrder = i+1; 
                 } 
                 
-                if (hand[i].card.handHome != hand[i].pos)
+                if (hand[i].card.cardHome != hand[i].pos)
                 {
-                    hand[i].card.handHome = hand[i].pos;
+                    hand[i].card.cardHome = hand[i].pos;
                 }
 
                 if (hand[i].card.destinationsBuffer.Count > 0)
@@ -179,7 +180,25 @@ public class PlayHandler : MonoBehaviour
     {
         hand.Add((nCard, new()));
 
-        for (int i = 0;i < hand.Count; i++)
+        UpdateCardPosInHand();
+
+        handChange = true;
+    }
+
+    public void RemoveCardFromHand(Card rCard)
+    {
+        // Under construction
+        hand.RemoveAll(x => x.card == rCard);
+
+        UpdateCardPosInHand();
+
+        handChange = true;
+        UpdateHand(); // Call to draw and fix the positions
+    }
+
+    private void UpdateCardPosInHand()
+    {
+        for (int i = 0; i < hand.Count; i++)
         {
             (Card card, Vector3 pos) unpackedTup = hand[i];
 
@@ -188,13 +207,6 @@ public class PlayHandler : MonoBehaviour
 
             hand[i] = unpackedTup;
         }
-
-        handChange = true;
-    }
-
-    private void RemoveCardFromHand(Card nCard)
-    {
-        // Under construction
     }
 
 }

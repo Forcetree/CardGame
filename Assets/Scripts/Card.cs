@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using TMPro;
 
 public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -23,7 +24,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public bool InFlight = false;
 
     // Under review -> Attributes for hover controls when in hand
-    public Vector3 handHome;
+    public Vector3 cardHome;
     
     public static float wiggle = 30;
     public static float bump = .3f;
@@ -38,7 +39,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     public bool hasMatFocus;
     public FieldMat MatFocus;
-    public List<GameObject> overlappingMats = new();
+    public List<FieldMat> overlappingMats = new();
 
     // Player Visible Card Attributes
     public string title;
@@ -108,6 +109,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public void FixedUpdate()
     {
         Mover();
+        MatFocuser();
     }
 
     // Runtime Managers
@@ -145,21 +147,47 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
             }
         }
     }
+    private void MatFocuser()
+    {
+        if (overlappingMats.Count > 0) 
+        {
+            overlappingMats = overlappingMats.Where(mat => mat.TryTarget(this)).OrderBy(mat => Vector2.Distance(transform.position, mat.transform.position)).ToList();
+
+            for (int i = 0; i < overlappingMats.Count; i++) 
+            { 
+                    overlappingMats[i].highlighted = (i == 0); 
+            } 
+
+            hasMatFocus = true;
+        }
+        else { hasMatFocus = false; }
+    }
 
     // Mouse Detectors
-    public void OnPointerDown(PointerEventData eventData) => dragging = true; // Drag Card
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        dragging = true; // Drag Card
+        this.spriteRenderer.sortingLayerName = "Focus";
+    }
     public void OnPointerUp(PointerEventData eventData)
     {
         // Logic for dropping on the playfield
-        if (myCollider.IsTouchingLayers(fieldLayer)) // Only run if we are touching something in the field
+        if (hasMatFocus) // Only run if we have a focus
         {
-            // Set new hand home
-            handHome = new(0, 0, 0);
-            // Queue? a new return to home animation
+            // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
+            transform.parent = overlappingMats[0].transform.parent; // Is this safe or is it better to reach to PlayHandler.Field to get the game object?
+            cardHome = overlappingMats[0].transform.localPosition;
+            PlayHandler.RemoveCardFromHand(this); // Remove the card from the hand
+            overlappingMats[0].AddToStack(this); // Use a safe method in the PlayerHandler that removes the card from the hand and then passes that ref back to the mat?
+            overlappingMats[0].highlighted = false; // Turn off the highlight now that we are placing a card (this might be best done internally in the mat when we trigger the AddToStack method after it is built out
+            
+            spriteRenderer.sortingLayerName = "Field";
+            destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // A new return to home animation or just reuse the hand return? Current implementation uses the hand home default params deHoverTime and deHoverEase
         }
-        else // Current Debug test
+        else // If we do not detect the field objects we throw the card back to the hand
         {
-            destinationsBuffer.Enqueue((handHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
+            destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
+            spriteRenderer.sortingLayerName = "Hand";
         }        
 
         dragging = false;
@@ -180,23 +208,30 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     {
         hovering = false;
 
-        destinationsBuffer.Enqueue((handHome, deHoverTime, deHoverEase));
+        destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase));
     }
 
     // Collision Detectors
     private void OnTriggerEnter2D(Collider2D collisions)
     {
-        if (collisions.CompareTag("Mat") && !overlappingMats.Contains(collisions.gameObject)) // Determine different methods for pulling mat objects as apposed to other cards
+        Debug.Log($"Collision detected with: {collisions.name}");
+
+        FieldMat detected = collisions.gameObject.GetComponent<FieldMat>();
+        if (detected != null && !overlappingMats.Contains(detected) && dragging)
         {
-            // overlappingMats.Add(collisions.gameObject);
+            overlappingMats.Add(detected);
+            Debug.Log($"Hit a mat! Current mats detected: {overlappingMats.Count}");                      
         }
     }
 
     private void OnTriggerExit2D(Collider2D decollisions)
     {
-        if (decollisions.CompareTag("Mat"))
+        FieldMat detected = decollisions.gameObject.GetComponent<FieldMat>();
+        if (detected != null && overlappingMats.Contains(detected))
         {
-            // overlappingMats.Remove(decollisions.gameObject);
+            overlappingMats.Remove(detected);
+            detected.highlighted = false;
+            Debug.Log($"Left a mat! Current mats detected: {overlappingMats.Count}");            
         }
     }
 }
