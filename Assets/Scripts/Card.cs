@@ -16,6 +16,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Under review -> Interaction Handles
     public bool hovering = false;
     public bool dragging = false;
+    public bool dragLock = false;
 
     // Animation Controlers
     public Queue<(Vector3 pos, float time, Ease ease)> destinationsBuffer = new(); // Destinations are read FIFO
@@ -117,12 +118,41 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     {
         switch (type) // Set Sprite
         {
+            // Pures
             case cardType.Red: spriteRenderer.color = Color.red; break;
             case cardType.Blue: spriteRenderer.color = Color.blue; break;
             case cardType.Yellow: spriteRenderer.color = Color.yellow; break;
             case cardType.White: spriteRenderer.color = Color.white; break;
             case cardType.Black: spriteRenderer.color = Color.gray1; break;
+
+            // Mixes
+            case cardType.Toxic: spriteRenderer.color = new Color32(0x53, 0x07, 0x5B, 0xFF); break;
+            case cardType.Amber: spriteRenderer.color = new Color32(0xC7, 0x3F, 0x25, 0xFF); break;
+            case cardType.Life: spriteRenderer.color = new Color32(0x55, 0x85, 0x00, 0xFF); break;
+
+            // Light Pures
+            case cardType.Coral: spriteRenderer.color = new Color32(0xE3, 0x6F, 0x74, 0xFF); break;
+            case cardType.Hydro: spriteRenderer.color = new Color32(0x2C, 0x50, 0xDE, 0xFF); break;
+            case cardType.Sun: spriteRenderer.color = new Color32(0xFF, 0xD4, 0x17, 0xFF); break;
+
+            // Light Mixes
+            case cardType.Iris: spriteRenderer.color = new Color32(0x90, 0x5A, 0xFF, 0xFF); break;
+            case cardType.Nectar: spriteRenderer.color = new Color32(0xF0, 0xD9, 0x6C, 0xFF); break;
+            case cardType.Moss: spriteRenderer.color = new Color32(0x3A, 0x52, 0x3B, 0xFF); break;
+
+            // Dark Pures
+            case cardType.Blood: spriteRenderer.color = new Color32(0x3C, 0x07, 0x07, 0xFF); break;
+            case cardType.Abyss: spriteRenderer.color = new Color32(0x03, 0x1A, 0x2A, 0xFF); break;
+            case cardType.Gold: spriteRenderer.color = new Color32(0xFF, 0xAB, 0x1D, 0xFF); break;
+
+            // Dark Mixes
+            case cardType.Obsidian: spriteRenderer.color = new Color32(0x17, 0x0E, 0x24, 0xFF); break;
+            case cardType.Lava: spriteRenderer.color = new Color32(0x65, 0x15, 0x00, 0xFF); break;
+            case cardType.Serpenite: spriteRenderer.color = new Color32(0x0B, 0x27, 0x00, 0xFF); break;
+
+
             case cardType.Back: spriteRenderer.color = Color.gray; break;
+            
                 // Need all color formats added eventually with actual sprites
         }
     }
@@ -166,31 +196,37 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Mouse Detectors
     public void OnPointerDown(PointerEventData eventData)
     {
-        dragging = true; // Drag Card
-        this.spriteRenderer.sortingLayerName = "Focus";
+        if (!dragLock)
+        {
+            dragging = true; // Drag Card
+            this.spriteRenderer.sortingLayerName = "Focus";
+        }
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        // Logic for dropping on the playfield
-        if (hasMatFocus) // Only run if we have a focus
+        if (!dragLock) 
         {
-            // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
-            transform.parent = overlappingMats[0].transform.parent; // Is this safe or is it better to reach to PlayHandler.Field to get the game object?
-            cardHome = overlappingMats[0].transform.localPosition;
-            PlayHandler.RemoveCardFromHand(this); // Remove the card from the hand
-            overlappingMats[0].AddToStack(this); // Use a safe method in the PlayerHandler that removes the card from the hand and then passes that ref back to the mat?
-            overlappingMats[0].highlighted = false; // Turn off the highlight now that we are placing a card (this might be best done internally in the mat when we trigger the AddToStack method after it is built out
-            
-            spriteRenderer.sortingLayerName = "Field";
-            destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // A new return to home animation or just reuse the hand return? Current implementation uses the hand home default params deHoverTime and deHoverEase
-        }
-        else // If we do not detect the field objects we throw the card back to the hand
-        {
-            destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
-            spriteRenderer.sortingLayerName = "Hand";
-        }        
+            // Logic for dropping on the playfield
+            if (hasMatFocus) // Only run if we have a focus
+            {
+                // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
+                transform.parent = overlappingMats[0].transform.parent; // Is this safe or is it better to reach to PlayHandler.Field to get the game object?
+                cardHome = overlappingMats[0].transform.localPosition;
+                PlayHandler.RemoveCardFromHand(this); // Remove the card from the hand
+                overlappingMats[0].AddToStack(this); // Use a safe method in the PlayerHandler that removes the card from the hand and then passes that ref back to the mat?
+                overlappingMats[0].highlighted = false; // Turn off the highlight now that we are placing a card (this might be best done internally in the mat when we trigger the AddToStack method after it is built out
 
-        dragging = false;
+                spriteRenderer.sortingLayerName = "Field";
+                destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // A new return to home animation or just reuse the hand return? Current implementation uses the hand home default params deHoverTime and deHoverEase
+            }
+            else // If we do not detect the field objects we throw the card back to the hand
+            {
+                destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
+                spriteRenderer.sortingLayerName = "Hand";
+            }
+
+            dragging = false;
+        }
     }
     public void OnPointerClick(PointerEventData eventData) // This triggers after the pointer is released -> to avoid complexity don't support two click control and force drags
     {

@@ -182,18 +182,16 @@ public class PlayHandler : MonoBehaviour
 
         UpdateCardPosInHand();
 
-        handChange = true;
+        handChange = true; // No call to update hand as this private method is only called in a flow during the update hand loop
     }
 
     public void RemoveCardFromHand(Card rCard)
     {
-        // Under construction
-        hand.RemoveAll(x => x.card == rCard);
+        hand.Remove(hand.First(x => x.card == rCard));
 
         UpdateCardPosInHand();
 
         handChange = true;
-        UpdateHand(); // Call to draw and fix the positions
     }
 
     private void UpdateCardPosInHand()
@@ -225,7 +223,7 @@ public static class ListExtensions
         }
     }
 
-    public static T Pop<T>(this List<T> list) // Pops off an element from a list like in Python (return null if list is null or empty)
+    public static T Pop<T>(this List<T> list) // Pops off an element from a list like in Python
     {
         if (list == null || list.Count == 0)
         {
