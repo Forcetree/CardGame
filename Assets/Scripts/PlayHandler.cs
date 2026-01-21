@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using DG.Tweening;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.XR;
+
+// Refactor needed: Break the labeled main components apart into single purpose objects
+    // Hand
+    // Deck
+    // Mana
 
 public class PlayHandler : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class PlayHandler : MonoBehaviour
     public GameObject Deck;
     public GameObject Graveyard;
     public GameObject Field;
+
+    public Mana mana1; // Temp ugly implementation
+    public Mana mana2; // -> Will change to use prefab and instantiate the mana in the scene on run time
 
     // Prefabs
     public Card CardRef; // To create new cards
@@ -34,13 +39,16 @@ public class PlayHandler : MonoBehaviour
     public float dealTime;
     public Ease dealEase;
 
-    public Vector3 drawFocusPos = new(-6, 1.5f, 0); // World location -> prepare for trouble (consider converting to live read from the deck position in future -> must convert world to local to achieve)
+    public Vector3 drawFocusPos = new(-6, 1.5f, 0); // World location offset -> prepare for trouble (consider converting to live read from the deck position in future -> must convert world to local to understand position relative to changing parent)
 
     // Hand Vars
     public int handLimit;
-    
-    private List<(Card card, Vector3 pos)> hand = new(); // Hand is splayed backwards for O(1) effciency in draw and add operations
-    public bool handChange = false;
+    public int manaLimit;
+    public int manaCount;
+
+    // private List<(Card card, Vector3 pos)> hand = new(); // Hand is splayed backwards for O(1) effciency in draw and add operations
+    private List<Card> hand = new(); // Under construction
+    public bool handChange = false; // Under review -> to be removed
     public float handSpread = 1f;
     public float toHandTime = .2f;
     public Ease toHandEase = Ease.InQuad;
@@ -53,7 +61,7 @@ public class PlayHandler : MonoBehaviour
     // Runtime
     void Start()
     {
-        StartPlay(20, 6);
+        StartPlay(20, 6, 2);
     }
 
     void Update()
@@ -64,20 +72,25 @@ public class PlayHandler : MonoBehaviour
             
 
             // Hand Updates
-            UpdateHand();
+            // Triggered only by turn -> under reconstruction
+                // UpdateHand();
         }
     }
 
     // Public Methods
-    public void StartPlay(int deckCount, int handLimit)
+    public void StartPlay(int deckCount, int handLimit, int manaLimit)
     {
         // Create and shuffle the deck
         GenDeck(deckCount);
         deck.Shuffle();
 
         this.handLimit = handLimit;
+        DrawHand();
 
-        playActive = true;
+        this.manaLimit = manaLimit;
+        RefreshMana();
+
+        playActive = true; // Signifies the setup tasks are complete -> animations will still be enqueued
     }
 
     // Deck Methods
@@ -134,76 +147,90 @@ public class PlayHandler : MonoBehaviour
     }
 
     // Hand Methods
-    public void UpdateHand() // Draw if possible then adjust the position of the cards in the hand
+    public void DrawHand() // Draw if possible -> automatic adjustment of hand positions triggered when a valid card is dealt to the hand
     {
-        // Check and fill hand with cards (ensure to check number of cards in the deal buffer and cards available in the deck)
+        // Check and fill hand with cards up to the hand limit (ensure to check number of cards currently in the deal buffer and cards available in the deck)
         while ((deck.Count > 0) && (hand.Count + dealBuffer.Count) < handLimit)
         {
             Card dCard = deck.Pop();
             dCard.gameObject.SetActive(true);
             Deal(dCard);
         }
-        
-        // Update the card positions for each card in the hand if there was a change for only cards which are not already queued to the intended destination
-        if (handChange)
-        {
-            for (int i = 0; i < hand.Count; i++)
-            {
-                if (hand[i].card.spriteRenderer.sortingOrder != i+1) // Update render order if it changed
-                { 
-                    hand[i].card.spriteRenderer.sortingOrder = i+1; 
-                } 
-                
-                if (hand[i].card.cardHome != hand[i].pos)
-                {
-                    hand[i].card.cardHome = hand[i].pos;
-                }
-
-                if (hand[i].card.destinationsBuffer.Count > 0)
-                {
-                    if (hand[i].pos != hand[i].card.destinationsBuffer.Peek().pos) // Add a destination if card is not already headed to the destination (only checks if the destination is queued not if the card is resting at the location)
-                    {
-                        hand[i].card.destinationsBuffer.Enqueue((hand[i].pos, toHandTime, toHandEase));
-                    }
-                }
-                else if (hand[i].card.transform.localPosition != hand[i].pos)
-                {
-                    hand[i].card.destinationsBuffer.Enqueue((hand[i].pos, toHandTime, toHandEase));
-                }
-            }
-
-            handChange = false;
-        }        
     }
 
-    private void AddCardToHand(Card nCard)
+    private void AddCardToHand(Card nCard) // Adds a single card to the hand
     {
-        hand.Add((nCard, new()));
-
+        hand.Add(nCard);
         UpdateCardPosInHand();
-
-        handChange = true; // No call to update hand as this private method is only called in a flow during the update hand loop
     }
 
-    public void RemoveCardFromHand(Card rCard)
+    public void RemoveCardFromHand(Card rCard) // Discards a single card from the hand
     {
-        hand.Remove(hand.First(x => x.card == rCard));
-
+        hand.Remove(rCard);
         UpdateCardPosInHand();
-
-        handChange = true;
     }
 
-    private void UpdateCardPosInHand()
+    private void UpdateCardPosInHand() // Updates card home and queues the home destination if it is not set
     {
         for (int i = 0; i < hand.Count; i++)
         {
-            (Card card, Vector3 pos) unpackedTup = hand[i];
-
             float xOffset = (i - (hand.Count - 1) * 0.5f) * handSpread;
-            unpackedTup.pos = new Vector3(-xOffset, 0, 0); // Set the pos value for the determined hand location
+            Vector3 offsetPos = new (xOffset, 0, 0);
 
-            hand[i] = unpackedTup;
+            // Update render order if it changed
+            if (hand[i].spriteRenderer.sortingOrder != i + 1)
+            {
+                hand[i].spriteRenderer.sortingOrder = i + 1;
+            }
+            // If the card home is not set update it
+            if (hand[i].cardHome != offsetPos)
+            {
+                hand[i].cardHome = offsetPos;
+            }
+            // Check the buffer for queued movements and confirm the home movement is not pending
+            if (hand[i].destinationsBuffer.Count > 0)
+            {
+                if (offsetPos != hand[i].destinationsBuffer.Peek().pos) // Add a destination if card is not already headed to the destination as it's last stop (only checks if the destination is queued not if the card is resting at the location)
+                {
+                    hand[i].destinationsBuffer.Enqueue((offsetPos, toHandTime, toHandEase));
+                }
+            }
+            else if (hand[i].transform.localPosition != offsetPos) // Confirms the card is not at the intended home and sends it there if it is currently at rest
+            {
+                hand[i].destinationsBuffer.Enqueue((offsetPos, toHandTime, toHandEase));
+            }
+        }
+    }
+
+    // Mana Methods
+    public void UseMana() // Burns a mana for card action (future home for triggering more complex associated animations -> current dirty simple implementation) -> (consider bool return for checking for available mana in a conditional attempt from other sources - research if that is a professional application)
+    {
+        manaCount--;
+        UpdateMana();
+    }
+
+    public void RefreshMana()
+    {
+        manaCount = manaLimit;
+        UpdateMana();
+    }
+
+    public void UpdateMana() // Rough outline of public trigger for updating the Mana Animation State (will be a private method in future refactor of Mana handler object)
+    {
+        if (manaCount == 0)
+        {
+            mana1.spriteRenderer.color = new(1f, 1f, 1f, .3f);
+            mana2.spriteRenderer.color = new(1f, 1f, 1f, .3f);
+        }
+        else if (manaCount == 1)
+        {
+            mana1.spriteRenderer.color = new(1f, 1f, 1f, 1f);
+            mana2.spriteRenderer.color = new(1f, 1f, 1f, .3f);
+        }
+        else
+        {
+            mana1.spriteRenderer.color = new(1f, 1f, 1f, 1f);
+            mana2.spriteRenderer.color = new(1f, 1f, 1f, 1f);
         }
     }
 

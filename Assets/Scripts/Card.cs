@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using TMPro;
 
 public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -34,7 +33,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public static float deHoverTime = .1f;
     public static Ease deHoverEase = Ease.OutBack;
 
-    // Under Construction -> Collider mask attributes
+    // Collider mask attributes
     public LayerMask fieldLayer;
     public List<Collider2D> touchColliders = new();
 
@@ -44,12 +43,12 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     // Player Visible Card Attributes
     public string title;
-    public int playCost; // ?
+    public int playCost; // ? not utilized
     public int value;
     public string flavor;
 
     // Internal Card Structs
-    public cardState state;
+    public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
     public cardType type;
 
     // Card Components
@@ -207,12 +206,18 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
         if (!dragLock) 
         {
             // Logic for dropping on the playfield
-            if (hasMatFocus) // Only run if we have a focus
+            if (hasMatFocus && PlayHandler.manaCount > 0) 
             {
+                PlayHandler.UseMana(); // Only running the mana handler if we have a focus and we had valid mana count (custom method for future animation controls and other mana related actions currently lives in the PlayHandler)
+                                
                 // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
                 transform.parent = overlappingMats[0].transform.parent; // Is this safe or is it better to reach to PlayHandler.Field to get the game object?
                 cardHome = overlappingMats[0].transform.localPosition;
+
                 PlayHandler.RemoveCardFromHand(this); // Remove the card from the hand
+                                                      // ^ need to handle this action as an intentional action by player as apposed to universal removal of card from hand (this is to delegate the capcity of a forced discard from the hand)
+                                                      // Temp override inside the conditional to track intentional turn by calling a new method in PlayHandler class object for mana control/tracking
+
                 overlappingMats[0].AddToStack(this); // Use a safe method in the PlayerHandler that removes the card from the hand and then passes that ref back to the mat?
                 overlappingMats[0].highlighted = false; // Turn off the highlight now that we are placing a card (this might be best done internally in the mat when we trigger the AddToStack method after it is built out
 
