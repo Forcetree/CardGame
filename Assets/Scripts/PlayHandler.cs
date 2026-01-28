@@ -10,6 +10,18 @@ using DG.Tweening;
     // Deck
     // Mana
 
+[Serializable] public class ScoreData
+{
+    public int score;
+    public int turns;
+
+    public ScoreData(int score, int turns)
+    {
+        this.score = score;
+        this.turns = turns;
+    }
+}
+
 public class PlayHandler : MonoBehaviour
 {
     // Objects
@@ -26,15 +38,15 @@ public class PlayHandler : MonoBehaviour
 
     // Play Vars
     public bool playActive = false;
-        // Score
-        // Win/Loss
+    [SerializeField] public List<ScoreData> score; // Score from the completed paintings
+                            // Win/Loss -> Not implemented yet
 
     // Deck Vars
     public int DeckSize => deck.Count; // Is needed?
     public List<Card> deck = new();
     
     private Queue<Card> dealBuffer = new();
-    private bool isProcessingDealBuffer = false;
+    public bool isProcessingDealBuffer = false;
     public float timeBetweenDeals;
     public float dealTime;
     public Ease dealEase;
@@ -46,14 +58,12 @@ public class PlayHandler : MonoBehaviour
     public int manaLimit;
     public int manaCount;
 
-    // private List<(Card card, Vector3 pos)> hand = new(); // Hand is splayed backwards for O(1) effciency in draw and add operations
-    private List<Card> hand = new(); // Under construction
-    public bool handChange = false; // Under review -> to be removed
+    private readonly List<Card> hand = new();
     public float handSpread = 1f;
     public float toHandTime = .2f;
     public Ease toHandEase = Ease.InQuad;
 
-    public Vector3 handHome = new(0, -3, 0); // This is not currently used (do I need it?)
+    public Vector3 handHome = new(0, -3, 0);
 
     // Graveyard Vars
     public List<Card> graveyard = new();
@@ -61,7 +71,7 @@ public class PlayHandler : MonoBehaviour
     // Runtime
     void Start()
     {
-        StartPlay(20, 6, 2);
+        StartPlay(60, 6, 2);
     }
 
     void Update()
@@ -106,7 +116,7 @@ public class PlayHandler : MonoBehaviour
             nCard.PlayHandler = this;
 
             nCard.playCost = 0;
-            nCard.value = 0;
+            nCard.value = 0; // Made safe with introduction of ValueDigitizer
             nCard.type = (Card.cardType)(i % 5);
             nCard.name = $"Card | {i + 1} | {nCard.type}";
             nCard.title = $"{nCard.type} Card";
@@ -139,11 +149,30 @@ public class PlayHandler : MonoBehaviour
             AddCardToHand(dCard);
             dCard.transform.parent = Hand.transform;
             dCard.spriteRenderer.sortingLayerName = "Hand";
-
+            
             yield return new WaitForSeconds(timeBetweenDeals);
         }
 
         isProcessingDealBuffer = false;
+    }
+
+    private IEnumerator SetCardValues()
+    {
+        // This coroutine waits until all cards are dealt before setting their values
+        while (isProcessingDealBuffer || dealBuffer.Count > 0)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        if (hand.Count != handLimit)
+        {
+            Debug.LogWarning("Hand is not full when setting card values."); // Debug check to ensure the coroutine is waiting properly
+        }
+
+        for (int i = 0; i < hand.Count; i++)
+        {
+            hand[i].value = handLimit - i;
+        }
     }
 
     // Hand Methods
@@ -156,6 +185,7 @@ public class PlayHandler : MonoBehaviour
             dCard.gameObject.SetActive(true);
             Deal(dCard);
         }
+        StartCoroutine(SetCardValues());
     }
 
     private void AddCardToHand(Card nCard) // Adds a single card to the hand
@@ -178,9 +208,9 @@ public class PlayHandler : MonoBehaviour
             Vector3 offsetPos = new (xOffset, 0, 0);
 
             // Update render order if it changed
-            if (hand[i].spriteRenderer.sortingOrder != i + 1)
+            if (hand[i].cardSortOrder != i + 1)
             {
-                hand[i].spriteRenderer.sortingOrder = i + 1;
+                hand[i].cardSortOrder = i + 1;
             }
             // If the card home is not set update it
             if (hand[i].cardHome != offsetPos)
