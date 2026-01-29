@@ -205,7 +205,7 @@ public class PlayHandler : MonoBehaviour
         for (int i = 0; i < hand.Count; i++)
         {
             float xOffset = (i - (hand.Count - 1) * 0.5f) * handSpread;
-            Vector3 offsetPos = new (xOffset, 0, 0);
+            Vector3 offsetPos = new (-xOffset, 0, 0);
 
             // Update render order if it changed
             if (hand[i].cardSortOrder != i + 1)
