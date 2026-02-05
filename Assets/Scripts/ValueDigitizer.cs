@@ -22,8 +22,20 @@ public class ValueDigitizer : MonoBehaviour
             }
             currentValue = value;
             UpdateDigits();
+            UpdateAlignment();
         }
     }
+
+    [Tooltip("Alignment of the digits")]
+    public Alignment alignment = Alignment.Right; // Future feature for aligning the digits (left, center, right)
+    public enum Alignment
+    {
+        Left,
+        Center,
+        Right
+    }
+    [Tooltip("Space between digits, can be adjusted for better visual appeal")]
+    public float digitSpacing = 0.35f; // Space between digits, can be adjusted for better visual appeal
 
     public void UpdateRenderSorting()
     {
@@ -79,5 +91,57 @@ public class ValueDigitizer : MonoBehaviour
         // Units: always show for non-zero values
         unitsRenderer.enabled = true;
         unitsRenderer.sprite = digitSprites[units];
+    }
+
+    private void UpdateAlignment()
+    {
+        float totalWidth = 0f;
+        int digitCount = 0;
+        if (hundredsRenderer.enabled)
+        {
+            totalWidth += hundredsRenderer.bounds.size.x + digitSpacing;
+            digitCount++;
+        }
+        if (tensRenderer.enabled)
+        {
+            totalWidth += tensRenderer.bounds.size.x + digitSpacing;
+            digitCount++;
+        }
+        if (unitsRenderer.enabled)
+        {
+            totalWidth += unitsRenderer.bounds.size.x + digitSpacing;
+            digitCount++;
+        }
+        // Remove the last spacing
+        if (digitCount > 0)
+            totalWidth -= digitSpacing;
+        float startX = 0f;
+        switch (alignment)
+        {
+            case Alignment.Left:
+                startX = -totalWidth / 2f;
+                break;
+            case Alignment.Center:
+                startX = -totalWidth / 2f;
+                break;
+            case Alignment.Right:
+                startX = -totalWidth;
+                break;
+        }
+        float currentX = startX;
+        if (hundredsRenderer.enabled)
+        {
+            hundredsRenderer.transform.localPosition = new Vector3(currentX + hundredsRenderer.bounds.size.x / 2f, hundredsRenderer.transform.localPosition.y, hundredsRenderer.transform.localPosition.z);
+            currentX += hundredsRenderer.bounds.size.x + digitSpacing;
+        }
+        if (tensRenderer.enabled)
+        {
+            tensRenderer.transform.localPosition = new Vector3(currentX + tensRenderer.bounds.size.x / 2f, tensRenderer.transform.localPosition.y, tensRenderer.transform.localPosition.z);
+            currentX += tensRenderer.bounds.size.x + digitSpacing;
+        }
+        if (unitsRenderer.enabled)
+        {
+            unitsRenderer.transform.localPosition = new Vector3(currentX + unitsRenderer.bounds.size.x / 2f, unitsRenderer.transform.localPosition.y, unitsRenderer.transform.localPosition.z);
+        }
     }
 }

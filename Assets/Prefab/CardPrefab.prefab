@@ -220,6 +220,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7423303732416319316}
     m_Modifications:
+    - target: {fileID: 1683899887388382072, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
+      propertyPath: alignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3757010855035220670, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
       propertyPath: m_Sprite
       value: 
