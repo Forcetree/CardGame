@@ -661,8 +661,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171407e6af6290e4ea0bcb1916bd2715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayHandler
-  Hand: {fileID: 1236652350}
-  Deck: {fileID: 1476619222}
+  hand: {fileID: 1236652352}
+  deck: {fileID: 1476619224}
   Graveyard: {fileID: 1589039290}
   Field: {fileID: 2068989992}
   mana1: {fileID: 1321891042}
@@ -670,19 +670,8 @@ MonoBehaviour:
   CardRef: {fileID: 5696907107929453150, guid: 1d2c641a34cf4da41831fd2db790ef68, type: 3}
   playActive: 0
   score: []
-  deck: []
-  isProcessingDealBuffer: 0
-  timeBetweenDeals: 0.5
-  dealTime: 0.1
-  dealEase: 6
-  drawFocusPos: {x: -6, y: 1.5, z: 0}
-  handLimit: 0
   manaLimit: 0
   manaCount: 0
-  handSpread: 0.5
-  toHandTime: 0.2
-  toHandEase: 5
-  handHome: {x: 0, y: -3, z: 0}
   graveyard: []
 --- !u!1 &529165883
 GameObject:
@@ -1332,6 +1321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1236652351}
+  - component: {fileID: 1236652352}
   m_Layer: 3
   m_Name: Hand
   m_TagString: Untagged
@@ -1354,6 +1344,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 520213723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1236652352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236652350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d425f8674b4728143abd804fb565793e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHand
+  deck: {fileID: 0}
+  handLimit: 0
+  handSpread: 0.5
+  toHandTime: 0.3
+  toHandEase: 28
+  handHome: {x: 0, y: -3, z: 0}
 --- !u!1 &1262412922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1657,6 +1665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1476619223}
+  - component: {fileID: 1476619224}
   m_Layer: 0
   m_Name: Deck
   m_TagString: Untagged
@@ -1681,6 +1690,27 @@ Transform:
   - {fileID: 953238331}
   m_Father: {fileID: 520213723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1476619224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476619222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ce2f2fa1dace242bd1ea9f3ade42e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaintDeck
+  hand: {fileID: 0}
+  PlayHandler: {fileID: 0}
+  CardRef: {fileID: 0}
+  cardsInDeck: []
+  isProcessingDealBuffer: 0
+  timeBetweenDeals: 0.5
+  dealTime: 0.5
+  dealEase: 7
+  drawFocusPos: {x: -6, y: 1.5, z: 0}
 --- !u!1 &1589039290
 GameObject:
   m_ObjectHideFlags: 0

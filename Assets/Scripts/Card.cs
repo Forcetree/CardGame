@@ -49,6 +49,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public string title;
     public int playCost; // not utilized
     public string flavor; // not utilized
+    
     [SerializeField] private int _value;
     public int value
     {
@@ -185,7 +186,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Mouse Detectors
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (dragLock || PlayHandler.isProcessingDealBuffer) // Currently blocking drags during deal animations to avoid bugs
+        if (dragLock || PlayHandler.deck.isProcessingDealBuffer) // Currently blocking drags during deal animations to avoid bugs
         {
             return;
         }
@@ -208,7 +209,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
                 // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
                 cardHome = new Vector3(0, 0, 0); // Reset the home to zero as the card is now on the field and no longer in the hand
 
-                PlayHandler.RemoveCardFromHand(this); // Remove the card from the hand
+                PlayHandler.hand.RemoveCardFromHand(this); // Remove the card from the hand
 
                 overlappingMats[0].AddToStack(this);
                 overlappingMats.Clear();
