@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8977307835569748999}
   - component: {fileID: 4353567974803706483}
+  - component: {fileID: 6586564759475051887}
   m_Layer: 0
   m_Name: Tens
   m_TagString: Untagged
@@ -91,6 +92,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6586564759475051887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145118047172387381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4fa89020c2d38040a8d34808f9f9f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Digit
+  spriteRenderer: {fileID: 4353567974803706483}
 --- !u!1 &1268173864082728025
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7047188838277775401}
   - component: {fileID: 8092135278105268053}
+  - component: {fileID: 269663092987790216}
   m_Layer: 0
   m_Name: Hundreds
   m_TagString: Untagged
@@ -182,6 +197,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &269663092987790216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268173864082728025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4fa89020c2d38040a8d34808f9f9f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Digit
+  spriteRenderer: {fileID: 8092135278105268053}
 --- !u!1 &3925380598465341916
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,9 +268,11 @@ MonoBehaviour:
   - {fileID: 6231858065355147749, guid: 69b56cd980353da49b51c351f5ff257f, type: 3}
   - {fileID: -6856888360262345466, guid: 69b56cd980353da49b51c351f5ff257f, type: 3}
   - {fileID: 5792812338273699227, guid: 69b56cd980353da49b51c351f5ff257f, type: 3}
-  hundredsRenderer: {fileID: 8092135278105268053}
-  tensRenderer: {fileID: 4353567974803706483}
-  unitsRenderer: {fileID: 3757010855035220670}
+  hundredsRenderer: {fileID: 269663092987790216}
+  tensRenderer: {fileID: 6586564759475051887}
+  unitsRenderer: {fileID: 2858735049140135566}
+  alignment: 2
+  digitSpacing: 0.35
 --- !u!1 &8741494787488587973
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4235054204323068527}
   - component: {fileID: 3757010855035220670}
+  - component: {fileID: 2858735049140135566}
   m_Layer: 0
   m_Name: Units
   m_TagString: Untagged
@@ -334,3 +365,16 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2858735049140135566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8741494787488587973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4fa89020c2d38040a8d34808f9f9f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Digit
+  spriteRenderer: {fileID: 3757010855035220670}

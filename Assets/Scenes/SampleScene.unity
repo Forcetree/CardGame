@@ -404,6 +404,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1907151735}
     m_Modifications:
+    - target: {fileID: 1683899887388382072, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
+      propertyPath: alignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3925380598465341916, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
       propertyPath: m_Name
       value: Digitizer
@@ -1064,6 +1068,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 529165884}
     m_Modifications:
+    - target: {fileID: 1683899887388382072, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
+      propertyPath: alignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3925380598465341916, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
       propertyPath: m_Name
       value: Digitizer
@@ -2304,6 +2312,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1171502792}
     m_Modifications:
+    - target: {fileID: 1683899887388382072, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
+      propertyPath: alignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3925380598465341916, guid: e296bae6aaea85d4ea8cfc838fc7fe8f, type: 3}
       propertyPath: m_Name
       value: Digitizer

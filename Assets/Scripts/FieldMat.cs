@@ -1,7 +1,8 @@
-using UnityEngine;
+using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
 
 public class FieldMat : MonoBehaviour
 {
@@ -68,10 +69,7 @@ public class FieldMat : MonoBehaviour
         var types = stack.Select(c => c.type).Distinct();
         if (CardCombiner.TryResolve(types, out Card.cardType resolved))
         {
-            TopperRenderer.color = CardCombiner.GetColor(resolved);
-            TopperRenderer.sortingLayerName = "Topper";
-            valueRenderer.UpdateRenderSorting();
-
+            PlayComboAnimation(CardCombiner.GetColor(resolved));            
             comboType = resolved;
         }
         else // This should never happen as TryTarget should prevent invalid cards from being added
@@ -91,6 +89,19 @@ public class FieldMat : MonoBehaviour
 
         highlighted = false;
         matIsEmpty = false;
+    }
+
+    private void PlayComboAnimation(Color combo) 
+    {
+        TopperRenderer.sortingLayerName = "Topper";
+        valueRenderer.UpdateRenderSorting();
+                
+        DG.Tweening.Sequence s = DOTween.Sequence();
+                
+        s.Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)); // Flash bright
+        s.Join(TopperRenderer.DOColor(combo, 0.1f).SetEase(Ease.InSine)); // Change to combo color
+
+        s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
     }
 
     public void ClearMat() // Need to expand this to combine and calculate the total value of the cards on the mat before clearing

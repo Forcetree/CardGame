@@ -1,13 +1,14 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class ValueDigitizer : MonoBehaviour
 {
     // Class handles conversion of integer values to digit sprites for display on UI elements. Should be capable of handling up to 3 digits currently.
     public Sprite[] digitSprites; // Array of digit sprites from 0-9 (should we create a better method to manage this?)
 
-    public SpriteRenderer hundredsRenderer;
-    public SpriteRenderer tensRenderer;
-    public SpriteRenderer unitsRenderer;
+    public Digit hundredsRenderer;
+    public Digit tensRenderer;
+    public Digit unitsRenderer;
 
     private int currentValue = 0;
     public int value
@@ -21,8 +22,7 @@ public class ValueDigitizer : MonoBehaviour
                 return;
             }
             currentValue = value;
-            UpdateDigits();
-            UpdateAlignment();
+            UpdateDigits();            
         }
     }
 
@@ -34,29 +34,25 @@ public class ValueDigitizer : MonoBehaviour
         Center,
         Right
     }
-    [Tooltip("Space between digits, can be adjusted for better visual appeal")]
+    [Tooltip("Space between digit centers, can be adjusted for better visual appeal")]
     public float digitSpacing = 0.35f; // Space between digits, can be adjusted for better visual appeal
 
     public void UpdateRenderSorting()
     {
-        SpriteRenderer parentRenderer = this.transform.parent.GetComponent<SpriteRenderer>(); // Accesses the parent object's SpriteRenderer to align sorting layers and orders (this is simple for Card objects but needs consideration for field)
+        SpriteRenderer parentRenderer = this.transform.parent.GetComponent<SpriteRenderer>(); // Accesses the parent object's SpriteRenderer to align sorting layers and orders (this is simple for Card objects but needs more consideration for field assets)
 
-        hundredsRenderer.sortingLayerName = parentRenderer.sortingLayerName;
-        tensRenderer.sortingLayerName = parentRenderer.sortingLayerName;
-        unitsRenderer.sortingLayerName = parentRenderer.sortingLayerName;
-
-        hundredsRenderer.sortingOrder = parentRenderer.sortingOrder + 1;
-        tensRenderer.sortingOrder = parentRenderer.sortingOrder + 1;
-        unitsRenderer.sortingOrder = parentRenderer.sortingOrder + 1;
+        hundredsRenderer.UpdateSorting(parentRenderer.sortingLayerName, parentRenderer.sortingOrder + 1);
+        tensRenderer.UpdateSorting(parentRenderer.sortingLayerName, parentRenderer.sortingOrder + 1);
+        unitsRenderer.UpdateSorting(parentRenderer.sortingLayerName, parentRenderer.sortingOrder + 1);
     }
 
-    private void UpdateDigits() // Consider adding animation effects later
+    private void UpdateDigits() // Adding Animations
     {
         if (currentValue == 0)
         {
-            hundredsRenderer.enabled = false;
-            tensRenderer.enabled = false;
-            unitsRenderer.enabled = false;
+            hundredsRenderer.Fade();
+            tensRenderer.Fade();
+            unitsRenderer.Fade();
             return;
         }
 
@@ -64,84 +60,77 @@ public class ValueDigitizer : MonoBehaviour
         int tens = (currentValue / 10) % 10;
         int units = currentValue % 10;
 
-        // Hundreds: show only when > 0
-        if (hundreds > 0)
-        {
-            hundredsRenderer.enabled = true;
-            hundredsRenderer.sprite = digitSprites[hundreds];
-        }
-        else
-        {
-            hundredsRenderer.enabled = false;
-            hundredsRenderer.sprite = null;
-        }
+        unitsRenderer.AnimateValueChange(digitSprites[units]);
+        int digitCount = 1;
 
-        // Tens: show when hundreds > 0 or tens > 0
         if (hundreds > 0 || tens > 0)
         {
-            tensRenderer.enabled = true;
-            tensRenderer.sprite = digitSprites[tens];
+            tensRenderer.AnimateValueChange(digitSprites[tens]);
+            digitCount = 2;
         }
         else
         {
-            tensRenderer.enabled = false;
-            tensRenderer.sprite = null;
+            tensRenderer.Fade();
         }
 
-        // Units: always show for non-zero values
-        unitsRenderer.enabled = true;
-        unitsRenderer.sprite = digitSprites[units];
+        if (hundreds > 0)
+        {            
+            hundredsRenderer.AnimateValueChange(digitSprites[hundreds]);
+            digitCount = 3;
+        }
+        else
+        {
+            hundredsRenderer.Fade();
+        }        
+
+        UpdateAlignment(digitCount);
     }
 
-    private void UpdateAlignment()
+    private void UpdateAlignment(int digitCount)
     {
-        float totalWidth = 0f;
-        int digitCount = 0;
-        if (hundredsRenderer.enabled)
-        {
-            totalWidth += hundredsRenderer.bounds.size.x + digitSpacing;
-            digitCount++;
-        }
-        if (tensRenderer.enabled)
-        {
-            totalWidth += tensRenderer.bounds.size.x + digitSpacing;
-            digitCount++;
-        }
-        if (unitsRenderer.enabled)
-        {
-            totalWidth += unitsRenderer.bounds.size.x + digitSpacing;
-            digitCount++;
-        }
-        // Remove the last spacing
-        if (digitCount > 0)
-            totalWidth -= digitSpacing;
-        float startX = 0f;
+        float s = digitSpacing;
+                
+        float groupStart;
         switch (alignment)
         {
             case Alignment.Left:
-                startX = -totalWidth / 2f;
+                groupStart = 0f;
                 break;
             case Alignment.Center:
-                startX = -totalWidth / 2f;
+                groupStart = -s * (digitCount - 1) * 0.5f;
                 break;
-            case Alignment.Right:
-                startX = -totalWidth;
+            case Alignment.Right:                
+                groupStart = -s * (digitCount - 1);
+                break;
+            default:
+                groupStart = -s * (digitCount - 1) * 0.5f;
                 break;
         }
-        float currentX = startX;
-        if (hundredsRenderer.enabled)
+
+        Vector3 hPos, tPos, uPos;
+
+        if (digitCount == 3)
         {
-            hundredsRenderer.transform.localPosition = new Vector3(currentX + hundredsRenderer.bounds.size.x / 2f, hundredsRenderer.transform.localPosition.y, hundredsRenderer.transform.localPosition.z);
-            currentX += hundredsRenderer.bounds.size.x + digitSpacing;
+            hPos = new Vector3(groupStart + (0 * s), 0f, 0f);
+            tPos = new Vector3(groupStart + (1 * s), 0f, 0f);
+            uPos = new Vector3(groupStart + (2 * s), 0f, 0f);
         }
-        if (tensRenderer.enabled)
-        {
-            tensRenderer.transform.localPosition = new Vector3(currentX + tensRenderer.bounds.size.x / 2f, tensRenderer.transform.localPosition.y, tensRenderer.transform.localPosition.z);
-            currentX += tensRenderer.bounds.size.x + digitSpacing;
+        else if (digitCount == 2)
+        {            
+            hPos = new Vector3(groupStart - (1 * s), 0f, 0f);
+            tPos = new Vector3(groupStart + (0 * s), 0f, 0f);
+            uPos = new Vector3(groupStart + (1 * s), 0f, 0f);
         }
-        if (unitsRenderer.enabled)
-        {
-            unitsRenderer.transform.localPosition = new Vector3(currentX + unitsRenderer.bounds.size.x / 2f, unitsRenderer.transform.localPosition.y, unitsRenderer.transform.localPosition.z);
+        else // digitCount == 1
+        {            
+            hPos = new Vector3(groupStart - (2 * s), 0f, 0f);
+            tPos = new Vector3(groupStart - (1 * s), 0f, 0f);
+            uPos = new Vector3(groupStart + (0 * s), 0f, 0f);
         }
+
+        hundredsRenderer.transform.DOLocalMove(hPos, 0.25f).SetEase(Ease.OutCubic);
+        tensRenderer.transform.DOLocalMove(tPos, 0.25f).SetEase(Ease.OutCubic);
+        unitsRenderer.transform.DOLocalMove(uPos, 0.25f).SetEase(Ease.OutCubic);
+
     }
 }
