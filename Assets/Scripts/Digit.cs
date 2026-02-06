@@ -36,7 +36,7 @@ public class Digit : MonoBehaviour
         {
             spriteRenderer.sprite = nDigit;
             spriteRenderer.enabled = true;
-            spriteRenderer.DOFade(1, .5f);
+            spriteRenderer.DOFade(1, .25f).SetDelay(.25f);
         }
     }
 }

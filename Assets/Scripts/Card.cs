@@ -30,7 +30,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public Vector3 cardHome;
 
     // Static hover attributes
-    public static float wiggle = 30;
+    public static float wiggle = 15;
     public static float bump = .4f;
     public static float hoverTime = .1f;
     public static Ease hoverEase = Ease.OutBack;
@@ -163,7 +163,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
                 (Vector3 pos, float time, Ease ease) = destinationsBuffer.Dequeue();
 
                 // Use the tween library to move smoothly to the target
-                transform.DOLocalMove(pos, time).SetEase(ease).OnComplete(() => { /* Kill cards in grave or other terminal end here? */ });
+                transform.DOLocalMove(pos, time).SetEase(ease).OnComplete(() => { dragLock = false; });
             }
         }
     }
@@ -186,21 +186,27 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Mouse Detectors
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (dragLock || PlayHandler.deck.isProcessingDealBuffer) // Currently blocking drags during deal animations to avoid bugs
+        if (dragLock || PlayHandler.deck.isProcessingDealBuffer || dragging) // Currently blocking drags during deal animations to avoid bugs and other weird interactions -> need to consider a more robust solution for handling this type of issue
         {
             return;
         }
         else
         {
             dragging = true; // Drag Card
+
+            destinationsBuffer.Clear(); // Clear the buffer to avoid conflicts with any queued movements 
+            
             this.spriteRenderer.sortingLayerName = "Focus";
             ValueRenderer.UpdateRenderSorting();
         }
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!dragLock) 
+        if (!dragLock && dragging) // Confirm that this is a valid release to trigger the drop logic
         {
+            dragging = false;
+            dragLock = true; // Lock the card to prevent multiple triggers of the drop logic -> currently needed to avoid bugs with multiple triggers of the drop logic due to the way we are handling the click and drag interactions
+
             // Logic for dropping on the playfield
             if (hasMatFocus && PlayHandler.manaCount > 0) 
             {
@@ -216,16 +222,25 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
                 spriteRenderer.sortingLayerName = "Field";
                 ValueRenderer.UpdateRenderSorting();
+                
                 destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // A new return to home animation or just reuse the hand return? Current implementation uses the hand home default params deHoverTime and deHoverEase
-            }
-            else // If we do not detect the field objects we throw the card back to the hand
-            {
-                destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
-                spriteRenderer.sortingLayerName = "Hand";
-                ValueRenderer.UpdateRenderSorting();
-            }
 
-            dragging = false;
+                dragging = false;
+            }
+            else // If we do not detect the field objects 
+            {
+                // Add a wiggle animation to the card when it is thrown back to the hand for some satisfying feedback -> under review for how to implement this with the current mover system (potentially just add a rotation tween before the return home)
+                DOTween.Sequence()
+                    .Append(transform.DOPunchRotation(new Vector3(0, 0, wiggle), 0.3f, 15, 1)) // Adjust the punch rotation parameters as needed (vector size adjustment, time, vibrato, elasticity)
+                    .Join(transform.DOPunchPosition(new Vector3(0.1f, 0, 0), 0.3f, 10, 1))
+                    .Join(spriteRenderer.DOColor(Color.red, 0.15f).SetLoops(2, LoopType.Yoyo)) // Currently can't override the color as we set that in the update loop -> need to create better handling for sprite color without polling
+                    .OnComplete(() =>
+                    {
+                        destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
+                        spriteRenderer.sortingLayerName = "Hand";
+                        ValueRenderer.UpdateRenderSorting();                        
+                    });                
+            }            
         }
     }
     public void OnPointerClick(PointerEventData eventData) // This triggers after the pointer is released -> to avoid complexity don't support two click control and force drags
@@ -243,8 +258,10 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
-
-        destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase));
+        if (!dragging && !dragLock)
+        {
+            destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase));
+        }        
     }
 
     // Collision Detectors
