@@ -16,7 +16,7 @@ public class TurnBtn : MonoBehaviour, IPointerClickHandler
     {
         // Handle mana and counts here
         PlayHandler.deck.DrawHand(PlayHandler.hand);
-        PlayHandler.RefreshMana();
+        PlayHandler.manaPool.FillManaPool();
         finisher.turns += 1;
         // Need to check deck state?
         // The deck can empty but actioning an empty deck to trigger end of season should be manual selection by player to finish current hand

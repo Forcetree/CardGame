@@ -32,9 +32,9 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Static hover attributes
     public static float wiggle = 15;
     public static float bump = .4f;
-    public static float hoverTime = .1f;
+    public static float hoverTime = .08f;
     public static Ease hoverEase = Ease.OutBack;
-    public static float deHoverTime = .1f;
+    public static float deHoverTime = .08f;
     public static Ease deHoverEase = Ease.OutBack;
 
     // Collider mask attributes
@@ -138,7 +138,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public void FixedUpdate()
     {
         Mover();
-        if (PlayHandler.manaCount > 0) { MatFocuser(); }
+        if (PlayHandler.manaPool.ManaCount > 0) { MatFocuser(); }
     }
 
     // Runtime Managers
@@ -208,9 +208,9 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
             dragLock = true; // Lock the card to prevent multiple triggers of the drop logic -> currently needed to avoid bugs with multiple triggers of the drop logic due to the way we are handling the click and drag interactions
 
             // Logic for dropping on the playfield
-            if (hasMatFocus && PlayHandler.manaCount > 0) 
+            if (hasMatFocus && PlayHandler.manaPool.ManaCount > 0) 
             {
-                PlayHandler.UseMana(); // Only running the mana handler if we have a focus and we had valid mana count (custom method for future animation controls and other mana related actions currently lives in the PlayHandler)
+                PlayHandler.manaPool.BurnMana(); // Only running the mana handler if we have a focus and we had valid mana count (custom method for future animation controls and other mana related actions currently lives in the PlayHandler)
 
                 // Set new hand home based on the currently focused mat object by grabbing the first mat in the list (we know the focused mat is the first because the operation that sets it with OrderBy has enabled the true flag)
                 cardHome = new Vector3(0, 0, 0); // Reset the home to zero as the card is now on the field and no longer in the hand
