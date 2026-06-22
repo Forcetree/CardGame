@@ -14,6 +14,9 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     // Sprites
     // public Sprite[] valueSprites; // Moved to digitizer class
+    public Sprite fireSprite;
+    public Sprite iceSprite;
+    public Sprite electricSprite;
 
     // Under review -> Interaction Handles
     public bool hovering = false;
@@ -87,7 +90,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public Quaternion orbit = Quaternion.identity; // Might not use this anymore -> unless we need for the swing motion tilt
 
     // Card Class Structs
-    public enum cardType
+    public enum cardType // Under construction for Necro Rebuild
     {
         Red,
         Yellow,
@@ -133,7 +136,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Runtime
     public void Update()
     {
-        SetSprite();        
+        // SetSprite();        
     }
     public void FixedUpdate()
     {
