@@ -15,8 +15,15 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Sprites
     // public Sprite[] valueSprites; // Moved to digitizer class
     public Sprite fireSprite;
-    public Sprite iceSprite;
-    public Sprite electricSprite;
+    public Sprite growthSprite;
+    public Sprite earthSprite;
+    public Sprite ironSprite;
+    public Sprite frostSprite;
+    public Sprite waterSprite;
+    public Sprite windSprite;
+    public Sprite stormSprite;
+    public Sprite blightSprite;
+    
 
     // Under review -> Interaction Handles
     public bool hovering = false;
