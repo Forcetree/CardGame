@@ -97,39 +97,17 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public Quaternion orbit = Quaternion.identity; // Might not use this anymore -> unless we need for the swing motion tilt
 
     // Card Class Structs
-    public enum cardType // Under construction for Necro Rebuild
+    public enum cardType // Elemental types matching sprite references
     {
-        Red,
-        Yellow,
-        Blue,
-        White,
-        Black,
-
-        // Combos made on the board
-        // Light Pures
-        Coral, // Red + White
-        Sun, // Yellow + White
-        Hydro, // Blue + White
-
-        // Dark Pures
-        Blood, // Red + Black
-        Gold, // Yellow + Black
-        Abyss, // Blue + Black
-
-        // Mixes
-        Toxic, // -> Purple
-        Amber, // -> Orange
-        Life, // -> Green
-
-        // Light Combos
-        Iris, // Purple + White
-        Nectar, // Orange + White
-        Moss, // Green + White
-
-        // Dark Combos
-        Obsidian, // Purple + Black
-        Lava, // Orange + Black
-        Serpenite, // Green + Black
+        Fire,
+        Growth,
+        Earth,
+        Iron,
+        Frost,
+        Water,
+        Wind,
+        Storm,
+        Blight,
 
         Back // Card back when flipped
     }
@@ -137,6 +115,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     {
         Deck,
         Hand,
+        Field,
         Grave
     }
 
