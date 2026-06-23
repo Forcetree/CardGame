@@ -131,9 +131,10 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     }
 
     // Runtime Managers
-    private void SetSprite() // Sets the sprite for render -> new design does not mandate that the card be able to display as any of the more complex mixes (we only need that in the FieldMat object)
+    private void SetSprite() // Sets the sprite for render -> Overhaul for Necro
     {
-        spriteRenderer.color = CardCombiner.GetColor(type);
+        // spriteRenderer.color = CardCombiner.GetColor(type);
+        // spriteRenderer.sprite = CardCombiner.GetSprite(type);
     }
     private void Mover()
     {
