@@ -50,7 +50,7 @@ public class Deck : MonoBehaviour
 
             nCard.playCost = 0;
             nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
-            nCard.type = (Card.cardType)(i % 5);
+            nCard.type = (Card.cardType)(i % 9);
             nCard.name = $"Card | {i + 1} | {nCard.type}";
             nCard.title = $"{nCard.type} Card";
             nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
