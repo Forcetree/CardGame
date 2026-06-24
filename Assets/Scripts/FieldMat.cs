@@ -45,7 +45,7 @@ public class FieldMat : MonoBehaviour
         spriteRenderer.color = new(1f, 1f, 1f, .3f);
     }
 
-    //public bool TryTarget(Card cCard) // Under reconstruction -> nFor Necro the card combiner class needs to do many differnt things moving forward
+    //public bool TryTarget(Card cCard) // Under reconstruction -> For Necro the card combiner class needs to do many differnt things moving forward
     //{
     //    // New logic under construction
     //    var prospective = stack.Select(c => c.type).Append(cCard.type).Distinct();

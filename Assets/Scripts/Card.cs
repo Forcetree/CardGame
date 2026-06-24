@@ -161,7 +161,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     {
         if (overlappingMats.Count > 0) 
         {
-            overlappingMats = overlappingMats.Where(mat => mat.TryTarget(this)).OrderBy(mat => Vector2.Distance(transform.position, mat.transform.position)).ToList();
+            // overlappingMats = overlappingMats.Where(mat => mat.TryTarget(this)).OrderBy(mat => Vector2.Distance(transform.position, mat.transform.position)).ToList();
 
             for (int i = 0; i < overlappingMats.Count; i++) 
             { 
