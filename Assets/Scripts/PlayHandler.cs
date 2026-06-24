@@ -12,7 +12,7 @@ public class PlayHandler : MonoBehaviour
 {
     // Objects
     public PlayerHand hand;
-    public PaintDeck deck;
+    public Deck deck;
     public ManaPool manaPool;
 
     // Deprecated
