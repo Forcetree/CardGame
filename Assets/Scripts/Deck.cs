@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class PaintDeck : MonoBehaviour
+public class Deck : MonoBehaviour
 {
     [Tooltip("The hand is set during active play by the PlayHandler")]
     public PlayerHand hand; // Needs Hand object to talk to -> filled on initialization of the deck in PlayHandler

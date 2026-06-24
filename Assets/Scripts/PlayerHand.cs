@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class PlayerHand : MonoBehaviour
 {
     [Tooltip("The deck is set during active play by the PlayHandler")]
-    public PaintDeck deck; // Needs Deck object to talk to -> filled on initialization of the hand in PlayHandler
+    public Deck deck; // Needs Deck object to talk to -> filled on initialization of the hand in PlayHandler
 
     [Tooltip("Set automatically by PlayHandler: for hand size")]
     public int handLimit;
@@ -28,7 +28,7 @@ public class PlayerHand : MonoBehaviour
 
     public Card this[int index] => hand[index]; // May not be used but allows for easier access to cards in hand with indexing
 
-    public void InitHand(int handLimit, PaintDeck nDeck) // Do we want to allow this to be called multiple times for different playthroughs? If so we need to consider resetting the hand and other related variables
+    public void InitHand(int handLimit, Deck nDeck) // Do we want to allow this to be called multiple times for different playthroughs? If so we need to consider resetting the hand and other related variables
     {
         this.handLimit = handLimit;
         this.deck = nDeck;
