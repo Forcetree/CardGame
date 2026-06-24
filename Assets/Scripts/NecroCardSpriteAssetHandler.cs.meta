@@ -1,2 +1,21 @@
 fileFormatVersion: 2
 guid: 74245616fe5acd2409a053115fbb0742
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - fireSprite: {instanceID: 0}
+  - growthSprite: {instanceID: 0}
+  - earthSprite: {instanceID: 0}
+  - ironSprite: {instanceID: 0}
+  - frostSprite: {instanceID: 0}
+  - waterSprite: {instanceID: 0}
+  - windSprite: {instanceID: 0}
+  - stormSprite: {instanceID: 0}
+  - blightSprite: {instanceID: 0}
+  - backSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,8 +15,14 @@ public class NecroCardSpriteAssetHandler : MonoBehaviour
     [SerializeField] private Sprite blightSprite;
     [SerializeField] private Sprite backSprite;
 
-    private void Awake()
+    public bool InitSprites()
     {
+        if (fireSprite == null || growthSprite == null || earthSprite == null || ironSprite == null || frostSprite == null || waterSprite == null || windSprite == null || stormSprite == null || blightSprite == null || backSprite == null)
+        {
+            Debug.LogError("One or more sprites are not assigned in the NecroCardSpriteAssetHandler instance.");
+            return false;
+        }
+
         CardCombiner.fireSprite = fireSprite;
         CardCombiner.growthSprite = growthSprite;
         CardCombiner.earthSprite = earthSprite;
@@ -27,5 +33,9 @@ public class NecroCardSpriteAssetHandler : MonoBehaviour
         CardCombiner.stormSprite = stormSprite;
         CardCombiner.blightSprite = blightSprite;
         CardCombiner.backSprite = backSprite;
+
+        Debug.Log("Sprites successfully assigned to CardCombiner.");
+
+        return true;
     }
 }

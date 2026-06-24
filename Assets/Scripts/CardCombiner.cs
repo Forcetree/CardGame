@@ -26,6 +26,9 @@ public static class CardCombiner
         if (_initialized) return;
         _initialized = true;
 
+        // Force the sprites to be initialized by the NecroCardSpriteAssetHandler
+        UnityEngine.Object.FindAnyObjectByType<NecroCardSpriteAssetHandler>()?.InitSprites();
+
         // Combos
         // AddCombo(new[] { Card.cardType.Fire, Card.cardType.Water }, Card
 
