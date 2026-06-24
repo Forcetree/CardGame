@@ -45,13 +45,13 @@ public class FieldMat : MonoBehaviour
         spriteRenderer.color = new(1f, 1f, 1f, .3f);
     }
 
-    public bool TryTarget(Card cCard) // Under reconstruction -> need to check against current stack for possible combos to exapnd the combos to support any number of duplicate cards
-    {
-        // New logic under construction
-        var prospective = stack.Select(c => c.type).Append(cCard.type).Distinct();
-        if (prospective.Count() > 3) return false;
-        return CardCombiner.TryResolve(prospective, out _);
-    }
+    //public bool TryTarget(Card cCard) // Under reconstruction -> nFor Necro the card combiner class needs to do many differnt things moving forward
+    //{
+    //    // New logic under construction
+    //    var prospective = stack.Select(c => c.type).Append(cCard.type).Distinct();
+    //    if (prospective.Count() > 3) return false;
+    //    return CardCombiner.TryResolve(prospective, out _);
+    //}
 
     public void TargetStatus(bool value) // Should I make this public to call from card or should we call internally if TryTarget allows targeting OR should I just leave the highlight public and allow it to be handled by cards
     {
@@ -67,19 +67,20 @@ public class FieldMat : MonoBehaviour
         value += nCard.value; // Update the mat value when adding a card
 
         var types = stack.Select(c => c.type).Distinct();
-        if (CardCombiner.TryResolve(types, out Card.cardType resolved))
-        {
-            PlayComboAnimation(CardCombiner.GetColor(resolved));            
-            comboType = resolved;
-        }
-        else // This should never happen as TryTarget should prevent invalid cards from being added
-        {
-            TopperRenderer.color = CardCombiner.GetColor(nCard.type);
-            TopperRenderer.sortingLayerName = "Topper";
-            valueRenderer.UpdateRenderSorting();
+        //if (CardCombiner.TryResolve(types, out Card.cardType resolved))
+        //{
+        //    PlayComboAnimation(CardCombiner.GetSprite(resolved));            
+        //    comboType = resolved;
+        //}
+        //else // This should never happen as TryTarget should prevent invalid cards from being added
+        //{
+        //    // Fall back: use the sprite for the lone card type
+        //    TopperRenderer.sprite = CardCombiner.GetSprite(nCard.type);
+        //    TopperRenderer.sortingLayerName = "Topper";
+        //    valueRenderer.UpdateRenderSorting();
 
-            comboType = nCard.type;
-        }
+        //    comboType = nCard.type;
+        //}
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
         {
@@ -91,17 +92,18 @@ public class FieldMat : MonoBehaviour
         matIsEmpty = false;
     }
 
-    private void PlayComboAnimation(Color combo) 
+    private void PlayComboAnimation(Sprite comboSprite)
     {
+        TopperRenderer.sprite = comboSprite;
         TopperRenderer.sortingLayerName = "Topper";
         valueRenderer.UpdateRenderSorting();
-                
-        DG.Tweening.Sequence s = DOTween.Sequence();
-                
-        s.Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)); // Flash bright
-        s.Join(TopperRenderer.DOColor(combo, 0.1f).SetEase(Ease.InSine)); // Change to combo color
 
-        s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
+        // Simple reveal animation: fade in the topper and add a punch scale
+        TopperRenderer.color = new Color(1f, 1f, 1f, 0f);
+
+        DG.Tweening.Sequence s = DOTween.Sequence();
+        s.Append(TopperRenderer.DOFade(1f, 0.08f).SetEase(Ease.InSine));
+        s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0));
     }
 
     public void ClearMat() // Need to expand this to combine and calculate the total value of the cards on the mat before clearing
