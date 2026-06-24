@@ -14,16 +14,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     // Sprites
     // public Sprite[] valueSprites; // Moved to digitizer class
-    public Sprite fireSprite;
-    public Sprite growthSprite;
-    public Sprite earthSprite;
-    public Sprite ironSprite;
-    public Sprite frostSprite;
-    public Sprite waterSprite;
-    public Sprite windSprite;
-    public Sprite stormSprite;
-    public Sprite blightSprite;
-    
+        // Moved sprite controller to CardCombiner class -> under review for how to handle sprite management in the future
 
     // Under review -> Interaction Handles
     public bool hovering = false;
@@ -59,7 +50,8 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     public string title;
     public int playCost; // not utilized
     public string flavor; // not utilized
-    
+
+    [Tooltip("Don't change this in inspector or the value will not update")]
     [SerializeField] private int _value;
     public int value
     {
@@ -85,7 +77,19 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     // Internal Card Structs
     public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
-    public cardType type;
+
+
+    [Tooltip("Don't change this in inspector or the sprite will not update")]
+    [SerializeField] private cardType _type;
+    public cardType type
+    {
+        get { return _type; }
+        set
+        {
+            _type = value;
+            SetSprite();
+        }
+    }
 
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later
@@ -122,7 +126,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Runtime
     public void Update()
     {
-        // SetSprite();        
+        // SetSprite(); // Removed to save on perf
     }
     public void FixedUpdate()
     {
@@ -131,11 +135,42 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     }
 
     // Runtime Managers
-    private void SetSprite() // Sets the sprite for render -> Overhaul for Necro
+
+    // Sprite and Color Managers
+
+    private Sprite GetSprite()
     {
-        // spriteRenderer.color = CardCombiner.GetColor(type);
-        // spriteRenderer.sprite = CardCombiner.GetSprite(type);
+        switch (this._type)
+        {
+            case cardType.Fire:
+                return CardCombiner.GetSprite(Card.cardType.Fire);
+            case cardType.Growth:
+                return CardCombiner.GetSprite(Card.cardType.Growth);
+            case cardType.Earth:
+                return CardCombiner.GetSprite(Card.cardType.Earth);
+            case cardType.Iron:
+                return CardCombiner.GetSprite(Card.cardType.Iron);
+            case cardType.Frost:
+                return CardCombiner.GetSprite(Card.cardType.Frost);
+            case cardType.Water:
+                return CardCombiner.GetSprite(Card.cardType.Water);
+            case cardType.Wind:
+                return CardCombiner.GetSprite(Card.cardType.Wind);
+            case cardType.Storm:
+                return CardCombiner.GetSprite(Card.cardType.Storm);
+            case cardType.Blight:
+                return CardCombiner.GetSprite(Card.cardType.Blight);
+            default:
+                return CardCombiner.GetSprite(Card.cardType.Back); // Or a default sprite if needed
+        }
     }
+
+    public void SetSprite() // Sets the sprite for render -> Overhaul for Necro
+    {
+        spriteRenderer.sprite = GetSprite();
+    }
+
+    // Animation and Movement Managers
     private void Mover()
     {
         InFlight = DOTween.IsTweening(transform);
