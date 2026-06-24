@@ -62,7 +62,10 @@ public class FieldMat : MonoBehaviour
     {
         stack.Add(nCard);
         nCard.transform.SetParent(this.transform);
-        nCard.dragLock = true;
+        
+        // Safer to turn off the card
+        // nCard.dragLock = true;
+        nCard.gameObject.SetActive(false); // Hide the card when added to the mat
 
         value += nCard.value; // Update the mat value when adding a card
 
