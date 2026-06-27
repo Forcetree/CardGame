@@ -10,7 +10,7 @@ public static class CardCombiner
     {
         if (_initialized)
         {
-            Debug.LogWarning("CardCombiner: Already initialized. Ignoring overwrite attempt.");
+            Debug.LogWarning("CardCombiner: Already initialized. Ignoring overwrite attempt."); // In future should we allow re-initialization? If we want to combine the games together
             return;
         }
 

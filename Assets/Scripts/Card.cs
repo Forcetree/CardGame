@@ -108,7 +108,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Runtime Managers
     private void SetSprite() // Sets the sprite for render -> new design does not mandate that the card be able to display as any of the more complex mixes (we only need that in the FieldMat object)
     {
-        spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID);
+        spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID); // Currently not an abstract -> needs to be for setting the controls
     }
     private void Mover()
     {

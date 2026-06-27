@@ -9,12 +9,9 @@ public abstract class CombinerLogic
 
     public bool TryResolve(IEnumerable<int> types, out int resolved)
     {
-        // EnsureInit(); // Issue here is not knowing where the initialization is happening -> should be in the constructor of the derived class?
         int mask = ToMask(types);
         return Combos.TryGetValue(mask, out resolved);
     }
-
-    
 
     protected static int ToMask(IEnumerable<int> types)
     {

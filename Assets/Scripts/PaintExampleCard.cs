@@ -47,5 +47,12 @@ public class PaintExampleCard : Card
         set => mySpecificType = (PaintCardTypes)value;
     }
 
+    // Should the sprites live here?
+    // Does a live instance accept <List<Sprite>>
+
     public override string CardTypeName => mySpecificType.ToString();
+
+    // Add potentially more abstract controllers for combo handling and animation
+    // public override void SetSprite()
+
 }
