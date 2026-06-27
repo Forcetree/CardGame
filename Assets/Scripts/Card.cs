@@ -76,6 +76,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Internal Card Structs
     public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
     public abstract int CardTypeID { get; set; }
+    public abstract string CardTypeName { get; }
 
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later

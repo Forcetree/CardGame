@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PaintExampleCard : Card
 {
-    public enum CardTypes 
+    public enum PaintCardTypes 
     {
         Red,
         Yellow,
@@ -39,11 +39,13 @@ public class PaintExampleCard : Card
         Back // Card back when flipped
     }
 
-    public CardTypes mySpecificType;
+    public PaintCardTypes mySpecificType;
 
     public override int CardTypeID
     {
         get => (int)mySpecificType;
-        set => mySpecificType = (CardTypes)value;
+        set => mySpecificType = (PaintCardTypes)value;
     }
+
+    public override string CardTypeName => mySpecificType.ToString();
 }
