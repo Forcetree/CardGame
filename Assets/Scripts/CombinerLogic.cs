@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class CombinerLogic<TVisualType>
+public abstract class CombinerLogic
 {
     protected readonly Dictionary<int, int> Combos = new();
-    protected readonly Dictionary<int, TVisualType> VisualMatrix = new();
 
     public abstract void SetupCombinations();
 
@@ -15,10 +14,7 @@ public abstract class CombinerLogic<TVisualType>
         return Combos.TryGetValue(mask, out resolved);
     }
 
-    public TVisualType GetVisual(int type)
-    {
-        return VisualMatrix.TryGetValue(type, out TVisualType visual) ? visual : default;
-    }
+    
 
     protected static int ToMask(IEnumerable<int> types)
     {
@@ -33,5 +29,15 @@ public abstract class CombinerLogic<TVisualType>
     protected void AddCombo(IEnumerable<int> types, int result)
     {
         Combos[ToMask(types)] = result;
+    }
+}
+
+public abstract class CombinerLogic<TVisualType> : CombinerLogic
+{
+    protected readonly Dictionary<int, TVisualType> VisualMatrix = new();
+
+    public TVisualType GetVisual(int type)
+    {
+        return VisualMatrix.TryGetValue(type, out TVisualType visual) ? visual : default;
     }
 }
