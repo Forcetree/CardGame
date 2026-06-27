@@ -6,7 +6,7 @@ public static class CardCombiner
     private static CombinerLogic _activeLogic;
     private static bool _initialized;
 
-    public static void Initialize<TVisualType>(CombinerLogic logic)
+    public static void Initialize<TVisualType>(CombinerLogic<TVisualType> logic)
     {
         if (_initialized)
         {

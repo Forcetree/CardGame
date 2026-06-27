@@ -52,6 +52,9 @@ public class PlayHandler : MonoBehaviour
     // Public Methods
     public void StartPlay(int deckCount, int handLimit, int manaLimit)
     {
+        // Initialize the Combiner Logic -> to be expanded to support dynamic logic selection based on game mode or player choice
+        CardCombiner.Initialize(new PaintCombiner());
+
         // Create and shuffle the deck -> to be expanded to support creating deck from prefab
         deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
         deck.GenDeck(deckCount);
