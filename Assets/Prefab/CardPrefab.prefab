@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7423303732416319316}
-  - component: {fileID: 5696907107929453150}
   - component: {fileID: 1195452857416274788}
   - component: {fileID: -7762885606432500204}
   - component: {fileID: 5598778183534665448}
+  - component: {fileID: 7225503320909994610}
   m_Layer: 0
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -36,44 +36,9 @@ Transform:
   - {fileID: 3582349980424205458}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5696907107929453150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7037730200098454068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4b867812dd676748855157d06f63d3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Card
-  PlayHandler: {fileID: 0}
-  hovering: 0
-  dragging: 0
-  dragLock: 0
-  InFlight: 0
-  cardHome: {x: 0, y: 0, z: 0}
-  fieldLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  touchColliders: []
-  hasMatFocus: 0
-  MatFocus: {fileID: 0}
-  overlappingMats: []
-  title: 
-  playCost: 0
-  flavor: 
-  _value: 0
-  state: 0
-  type: 0
-  spriteRenderer: {fileID: 1195452857416274788}
-  myCollider: {fileID: -7762885606432500204}
-  ValueRenderer: {fileID: 5075109201278941140}
-  orbit: {x: 0, y: 0, z: 0, w: 1}
 --- !u!212 &1195452857416274788
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,6 +95,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!60 &-7762885606432500204
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -212,6 +178,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7225503320909994610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7037730200098454068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14ec66dd3067734682ea02059be9f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaintExampleCard
+  PlayHandler: {fileID: 0}
+  hovering: 0
+  dragging: 0
+  dragLock: 0
+  InFlight: 0
+  cardHome: {x: 0, y: 0, z: 0}
+  fieldLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  touchColliders: []
+  hasMatFocus: 0
+  MatFocus: {fileID: 0}
+  overlappingMats: []
+  title: 
+  playCost: 0
+  flavor: 
+  _value: 0
+  state: 0
+  spriteRenderer: {fileID: 1195452857416274788}
+  myCollider: {fileID: -7762885606432500204}
+  ValueRenderer: {fileID: 5075109201278941140}
+  orbit: {x: 0, y: 0, z: 0, w: 1}
+  mySpecificType: 0
 --- !u!1001 &5850179125697242284
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ public class FieldMat : MonoBehaviour
     public bool highlighted = false;
     public List<Card> stack = new();
 
-    public Card.cardType comboType;
+    public int comboType;
 
     public bool matIsEmpty = true;
 
@@ -48,7 +48,7 @@ public class FieldMat : MonoBehaviour
     public bool TryTarget(Card cCard) // Under reconstruction -> need to check against current stack for possible combos to exapnd the combos to support any number of duplicate cards
     {
         // New logic under construction
-        var prospective = stack.Select(c => c.type).Append(cCard.type).Distinct();
+        var prospective = stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct();
         if (prospective.Count() > 3) return false;
         return CardCombiner.TryResolve(prospective, out _);
     }
@@ -66,19 +66,19 @@ public class FieldMat : MonoBehaviour
 
         value += nCard.value; // Update the mat value when adding a card
 
-        var types = stack.Select(c => c.type).Distinct();
-        if (CardCombiner.TryResolve(types, out Card.cardType resolved))
+        var types = stack.Select(c => c.CardTypeID).Distinct();
+        if (CardCombiner.TryResolve(types, out int resolved))
         {
             PlayComboAnimation(CardCombiner.GetColor(resolved));            
             comboType = resolved;
         }
         else // This should never happen as TryTarget should prevent invalid cards from being added
         {
-            TopperRenderer.color = CardCombiner.GetColor(nCard.type);
+            TopperRenderer.color = CardCombiner.GetColor(nCard.CardTypeID);
             TopperRenderer.sortingLayerName = "Topper";
             valueRenderer.UpdateRenderSorting();
 
-            comboType = nCard.type;
+            comboType = nCard.CardTypeID;
         }
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer

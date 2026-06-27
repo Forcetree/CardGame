@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 
-public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static Vector2Int standardCardSize = new Vector2Int(3, 5); // Card Ratios (not utilized)
     
@@ -75,7 +75,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     // Internal Card Structs
     public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
-    public cardType type;
+    public abstract int CardTypeID { get; set; }
 
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later
@@ -86,43 +86,6 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     public Quaternion orbit = Quaternion.identity; // Might not use this anymore -> unless we need for the swing motion tilt
 
-    // Card Class Structs
-    public enum cardType
-    {
-        Red,
-        Yellow,
-        Blue,
-        White,
-        Black,
-
-        // Combos made on the board
-        // Light Pures
-        Coral, // Red + White
-        Sun, // Yellow + White
-        Hydro, // Blue + White
-
-        // Dark Pures
-        Blood, // Red + Black
-        Gold, // Yellow + Black
-        Abyss, // Blue + Black
-
-        // Mixes
-        Toxic, // -> Purple
-        Amber, // -> Orange
-        Life, // -> Green
-
-        // Light Combos
-        Iris, // Purple + White
-        Nectar, // Orange + White
-        Moss, // Green + White
-
-        // Dark Combos
-        Obsidian, // Purple + Black
-        Lava, // Orange + Black
-        Serpenite, // Green + Black
-
-        Back // Card back when flipped
-    }
     public enum cardState
     {
         Deck,
@@ -144,7 +107,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Runtime Managers
     private void SetSprite() // Sets the sprite for render -> new design does not mandate that the card be able to display as any of the more complex mixes (we only need that in the FieldMat object)
     {
-        spriteRenderer.color = CardCombiner.GetColor(type);
+        spriteRenderer.color = CardCombiner.GetColor(CardTypeID);
     }
     private void Mover()
     {
