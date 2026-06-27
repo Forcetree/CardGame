@@ -40,7 +40,6 @@ public class FieldMat : MonoBehaviour
 
     public void Awake()
     {
-        CardCombiner.InitMatrix();
         matIsEmpty = true;
         spriteRenderer.color = new(1f, 1f, 1f, .3f);
     }
@@ -69,12 +68,12 @@ public class FieldMat : MonoBehaviour
         var types = stack.Select(c => c.CardTypeID).Distinct();
         if (CardCombiner.TryResolve(types, out int resolved))
         {
-            PlayComboAnimation(CardCombiner.GetColor(resolved));            
+            PlayComboAnimation(CardCombiner.GetVisual<Color>(resolved));            
             comboType = resolved;
         }
         else // This should never happen as TryTarget should prevent invalid cards from being added
         {
-            TopperRenderer.color = CardCombiner.GetColor(nCard.CardTypeID);
+            TopperRenderer.color = CardCombiner.GetVisual<Color>(nCard.CardTypeID);
             TopperRenderer.sortingLayerName = "Topper";
             valueRenderer.UpdateRenderSorting();
 
