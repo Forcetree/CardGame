@@ -44,7 +44,11 @@ public class PaintExampleCard : Card
     public override int CardTypeID
     {
         get => (int)mySpecificType;
-        set => mySpecificType = (PaintCardTypes)value;
+        set
+        {
+            mySpecificType = (PaintCardTypes)value;
+            SetSprite();
+        }
     }
 
     // Should the sprites live here?
@@ -52,7 +56,9 @@ public class PaintExampleCard : Card
 
     public override string CardTypeName => mySpecificType.ToString();
 
-    // Add potentially more abstract controllers for combo handling and animation
-    // public override void SetSprite()
+    public override void SetSprite()
+    {
+        spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID);
+    }
 
 }

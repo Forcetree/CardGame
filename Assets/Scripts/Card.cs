@@ -75,8 +75,6 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     // Internal Card Structs
     public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
-    public abstract int CardTypeID { get; set; }
-    public abstract string CardTypeName { get; }
 
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later
@@ -97,7 +95,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Runtime
     public void Update()
     {
-        SetSprite();        
+        // SetSprite();        
     }
     public void FixedUpdate()
     {
@@ -105,11 +103,12 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
         if (PlayHandler.manaPool.ManaCount > 0) { MatFocuser(); }
     }
 
+    // Abstracts
+    public abstract int CardTypeID { get; set; }
+    public abstract string CardTypeName { get; }
+    public abstract void SetSprite();
+
     // Runtime Managers
-    private void SetSprite() // Sets the sprite for render -> new design does not mandate that the card be able to display as any of the more complex mixes (we only need that in the FieldMat object)
-    {
-        spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID); // Currently not an abstract -> needs to be for setting the controls
-    }
     private void Mover()
     {
         InFlight = DOTween.IsTweening(transform);

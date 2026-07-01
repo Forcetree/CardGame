@@ -1,10 +1,9 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class FieldMat : MonoBehaviour
+public abstract class FieldMat : MonoBehaviour
 {
     // Objects
     public GameObject Topper;
@@ -63,22 +62,16 @@ public class FieldMat : MonoBehaviour
         nCard.transform.SetParent(this.transform);
         nCard.dragLock = true;
 
-        value += nCard.value; // Update the mat value when adding a card
+        value = stack.Sum(c => c.value);
 
+
+        // comboType = CardCombiner.TryResolve(stack.Select(c => c.CardTypeID).Distinct(), out int resolved) ? resolved : -1; // Short compressed code: Default type listed as -1 if no combo is found, otherwise resolved type is returned
         var types = stack.Select(c => c.CardTypeID).Distinct();
-        if (CardCombiner.TryResolve(types, out int resolved))
-        {
-            PlayComboAnimation(CardCombiner.GetVisual<Color>(resolved));            
-            comboType = resolved;
-        }
-        else // This should never happen as TryTarget should prevent invalid cards from being added
-        {
-            TopperRenderer.color = CardCombiner.GetVisual<Color>(nCard.CardTypeID);
-            TopperRenderer.sortingLayerName = "Topper";
-            valueRenderer.UpdateRenderSorting();
+        CardCombiner.TryResolve(types, out int resolved);
+        comboType = resolved;
 
-            comboType = nCard.CardTypeID;
-        }
+        // PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
+        PlayComboAnimation(); 
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
         {
@@ -90,20 +83,24 @@ public class FieldMat : MonoBehaviour
         matIsEmpty = false;
     }
 
-    private void PlayComboAnimation(Color combo) 
+    protected abstract void PlayAnimation();
+
+    private void PlayComboAnimation() // We currently only have one sprite location and swap between field use and topper (why should we not do a bottom and cover it with the topper when needed?
     {
-        TopperRenderer.sortingLayerName = "Topper";
-        valueRenderer.UpdateRenderSorting();
-                
+        TopperRenderer.sortingLayerName = "Topper"; 
+        valueRenderer.UpdateRenderSorting(); // Only required because we must reset the layer on the single sprite renderer that is used for both the topper and value renderer (we should consider separating these into two objects to avoid this issue)
+
         DG.Tweening.Sequence s = DOTween.Sequence();
                 
         s.Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)); // Flash bright
-        s.Join(TopperRenderer.DOColor(combo, 0.1f).SetEase(Ease.InSine)); // Change to combo color
+
+        Color comboColor = CardCombiner.GetVisual<Color>(comboType);
+        s.Join(TopperRenderer.DOColor(comboColor, 0.1f).SetEase(Ease.InSine)); // Change to combo color
 
         s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
     }
 
-    public void ClearMat() // Need to expand this to combine and calculate the total value of the cards on the mat before clearing
+    public void ClearMat() // No need to expand (we will process the data out of the stack before we clear it using the abstract and child class definitions)
     {
         foreach (var card in stack)
         {
@@ -112,11 +109,17 @@ public class FieldMat : MonoBehaviour
         
         stack.Clear();
         value = 0;
+        comboType = -1; // Set to default type when clearing the mat -> should be invisible in future
 
         matIsEmpty = true;
+
+        // PlayAnimation(); // Can determine that the mat was cleared
+
         spriteRenderer.color = new(1f, 1f, 1f, .3f);
-        TopperRenderer.sortingLayerName = "Field";
-        valueRenderer.UpdateRenderSorting();
+
+
+        TopperRenderer.sortingLayerName = "Field"; // Look into a better way to handle the sorting layer for the topper and value renderer (maybe a separate object that handles the topper and value renderer together)
+        valueRenderer.UpdateRenderSorting(); // Only required because we must reset the layer on the single sprite renderer that is used for both the topper and value renderer (we should consider separating these into two objects to avoid this issue)
     }
 
     // Need to find a better approach to live update the sprite state based on a mat state - under construction to refine how the mat displays and takes collisions (check card class for which layers it checks against (unless sorting layer is independant of physics which I think it is))

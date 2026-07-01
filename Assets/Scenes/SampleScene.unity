@@ -915,7 +915,7 @@ GameObject:
   - component: {fileID: 643245055}
   - component: {fileID: 643245057}
   - component: {fileID: 643245056}
-  - component: {fileID: 643245058}
+  - component: {fileID: 643245059}
   m_Layer: 6
   m_Name: Mat Left
   m_TagString: Untagged
@@ -1054,7 +1054,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &643245058
+--- !u!114 &643245059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1063,9 +1063,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 643245054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e2e465c84be19448623290d994f93c, type: 3}
+  m_Script: {fileID: 11500000, guid: 07cf59e419aca2348b4aa56cf755decd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldMat
+  m_EditorClassIdentifier: Assembly-CSharp::PaintMat
   Topper: {fileID: 529165883}
   TopperRenderer: {fileID: 529165887}
   basicCard: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
@@ -1075,7 +1075,7 @@ MonoBehaviour:
   highlighted: 0
   stack: []
   comboType: 0
-  matIsEmpty: 0
+  matIsEmpty: 1
   _value: 0
 --- !u!1001 &861321589
 PrefabInstance:
@@ -1436,9 +1436,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FinishPainting
   PlayHandler: {fileID: 520213724}
-  fieldMatLeft: {fileID: 643245058}
-  fieldMatCenter: {fileID: 1906731782}
-  fieldMatRight: {fileID: 1593016278}
+  fieldMatLeft: {fileID: 0}
+  fieldMatCenter: {fileID: 0}
+  fieldMatRight: {fileID: 0}
   spriteRenderer: {fileID: 1262412926}
   myCollider: {fileID: 1262412925}
   turns: 0
@@ -1826,9 +1826,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1593016274}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e2e465c84be19448623290d994f93c, type: 3}
+  m_Script: {fileID: 11500000, guid: 07cf59e419aca2348b4aa56cf755decd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldMat
+  m_EditorClassIdentifier: Assembly-CSharp::PaintMat
   Topper: {fileID: 1907151734}
   TopperRenderer: {fileID: 1907151738}
   basicCard: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
@@ -1838,7 +1838,7 @@ MonoBehaviour:
   highlighted: 0
   stack: []
   comboType: 0
-  matIsEmpty: 0
+  matIsEmpty: 1
   _value: 0
 --- !u!1 &1833003244
 GameObject:
@@ -2045,9 +2045,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1906731778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e2e465c84be19448623290d994f93c, type: 3}
+  m_Script: {fileID: 11500000, guid: 07cf59e419aca2348b4aa56cf755decd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldMat
+  m_EditorClassIdentifier: Assembly-CSharp::PaintMat
   Topper: {fileID: 1171502791}
   TopperRenderer: {fileID: 1171502795}
   basicCard: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
@@ -2057,7 +2057,7 @@ MonoBehaviour:
   highlighted: 0
   stack: []
   comboType: 0
-  matIsEmpty: 0
+  matIsEmpty: 1
   _value: 0
 --- !u!1 &1907151734
 GameObject:
