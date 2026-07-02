@@ -88,8 +88,8 @@ public abstract class FieldMat : MonoBehaviour
         CardCombiner.TryResolve(types, out int resolved);
         comboType = resolved;
 
-        // PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
-        PlayComboAnimation(); 
+        PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
+        // PlayComboAnimation(); 
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
         {
@@ -130,9 +130,8 @@ public abstract class FieldMat : MonoBehaviour
 
         matIsFull = false;
 
-        // PlayAnimation(); // Can determine that the mat was cleared
+        PlayAnimation(); // Can determine that the mat was cleared
 
-        //valueRenderer.UpdateRenderSorting();  // Only required because we must reset the layer on the single sprite renderer that is used for both the topper and value renderer (we should consider separating these into two objects to avoid this issue)
     }
 
     
