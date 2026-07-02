@@ -6,24 +6,28 @@ public class PaintMat : FieldMat
 {
     protected override void PlayAnimation()
     {
+        Color comboColor = CardCombiner.GetVisual<Color>(comboType);
+
         if (stack.Count == 0)
         {
-            // Play the empty mat animation -> not implemented yet
+
+            // Play the Clear animation -> not implemented yet
         }
-        else if(stack.Count == 1)
+        else if(stack.Count == 1) // Play Animation for the first card in the stack
         {
-            // Play the Appear animation -> not implemented yet
+            DOTween.Sequence()
+                .Append(Topper.transform.DOPunchScale(new Vector3(0.05f, 0.05f, 1), 0.3f, 1, 0)) // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
+                .Join(TopperRenderer.DOColor(comboColor, 0.1f).SetEase(Ease.InSine)); // Change to combo color
+
+
+
         }
-        else //stack.Count always greater than 1
+        else // Combo Animation
         {
-            DG.Tweening.Sequence s = DOTween.Sequence();
-
-            s.Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)); // Flash bright
-
-            Color comboColor = CardCombiner.GetVisual<Color>(comboType);
-            s.Join(TopperRenderer.DOColor(comboColor, 0.1f).SetEase(Ease.InSine)); // Change to combo color
-
-            s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
+            DOTween.Sequence()
+                .Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)) // Flash bright
+                .Join(TopperRenderer.DOColor(comboColor, 0.1f).SetEase(Ease.InSine)) // Change to combo color
+                .Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
         }
         
     }
