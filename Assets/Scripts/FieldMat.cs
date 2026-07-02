@@ -82,14 +82,11 @@ public abstract class FieldMat : MonoBehaviour
 
         value = stack.Sum(c => c.value);
 
-
-        // comboType = CardCombiner.TryResolve(stack.Select(c => c.CardTypeID).Distinct(), out int resolved) ? resolved : -1; // Short compressed code: Default type listed as -1 if no combo is found, otherwise resolved type is returned
         var types = stack.Select(c => c.CardTypeID).Distinct();
         CardCombiner.TryResolve(types, out int resolved);
         comboType = resolved;
 
         PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
-        // PlayComboAnimation(); 
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
         {
@@ -102,20 +99,6 @@ public abstract class FieldMat : MonoBehaviour
     }
 
     protected abstract void PlayAnimation();
-
-    private void PlayComboAnimation() // We currently only have one sprite location and swap between field use and topper (why should we not do a bottom and cover it with the topper when needed?
-    {
-        // TopperRenderer.color = new Color(1, 1, 1, 0); // Reset the color to white with full opacity before starting the animation
-
-        DG.Tweening.Sequence s = DOTween.Sequence();
-                
-        s.Append(TopperRenderer.DOColor(Color.white, 0.05f).SetEase(Ease.Flash)); // Flash bright
-
-        Color comboColor = CardCombiner.GetVisual<Color>(comboType);
-        s.Join(TopperRenderer.DOColor(comboColor, 0.1f).SetEase(Ease.InSine)); // Change to combo color
-
-        s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
-    }
 
     public void ClearMat() // No need to expand (we will process the data out of the stack before we clear it using the abstract and child class definitions)
     {
