@@ -113,7 +113,7 @@ MonoBehaviour:
   _highlighted: 0
   stack: []
   comboType: 0
-  _matIsFull: 0
+  matIsFull: 0
   _value: 0
 --- !u!1 &2815716947705506484
 GameObject:
@@ -315,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8712346716738136999
 Transform:
   m_ObjectHideFlags: 0
@@ -382,7 +382,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

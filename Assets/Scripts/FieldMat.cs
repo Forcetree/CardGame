@@ -46,17 +46,8 @@ public abstract class FieldMat : MonoBehaviour
 
     public int comboType;
 
-    [SerializeField] private bool _matIsFull;
-    public bool matIsFull
-    {
-        get { return _matIsFull; } 
-        
-        set  // There is no room for an animation in this integration
-        {
-            _matIsFull = value;
-            Topper.SetActive(_matIsFull); // Show the Topper renderer when the mat is full
-        }
-    }
+    public bool matIsFull = false;
+    
 
     // Value Digitizer Controller
     [SerializeField] private int _value;
