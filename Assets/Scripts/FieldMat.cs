@@ -56,15 +56,7 @@ public abstract class FieldMat : MonoBehaviour
         }
     }
 
-    // public abstract bool TryTarget(Card cCard); // Under construction
-
-    public bool TryTarget(Card cCard) // Under reconstruction -> need to check against current stack for possible combos to exapnd the combos to support any number of duplicate cards
-    {
-        // New logic under construction
-        var prospective = stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct();
-        if (prospective.Count() > 3) return false;
-        return CardCombiner.TryResolve(prospective, out _);
-    }
+    public abstract bool TryTarget(Card cCard); // Abstracting the rules for targeting a mat with a card. Each mat type will have its own rules for what cards can be placed on it.
 
     public void AddToStack(Card nCard)
     {
