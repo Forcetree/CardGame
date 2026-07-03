@@ -9,8 +9,8 @@ public abstract class FieldMat : MonoBehaviour
     public GameObject Topper;
     
     // Sprite Refs
-    public Sprite basicCard;
-    public Sprite highlight;
+    protected Sprite basicCard;
+    protected Sprite highlight;
 
     // Components
     public SpriteRenderer TopperRenderer;
@@ -20,8 +20,14 @@ public abstract class FieldMat : MonoBehaviour
     public ValueDigitizer valueRenderer;
 
     // Attributes
+
+    public List<Card> stack = new();
+
+    public int comboType;
+    public bool matIsFull = false;
+
     [SerializeField] private bool _highlighted;
-    public bool highlighted
+    public bool highlighted // This is a public property that controls the highlighting of the mat. When set to true, it will display the highlight sprite; when set to false, it will remove the highlight sprite.
     {
         get { return _highlighted; }
         set
@@ -39,19 +45,8 @@ public abstract class FieldMat : MonoBehaviour
         }
     }
 
-    
-    
-
-    public List<Card> stack = new();
-
-    public int comboType;
-
-    public bool matIsFull = false;
-    
-
-    // Value Digitizer Controller
     [SerializeField] private int _value;
-    public int value
+    public int value // Value Digitizer Controller
     {
         get { return _value; }
         set
@@ -61,17 +56,14 @@ public abstract class FieldMat : MonoBehaviour
         }
     }
 
+    // public abstract bool TryTarget(Card cCard); // Under construction
+
     public bool TryTarget(Card cCard) // Under reconstruction -> need to check against current stack for possible combos to exapnd the combos to support any number of duplicate cards
     {
         // New logic under construction
         var prospective = stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct();
         if (prospective.Count() > 3) return false;
         return CardCombiner.TryResolve(prospective, out _);
-    }
-
-    public void TargetStatus(bool value) // Should I make this public to call from card or should we call internally if TryTarget allows targeting OR should I just leave the highlight public and allow it to be handled by cards
-    {
-        highlighted = value;   
     }
 
     public void AddToStack(Card nCard)
@@ -114,7 +106,6 @@ public abstract class FieldMat : MonoBehaviour
         matIsFull = false;
 
         PlayAnimation(); // Can determine that the mat was cleared
-
     }
 
     
