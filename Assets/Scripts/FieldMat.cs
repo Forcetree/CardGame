@@ -7,10 +7,10 @@ public abstract class FieldMat : MonoBehaviour
 {
     // Objects
     public GameObject Topper;
-    
+
     // Sprite Refs
-    protected Sprite basicCard;
-    protected Sprite highlight;
+    [SerializeField] protected Sprite _basicCardSprite;
+    [SerializeField] protected Sprite _highlightSprite;
 
     // Components
     public SpriteRenderer TopperRenderer;
@@ -36,7 +36,7 @@ public abstract class FieldMat : MonoBehaviour
             
             if (_highlighted)
             {
-                HighlightRenderer.sprite = highlight;
+                HighlightRenderer.sprite = _highlightSprite;
             }
             else
             {

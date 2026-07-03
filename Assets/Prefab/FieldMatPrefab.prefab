@@ -104,16 +104,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintMat
   Topper: {fileID: 8537925156848953910}
-  basicCard: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
-  highlight: {fileID: 7944202395061093912, guid: f5cc5af51ecdaee4fa8c29c01d21c977, type: 3}
+  _basicCardSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  _highlightSprite: {fileID: 7944202395061093912, guid: f5cc5af51ecdaee4fa8c29c01d21c977, type: 3}
   TopperRenderer: {fileID: 6608722619398274223}
   BottomRenderer: {fileID: 609048615482448439}
   HighlightRenderer: {fileID: 2556950701445660639}
   valueRenderer: {fileID: 5217731257508515035}
-  _highlighted: 0
   stack: []
   comboType: 0
   matIsFull: 0
+  _highlighted: 0
   _value: 0
 --- !u!1 &2815716947705506484
 GameObject:
