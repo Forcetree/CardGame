@@ -37,6 +37,7 @@ public abstract class PlaySpace<MatType> : MonoBehaviour where MatType : FieldMa
     protected void SpawnMatAtLocation(Transform spawnLocation)
     {
         MatType newMat = Instantiate(matPrefab, spawnLocation.position, Quaternion.identity);
+        newMat.gameObject.transform.parent = this.transform;
         _activeMats.Add(newMat);
     }
 }
