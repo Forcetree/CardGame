@@ -48,7 +48,10 @@ public class Deck : MonoBehaviour
             nCard.gameObject.transform.parent = this.transform;
             nCard.PlayHandler = this.PlayHandler;
 
-            nCard.playCost = 0;
+            nCard.playCost = 0; // Currently not used as all cards cost the same (this offers card scalability)
+
+            nCard.state = Card.cardState.Deck; // Start the card in the deck state (should this be set here or in prefab? -> cards could be initialized anywhere in the game and not always in the deck)
+
             nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
             nCard.CardTypeID = (i % 5);
             nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";

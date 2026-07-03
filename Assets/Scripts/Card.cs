@@ -127,7 +127,14 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
                 (Vector3 pos, float time, Ease ease) = destinationsBuffer.Dequeue();
 
                 // Use the tween library to move smoothly to the target
-                transform.DOLocalMove(pos, time).SetEase(ease).OnComplete(() => { dragLock = false; });
+                transform.DOLocalMove(pos, time).SetEase(ease)
+                    .OnComplete(() => 
+                    { 
+                        if (state == cardState.Hand) // Only unlocks cards if they are in the hand -> this is to avoid issues with cards being dragged to the field and then not being locked out of movement due to the dragLock being reset
+                        {
+                            dragLock = false;
+                        }
+                    });
             }
         }
     }
