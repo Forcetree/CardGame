@@ -41,6 +41,7 @@ public class PlayerHand : MonoBehaviour
         hand.Add(nCard);
         nCard.transform.parent = this.transform;
         nCard.spriteRenderer.sortingLayerName = "Hand";
+        nCard.state = Card.cardState.Hand;
         UpdateCardPosInHand();
     }
 

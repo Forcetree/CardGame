@@ -89,6 +89,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     {
         Deck,
         Hand,
+        Field,
         Grave
     }
 

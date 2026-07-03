@@ -62,7 +62,9 @@ public abstract class FieldMat : MonoBehaviour
     {
         stack.Add(nCard);
         nCard.transform.SetParent(this.transform);
-        nCard.dragLock = true;
+        nCard.state = Card.cardState.Field; // Set the card state to Field when it is placed on the mat
+        
+        nCard.dragLock = true; // Should change the destination buffer mover method to NOT unlock drag state if the card is in state = Field
 
         value = stack.Sum(c => c.value);
 
