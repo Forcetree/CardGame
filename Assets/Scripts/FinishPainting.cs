@@ -6,9 +6,10 @@ public class FinishPainting : MonoBehaviour, IPointerClickHandler
     // Scene References
     public PlayHandler PlayHandler;
 
-    public FieldMat fieldMatLeft;
-    public FieldMat fieldMatCenter;
-    public FieldMat fieldMatRight;
+    // No longer needed
+    //public FieldMat fieldMatLeft;
+    //public FieldMat fieldMatCenter;
+    //public FieldMat fieldMatRight;
 
     // Components
     public SpriteRenderer spriteRenderer;
@@ -17,23 +18,26 @@ public class FinishPainting : MonoBehaviour, IPointerClickHandler
     // Attributes
     public int turns = 0;
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData) // Dirty hook up to the finish button in the scene. This is not a good way to handle this, but it works for now.
     {
         // Add score to the list from PlayHandler
-        PlayHandler.score.Add(new(CollectScore(), turns));
+        PlayHandler.score.Add(new(PlayHandler.Field.RawValue, turns));
         turns = 0;
-        ClearField();
+        PlayHandler.Field.ClearField();
     }
 
-    private int CollectScore()
-    {
-        return fieldMatLeft.value + fieldMatCenter.value + fieldMatRight.value;
-    }
 
-    private void ClearField()
-    {
-        fieldMatLeft.ClearMat();
-        fieldMatCenter.ClearMat();
-        fieldMatRight.ClearMat();
-    }
+    // Depricated in dirty hook up
+
+    //private int CollectScore()
+    //{
+    //    return fieldMatLeft.value + fieldMatCenter.value + fieldMatRight.value;
+    //}
+
+    //private void ClearField()
+    //{
+    //    fieldMatLeft.ClearMat();
+    //    fieldMatCenter.ClearMat();
+    //    fieldMatRight.ClearMat();
+    //}
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1165077588377382285}
   - component: {fileID: 5431872155658850742}
   m_Layer: 6
-  m_Name: FieldMatPrefab
+  m_Name: PaintMatPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
