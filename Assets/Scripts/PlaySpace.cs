@@ -22,10 +22,15 @@ public abstract class PlaySpace<MatType> : MonoBehaviour where MatType : FieldMa
         }
     }
 
-    public virtual void ClearField()
+    public virtual void DestroyField() // Destroys all the active mats in the field
     {
         foreach (var mat in _activeMats) Destroy(mat.gameObject);
         _activeMats.Clear();
+    }
+
+    public virtual void ClearField() // Resets the active mats in the field (empties the mat)
+    {
+        foreach (var mat in _activeMats) mat.ClearMat();
     }
 
     // Protected Methods
