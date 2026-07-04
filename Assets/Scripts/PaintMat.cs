@@ -4,7 +4,7 @@ using System.Linq;
 
 public class PaintMat : FieldMat
 {
-    protected override void PlayAnimation()
+    protected override void PlayAnimation() // Overhauling for Animator controller additions 
     {
         Color comboColor = CardCombiner.GetVisual<Color>(comboType);
 
