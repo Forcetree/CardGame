@@ -17,7 +17,7 @@ public abstract class FieldMat : MonoBehaviour
     public SpriteRenderer BottomRenderer;
     public SpriteRenderer HighlightRenderer;
 
-    public Animator TopperMatAnimtor;
+    public Animator TopperMatAnimator;
 
     public ValueDigitizer valueRenderer;
 

@@ -109,7 +109,7 @@ MonoBehaviour:
   TopperRenderer: {fileID: 6608722619398274223}
   BottomRenderer: {fileID: 609048615482448439}
   HighlightRenderer: {fileID: 2556950701445660639}
-  TopperMatAnimtor: {fileID: 8140515844254686062}
+  TopperMatAnimator: {fileID: 8140515844254686062}
   valueRenderer: {fileID: 5217731257508515035}
   stack: []
   comboType: 0
