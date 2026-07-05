@@ -33,8 +33,10 @@ public class PlayHandler : MonoBehaviour
     // Runtime
     void Start()
     {
-        StartPlay(60, 5, 6, 2); //Added a second parameter to be able to change the number of card types in the deck, set to 5 still so cards can be played.
+        StartPlay(60, 5, 6, 2); // Added a second parameter to be able to change the number of card types in the deck, set to 5 still so cards can be played.
+                                // Making dependent coupling.
     }
+
 
     void Update()
     {
