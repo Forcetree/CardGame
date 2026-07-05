@@ -62,7 +62,8 @@ public class PaintExampleCard : Card
         spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID);
     }
     protected override void PlayAnimation()
-    {
+    {   // Add a wiggle animation to the card when it is thrown back to the hand for some satisfying feedback -> under review for how to implement this with the current mover system (potentially just add a rotation tween before the return home)
+
         DOTween.Sequence()
                .Append(transform.DOPunchRotation(new Vector3(0, 0, wiggle), 0.3f, 15, 1)) // Adjust the punch rotation parameters as needed (vector size adjustment, time, vibrato, elasticity)
                .Join(transform.DOPunchPosition(new Vector3(0.1f, 0, 0), 0.3f, 10, 1))
@@ -73,7 +74,7 @@ public class PaintExampleCard : Card
                    spriteRenderer.sortingLayerName = "Hand";
                    ValueRenderer.UpdateRenderSorting();
                });
-
+            //For other animations like idle could we leverage the CardState? check if card is in hand and how long it has been in hand? or how long it has been on field? 
 
     }
 

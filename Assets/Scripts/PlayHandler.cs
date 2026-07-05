@@ -33,7 +33,7 @@ public class PlayHandler : MonoBehaviour
     // Runtime
     void Start()
     {
-        StartPlay(60, 6, 2);
+        StartPlay(60, 5, 6, 2); //Added a second parameter to be able to change the number of card types in the deck, set to 5 still so cards can be played.
     }
 
     void Update()
@@ -50,14 +50,14 @@ public class PlayHandler : MonoBehaviour
     }
 
     // Public Methods
-    public void StartPlay(int deckCount, int handLimit, int manaLimit)
+    public void StartPlay(int deckCount, int typeCount, int handLimit, int manaLimit)
     {
         // Initialize the Combiner Logic -> to be expanded to support dynamic logic selection based on game mode or player choice
         CardCombiner.Initialize(new PaintCombiner());
 
         // Create and shuffle the deck -> to be expanded to support creating deck from prefab
         deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
-        deck.GenDeck(deckCount);
+        deck.GenDeck(deckCount, typeCount);
 
         // Initialize the hand and draw the starting hand -> to be expanded to support creating hand from prefab? (maybe not as we always want a hand in the scene)
         hand.InitHand(handLimit, deck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
