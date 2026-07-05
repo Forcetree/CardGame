@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PaintExampleCard : Card
@@ -59,6 +60,21 @@ public class PaintExampleCard : Card
     public override void SetSprite()
     {
         spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID);
+    }
+    protected override void PlayAnimation()
+    {
+        DOTween.Sequence()
+               .Append(transform.DOPunchRotation(new Vector3(0, 0, wiggle), 0.3f, 15, 1)) // Adjust the punch rotation parameters as needed (vector size adjustment, time, vibrato, elasticity)
+               .Join(transform.DOPunchPosition(new Vector3(0.1f, 0, 0), 0.3f, 10, 1))
+               .Join(spriteRenderer.DOColor(Color.red, 0.15f).SetLoops(2, LoopType.Yoyo)) // Currently can't override the color as we set that in the update loop -> need to create better handling for sprite color without polling
+               .OnComplete(() =>
+               {
+                   destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
+                   spriteRenderer.sortingLayerName = "Hand";
+                   ValueRenderer.UpdateRenderSorting();
+               });
+
+
     }
 
 }
