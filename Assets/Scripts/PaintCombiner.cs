@@ -36,7 +36,7 @@ public class PaintCombiner : CombinerLogic<Color>
         VisualMatrix[2] = Color.blue;
         VisualMatrix[1] = Color.yellow;
         VisualMatrix[3] = Color.white;
-        VisualMatrix[4] = Color.black;
+        VisualMatrix[4] = new Color32(0x20, 0x20, 0x20, 0xFF); // Off Black Tweak
 
         VisualMatrix[11] = new Color32(0x53, 0x07, 0x5B, 0xFF);
         VisualMatrix[12] = new Color32(0xC7, 0x3F, 0x25, 0xFF);

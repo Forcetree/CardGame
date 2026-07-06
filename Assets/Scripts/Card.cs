@@ -78,6 +78,8 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later
+    public Animator animator;
+
     public PolygonCollider2D myCollider;
     public ValueDigitizer ValueRenderer;
 
