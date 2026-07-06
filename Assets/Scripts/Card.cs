@@ -118,42 +118,6 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     protected abstract void PlayAnimation();
 
-    // Runtime Managers
-    // Sprite and Color Managers
-    /*
-    private Sprite GetSprite()
-    {
-        switch (this._type)
-        {
-            case cardType.Fire:
-                return CardCombiner.GetSprite(Card.cardType.Fire);
-            case cardType.Growth:
-                return CardCombiner.GetSprite(Card.cardType.Growth);
-            case cardType.Earth:
-                return CardCombiner.GetSprite(Card.cardType.Earth);
-            case cardType.Iron:
-                return CardCombiner.GetSprite(Card.cardType.Iron);
-            case cardType.Frost:
-                return CardCombiner.GetSprite(Card.cardType.Frost);
-            case cardType.Water:
-                return CardCombiner.GetSprite(Card.cardType.Water);
-            case cardType.Wind:
-                return CardCombiner.GetSprite(Card.cardType.Wind);
-            case cardType.Storm:
-                return CardCombiner.GetSprite(Card.cardType.Storm);
-            case cardType.Blight:
-                return CardCombiner.GetSprite(Card.cardType.Blight);
-            default:
-                return CardCombiner.GetSprite(Card.cardType.Back); // Or a default sprite if needed
-        }
-    }
-
-    public void SetSprite() // Sets the sprite for render -> Overhaul for Necro
-    {
-        spriteRenderer.sprite = GetSprite();
-    }
-    */
-
     // Animation and Movement Managers
     private void Mover()
     {
@@ -187,7 +151,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     {
         if (overlappingMats.Count > 0) 
         {
-            // overlappingMats = overlappingMats.Where(mat => mat.TryTarget(this)).OrderBy(mat => Vector2.Distance(transform.position, mat.transform.position)).ToList();
+            overlappingMats = overlappingMats.Where(mat => mat.TryTarget(this)).OrderBy(mat => Vector2.Distance(transform.position, mat.transform.position)).ToList();
 
             for (int i = 0; i < overlappingMats.Count; i++) 
             { 

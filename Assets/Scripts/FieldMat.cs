@@ -69,6 +69,7 @@ public abstract class FieldMat : MonoBehaviour
         nCard.dragLock = true; // Should change the destination buffer mover method to NOT unlock drag state if the card is in state = Field
 
         value = stack.Sum(c => c.value);
+
         var types = stack.Select(c => c.CardTypeID).Distinct();
         CardCombiner.TryResolve(types, out int resolved);
         comboType = resolved;
