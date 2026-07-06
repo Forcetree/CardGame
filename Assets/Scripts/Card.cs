@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 
-public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static Vector2Int standardCardSize = new Vector2Int(3, 5); // Card Ratios (not utilized)
     
@@ -78,21 +78,10 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Internal Card Structs
     public cardState state; // Not currently being leveraged (may not be needed in the long run as it is a dependant variable not a state controller)
 
-
-    [Tooltip("Don't change this in inspector or the sprite will not update")]
-    [SerializeField] private cardType _type;
-    public cardType type
-    {
-        get { return _type; }
-        set
-        {
-            _type = value;
-            SetSprite();
-        }
-    }
-
     // Card Components
     public SpriteRenderer spriteRenderer; // Art link -> workshop how this is defined later or if it is more organic and we make it later
+    public Animator animator;
+
     public PolygonCollider2D myCollider;
     public ValueDigitizer ValueRenderer;
 
@@ -100,21 +89,6 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
 
     public Quaternion orbit = Quaternion.identity; // Might not use this anymore -> unless we need for the swing motion tilt
 
-    // Card Class Structs
-    public enum cardType // Elemental types matching sprite references
-    {
-        Fire,
-        Growth,
-        Earth,
-        Iron,
-        Frost,
-        Water,
-        Wind,
-        Storm,
-        Blight,
-
-        Back // Card back when flipped
-    }
     public enum cardState
     {
         Deck,
@@ -126,7 +100,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     // Runtime
     public void Update()
     {
-        // SetSprite(); // Removed to save on perf
+
     }
     public void FixedUpdate()
     {
@@ -134,10 +108,19 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
         if (PlayHandler.manaPool.ManaCount > 0) { MatFocuser(); }
     }
 
+    // Abstracts
+    public abstract int CardTypeID { get; set; }
+    public int numberOfTypesForDeck;
+    public int numberOfTotalTypes;
+
+    public abstract string CardTypeName { get; }
+    public abstract void SetSprite();
+
+    protected abstract void PlayAnimation();
+
     // Runtime Managers
-
     // Sprite and Color Managers
-
+    /*
     private Sprite GetSprite()
     {
         switch (this._type)
@@ -169,6 +152,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
     {
         spriteRenderer.sprite = GetSprite();
     }
+    */
 
     // Animation and Movement Managers
     private void Mover()
@@ -188,7 +172,14 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
                 (Vector3 pos, float time, Ease ease) = destinationsBuffer.Dequeue();
 
                 // Use the tween library to move smoothly to the target
-                transform.DOLocalMove(pos, time).SetEase(ease).OnComplete(() => { dragLock = false; });
+                transform.DOLocalMove(pos, time).SetEase(ease)
+                    .OnComplete(() => 
+                    { 
+                        if (state == cardState.Hand) // Only unlocks cards if they are in the hand -> this is to avoid issues with cards being dragged to the field and then not being locked out of movement due to the dragLock being reset
+                        {
+                            dragLock = false;
+                        }
+                    });
             }
         }
     }
@@ -254,18 +245,8 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IP
             }
             else // If we do not detect the field objects 
             {
-                // Add a wiggle animation to the card when it is thrown back to the hand for some satisfying feedback -> under review for how to implement this with the current mover system (potentially just add a rotation tween before the return home)
-                DOTween.Sequence()
-                    .Append(transform.DOPunchRotation(new Vector3(0, 0, wiggle), 0.3f, 15, 1)) // Adjust the punch rotation parameters as needed (vector size adjustment, time, vibrato, elasticity)
-                    .Join(transform.DOPunchPosition(new Vector3(0.1f, 0, 0), 0.3f, 10, 1))
-                    .Join(spriteRenderer.DOColor(Color.red, 0.15f).SetLoops(2, LoopType.Yoyo)) // Currently can't override the color as we set that in the update loop -> need to create better handling for sprite color without polling
-                    .OnComplete(() =>
-                    {
-                        destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
-                        spriteRenderer.sortingLayerName = "Hand";
-                        ValueRenderer.UpdateRenderSorting();                        
-                    });                
-            }            
+                PlayAnimation();
+            }
         }
     }
     public void OnPointerClick(PointerEventData eventData) // This triggers after the pointer is released -> to avoid complexity don't support two click control and force drags

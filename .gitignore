@@ -74,3 +74,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .github/copilot-instructions.md
+ProjectSettings/ShaderGraphSettings.asset
+ProjectSettings/ProjectSettings.asset
+ProjectSettings/EditorBuildSettings.asset
+Assets/UniversalRenderPipelineGlobalSettings.asset
+.vscode/settings.json
+/PhotoShop

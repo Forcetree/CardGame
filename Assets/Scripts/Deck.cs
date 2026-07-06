@@ -37,7 +37,7 @@ public class Deck : MonoBehaviour
         this.PlayHandler = handler;
     }
 
-    public bool GenDeck(int deckCount)
+    public bool GenDeck(int deckCount , int typeCount) //added typeCount to allow for generation of a number of card types in the deck
     {
         for (int i = 0; i < deckCount; i++)
         {
@@ -48,11 +48,15 @@ public class Deck : MonoBehaviour
             nCard.gameObject.transform.parent = this.transform;
             nCard.PlayHandler = this.PlayHandler;
 
-            nCard.playCost = 0;
+            nCard.playCost = 0; // Currently not used as all cards cost the same (this offers card scalability)
+
+            nCard.state = Card.cardState.Deck; // Start the card in the deck state (should this be set here or in prefab? -> cards could be initialized anywhere in the game and not always in the deck)
+
             nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
-            nCard.type = (Card.cardType)(i % 9);
-            nCard.name = $"Card | {i + 1} | {nCard.type}";
-            nCard.title = $"{nCard.type} Card";
+
+            nCard.CardTypeID = (i % typeCount); //Deck generates cards of a number of types based on the typeCount int 
+            nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";
+            nCard.title = $"{nCard.CardTypeName} Card";
             nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
 
             cardsInDeck.Add(nCard);

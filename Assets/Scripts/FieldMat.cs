@@ -1,34 +1,54 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class FieldMat : MonoBehaviour
+public abstract class FieldMat : MonoBehaviour
 {
     // Objects
     public GameObject Topper;
-    public SpriteRenderer TopperRenderer;
 
     // Sprite Refs
-    public Sprite basicCard;
-    public Sprite highlightCard;
+    [SerializeField] protected Sprite _basicCardSprite;
+    [SerializeField] protected Sprite _highlightSprite;
 
     // Components
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer TopperRenderer;
+    public SpriteRenderer BottomRenderer;
+    public SpriteRenderer HighlightRenderer;
+
+    public Animator TopperMatAnimator;
+
     public ValueDigitizer valueRenderer;
 
     // Attributes
-    public bool highlighted = false;
+
     public List<Card> stack = new();
 
-    public Card.cardType comboType;
+    public int comboType;
+    public bool matIsFull = false;
 
-    public bool matIsEmpty = true;
+    [SerializeField] private bool _highlighted;
+    public bool highlighted // This is a public property that controls the highlighting of the mat. When set to true, it will display the highlight sprite; when set to false, it will remove the highlight sprite.
+    {
+        get { return _highlighted; }
+        set
+        {
+            _highlighted = value;
+            
+            if (_highlighted)
+            {
+                HighlightRenderer.sprite = _highlightSprite;
+            }
+            else
+            {
+                HighlightRenderer.sprite = null;
+            }
+        }
+    }
 
-    // Value Digitizer Controller
     [SerializeField] private int _value;
-    public int value
+    public int value // Value Digitizer Controller
     {
         get { return _value; }
         set
@@ -38,52 +58,22 @@ public class FieldMat : MonoBehaviour
         }
     }
 
-    public void Awake()
-    {
-        CardCombiner.InitMatrix();
-        matIsEmpty = true;
-        spriteRenderer.color = new(1f, 1f, 1f, .3f);
-    }
-
-    //public bool TryTarget(Card cCard) // Under reconstruction -> For Necro the card combiner class needs to do many differnt things moving forward
-    //{
-    //    // New logic under construction
-    //    var prospective = stack.Select(c => c.type).Append(cCard.type).Distinct();
-    //    if (prospective.Count() > 3) return false;
-    //    return CardCombiner.TryResolve(prospective, out _);
-    //}
-
-    public void TargetStatus(bool value) // Should I make this public to call from card or should we call internally if TryTarget allows targeting OR should I just leave the highlight public and allow it to be handled by cards
-    {
-        highlighted = value;   
-    }
+    public abstract bool TryTarget(Card cCard); // Abstracting the rules for targeting a mat with a card. Each mat type will have its own rules for what cards can be placed on it.
 
     public void AddToStack(Card nCard)
     {
         stack.Add(nCard);
         nCard.transform.SetParent(this.transform);
+        nCard.state = Card.cardState.Field; // Set the card state to Field when it is placed on the mat
         
-        // Safer to turn off the card
-        // nCard.dragLock = true;
-        nCard.gameObject.SetActive(false); // Hide the card when added to the mat
+        nCard.dragLock = true; // Should change the destination buffer mover method to NOT unlock drag state if the card is in state = Field
 
-        value += nCard.value; // Update the mat value when adding a card
+        value = stack.Sum(c => c.value);
+        var types = stack.Select(c => c.CardTypeID).Distinct();
+        CardCombiner.TryResolve(types, out int resolved);
+        comboType = resolved;
 
-        var types = stack.Select(c => c.type).Distinct();
-        //if (CardCombiner.TryResolve(types, out Card.cardType resolved))
-        //{
-        //    PlayComboAnimation(CardCombiner.GetSprite(resolved));            
-        //    comboType = resolved;
-        //}
-        //else // This should never happen as TryTarget should prevent invalid cards from being added
-        //{
-        //    // Fall back: use the sprite for the lone card type
-        //    TopperRenderer.sprite = CardCombiner.GetSprite(nCard.type);
-        //    TopperRenderer.sortingLayerName = "Topper";
-        //    valueRenderer.UpdateRenderSorting();
-
-        //    comboType = nCard.type;
-        //}
+        PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
 
         for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
         {
@@ -92,24 +82,11 @@ public class FieldMat : MonoBehaviour
         }
 
         highlighted = false;
-        matIsEmpty = false;
+        matIsFull = true;  
     }
+    protected abstract void PlayAnimation();
 
-    private void PlayComboAnimation(Sprite comboSprite)
-    {
-        TopperRenderer.sprite = comboSprite;
-        TopperRenderer.sortingLayerName = "Topper";
-        valueRenderer.UpdateRenderSorting();
-
-        // Simple reveal animation: fade in the topper and add a punch scale
-        TopperRenderer.color = new Color(1f, 1f, 1f, 0f);
-
-        DG.Tweening.Sequence s = DOTween.Sequence();
-        s.Append(TopperRenderer.DOFade(1f, 0.08f).SetEase(Ease.InSine));
-        s.Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.1f, 1, 0));
-    }
-
-    public void ClearMat() // Need to expand this to combine and calculate the total value of the cards on the mat before clearing
+    public void ClearMat() // No need to expand (we will process the data out of the stack before we clear it using the abstract and child class definitions)
     {
         foreach (var card in stack)
         {
@@ -118,25 +95,11 @@ public class FieldMat : MonoBehaviour
         
         stack.Clear();
         value = 0;
+        comboType = -1; // Set to default type when clearing the mat -> should be invisible in future
 
-        matIsEmpty = true;
-        spriteRenderer.color = new(1f, 1f, 1f, .3f);
-        TopperRenderer.sortingLayerName = "Field";
-        valueRenderer.UpdateRenderSorting();
+        matIsFull = false;
+
+        PlayAnimation(); // Can determine that the mat was cleared
     }
-
-    // Need to find a better approach to live update the sprite state based on a mat state - under construction to refine how the mat displays and takes collisions (check card class for which layers it checks against (unless sorting layer is independant of physics which I think it is))
-    void Update()
-    {
-        Topper.SetActive(!matIsEmpty);
-
-        if (highlighted) // Look for a way to make this change occur when the operations run rather than check each update
-        {
-            spriteRenderer.sprite = highlightCard;
-        }
-        else
-        {
-            spriteRenderer.sprite = basicCard;
-        }
-    }
+    
 }
