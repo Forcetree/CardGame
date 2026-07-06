@@ -106,8 +106,13 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     // Abstracts
     public abstract int CardTypeID { get; set; }
+    public int numberOfTypesForDeck;
+    public int numberOfTotalTypes;
+
     public abstract string CardTypeName { get; }
     public abstract void SetSprite();
+
+    protected abstract void PlayAnimation();
 
     // Runtime Managers
     private void Mover()
@@ -200,18 +205,8 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
             }
             else // If we do not detect the field objects 
             {
-                // Add a wiggle animation to the card when it is thrown back to the hand for some satisfying feedback -> under review for how to implement this with the current mover system (potentially just add a rotation tween before the return home)
-                DOTween.Sequence()
-                    .Append(transform.DOPunchRotation(new Vector3(0, 0, wiggle), 0.3f, 15, 1)) // Adjust the punch rotation parameters as needed (vector size adjustment, time, vibrato, elasticity)
-                    .Join(transform.DOPunchPosition(new Vector3(0.1f, 0, 0), 0.3f, 10, 1))
-                    .Join(spriteRenderer.DOColor(Color.red, 0.15f).SetLoops(2, LoopType.Yoyo)) // Currently can't override the color as we set that in the update loop -> need to create better handling for sprite color without polling
-                    .OnComplete(() =>
-                    {
-                        destinationsBuffer.Enqueue((cardHome, deHoverTime, deHoverEase)); // Currently using the same dehome parameters unless we want custom ones for a different feel when dropping a card
-                        spriteRenderer.sortingLayerName = "Hand";
-                        ValueRenderer.UpdateRenderSorting();                        
-                    });                
-            }            
+                PlayAnimation();
+            }
         }
     }
     public void OnPointerClick(PointerEventData eventData) // This triggers after the pointer is released -> to avoid complexity don't support two click control and force drags
