@@ -337,6 +337,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2068989993}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &252180317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 252180318}
+  - component: {fileID: 252180319}
+  m_Layer: 6
+  m_Name: NecroFieldTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &252180318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252180317}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1961944301}
+  - {fileID: 730432050}
+  m_Father: {fileID: 520213723}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &252180319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252180317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf740fc0421be945b4480d6e453c50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NecroPlaySpace
+  matPrefab: {fileID: -4541170962706573620, guid: 782cb47e3a997744b9eecb03680440a8, type: 3}
+  spawns:
+  - {fileID: 1961944301}
+  - {fileID: 730432050}
 --- !u!1 &378802693
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +698,7 @@ Transform:
   - {fileID: 1476619223}
   - {fileID: 1236652351}
   - {fileID: 2068989993}
+  - {fileID: 252180318}
   - {fileID: 1589039291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -666,9 +717,10 @@ MonoBehaviour:
   hand: {fileID: 1236652352}
   deck: {fileID: 1476619224}
   manaPool: {fileID: 1833003246}
-  Field: {fileID: 2068989994}
+  PaintField: {fileID: 2068989994}
+  NecroField: {fileID: 252180319}
   Graveyard: {fileID: 1589039290}
-  CardRef: {fileID: 7225503320909994610, guid: 1d2c641a34cf4da41831fd2db790ef68, type: 3}
+  CardRef: {fileID: 6445121948122075995, guid: 0e4b65d070bf11d4b8fde2fc072fe871, type: 3}
   playActive: 0
   score: []
   graveyard: []
@@ -806,6 +858,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &730432049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 730432050}
+  m_Layer: 6
+  m_Name: Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &730432050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730432049}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.75, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 252180318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &953238330
 GameObject:
@@ -1355,6 +1438,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ManaPool
   ManaRef: {fileID: 969396550572113778, guid: de11d6564685e2b4bb65bbdf2ea75c18, type: 3}
   manaPoints: []
+--- !u!1 &1961944300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1961944301}
+  m_Layer: 6
+  m_Name: Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1961944301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961944300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.75, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 252180318}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2068989992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,7 +1480,7 @@ GameObject:
   - component: {fileID: 2068989993}
   - component: {fileID: 2068989994}
   m_Layer: 6
-  m_Name: Field
+  m_Name: PaintField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1403,10 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintPlaySpace
   matPrefab: {fileID: 5431872155658850742, guid: 17ab67ca3dc166c418f165c131bf8c52, type: 3}
-  spawns:
-  - {fileID: 215035184}
-  - {fileID: 1200222405}
-  - {fileID: 378802694}
+  spawns: []
 --- !u!1 &2137661009
 GameObject:
   m_ObjectHideFlags: 0

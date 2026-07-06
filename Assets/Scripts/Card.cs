@@ -102,6 +102,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     {
 
     }
+
     public void FixedUpdate()
     {
         Mover();
