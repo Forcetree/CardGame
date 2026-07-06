@@ -58,7 +58,7 @@ public class PlayHandler : MonoBehaviour
 
         // Create and shuffle the deck -> to be expanded to support creating deck from prefab
         deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
-        deck.GenDeck(deckCount, CardRef.numberOfTypes);
+        deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck);
 
         // Initialize the hand and draw the starting hand -> to be expanded to support creating hand from prefab? (maybe not as we always want a hand in the scene)
         hand.InitHand(handLimit, deck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
