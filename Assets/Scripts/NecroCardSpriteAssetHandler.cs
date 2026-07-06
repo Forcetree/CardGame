@@ -23,16 +23,16 @@ public class NecroCardSpriteAssetHandler : MonoBehaviour
             return false;
         }
 
-        CardCombiner.fireSprite = fireSprite;
-        CardCombiner.growthSprite = growthSprite;
-        CardCombiner.earthSprite = earthSprite;
-        CardCombiner.ironSprite = ironSprite;
-        CardCombiner.frostSprite = frostSprite;
-        CardCombiner.waterSprite = waterSprite;
-        CardCombiner.windSprite = windSprite;
-        CardCombiner.stormSprite = stormSprite;
-        CardCombiner.blightSprite = blightSprite;
-        CardCombiner.backSprite = backSprite;
+        //CardCombiner.fireSprite = fireSprite;
+        //CardCombiner.growthSprite = growthSprite;
+        //CardCombiner.earthSprite = earthSprite;
+        //CardCombiner.ironSprite = ironSprite;
+        //CardCombiner.frostSprite = frostSprite;
+        //CardCombiner.waterSprite = waterSprite;
+        //CardCombiner.windSprite = windSprite;
+        //CardCombiner.stormSprite = stormSprite;
+        //CardCombiner.blightSprite = blightSprite;
+        //CardCombiner.backSprite = backSprite;
 
         Debug.Log("Sprites successfully assigned to CardCombiner.");
 
