@@ -51,6 +51,8 @@ public class PaintExampleCard : Card
             SetSprite();
         }
     }
+    public override int numberOfTypes => 5; 
+
 
     // Should the sprites live here?
     // Does a live instance accept <List<Sprite>>

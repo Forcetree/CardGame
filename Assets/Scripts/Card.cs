@@ -105,6 +105,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     // Abstracts
     public abstract int CardTypeID { get; set; }
+    public abstract int numberOfTypes { get; }
     public abstract string CardTypeName { get; }
     public abstract void SetSprite();
 
