@@ -2,15 +2,49 @@ using UnityEngine;
 
 public class ForgeSpriteAssetHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Sprite ironSprite;
+    public Sprite copperSprite;
+    public Sprite nickelSprite;
+    public Sprite sulfurSprite;
+    public Sprite carbonSprite;
+    public Sprite waterSprite;
+    public Sprite voiddustSprite;
+    public Sprite moonsaltSprite;
+    public Sprite quicksilverSprite;
+    public Sprite bronzeSprite;
+    public Sprite leadSprite;   
+    public Sprite brassSprite;  
+    public Sprite gunmetalSprite;  
+    public Sprite steelSprite;     
+    public Sprite rustSprite;      
+    public Sprite blackslagSprite; 
+    public Sprite yellowslagSprite;
+    public Sprite greenslagSprite; 
+    public Sprite ashSprite;       
+    public Sprite titaniumSprite;   
+    public Sprite nickelplateSprite;
+    public Sprite explosionSprite; 
+    public Sprite acidSprite;      
+    public Sprite sootSprite;      
+    public Sprite voidsteelSprite; 
+    public Sprite silverSprite;    
+    public Sprite inertiumSprite;  
+    public Sprite lithiumSprite;   
+    public Sprite verdigrisSprite;  
+    public Sprite chromiumSprite;  
+    public Sprite sandSprite;      
+    public Sprite platinumSprite;  
+    public Sprite mirrorSprite;    
+    public Sprite gunpowderSprite; 
+    public Sprite iridiumSprite;   
+    public Sprite lavastoneSprite; 
+    public Sprite gloomcrumbSprite;
+    public Sprite gleamtalcSprite; 
+    public Sprite pewterSprite;    
+    public Sprite siltSprite;      
+    public Sprite manatearsSprite; 
+    public Sprite vaporSprite;     
+    public Sprite nothingSprite;   
+    public Sprite blacksludgeSprite;  
+    public Sprite glassSprite;     
 }

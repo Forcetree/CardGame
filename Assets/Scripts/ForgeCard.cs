@@ -88,7 +88,7 @@ public class ForgeCard : Card
 
     public override void SetSprite()
     {
-        spriteRenderer.color = CardCombiner.GetVisual<Color>(CardTypeID);
+        spriteRenderer.sprite = CardCombiner.GetVisual<Sprite>(CardTypeID);
     }
     protected override void PlayAnimation()
     {   // Add a wiggle animation to the card when it is thrown back to the hand for some satisfying feedback -> under review for how to implement this with the current mover system (potentially just add a rotation tween before the return home)
