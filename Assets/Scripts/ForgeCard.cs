@@ -1,53 +1,82 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class PaintExampleCard : Card
+public class ForgeCard : Card
 {
-    public enum PaintCardTypes 
+    public enum ForgeCardTypes
     {
-        Red,
-        Yellow,
-        Blue,
-        White,
-        Black,
+        //The 9 base materials
+        ironSprite,
+        copperSprite,
+        nickelSprite,
+        sulfurSprite,
+        carbonSprite,
+        waterSprite,
+        voiddustSprite,
+        moonsaltSprite,
+        quicksilverSprite,
 
-        // Combos made on the board
-        // Light Pures
-        Coral, // Red + White
-        Sun, // Yellow + White
-        Hydro, // Blue + White
+        //Pure Metals
+        bronzeSprite, // Iron Copper 10
+        leadSprite,   // Iron Nickel 11
+        brassSprite,  // Copper Nickel 12
 
-        // Dark Pures
-        Blood, // Red + Black
-        Gold, // Yellow + Black
-        Abyss, // Blue + Black
+        // Alchemical Metal Combos
 
-        // Mixes
-        Toxic, // -> Purple
-        Amber, // -> Orange
-        Life, // -> Green
+        gunmetalSprite,  // Iron Sulfur 13
+        steelSprite,     // Iron Carbon 14 
+        rustSprite,      // Iron Water  15
+        blackslagSprite, // Copper Sulfur  16
+        yellowslagSprite,// Copper Carbon  17
+        greenslagSprite, // Copper Water   18
+        ashSprite,       // Nickel Sulfur  19
+        titaniumSprite,  // Nickel Carbon  20 
+        nickelplateSprite,// Nickel Water  21
 
-        // Light Combos
-        Iris, // Purple + White
-        Nectar, // Orange + White
-        Moss, // Green + White
+        // Alchemical non-metal combos
 
-        // Dark Combos
-        Obsidian, // Purple + Black
-        Lava, // Orange + Black
-        Serpenite, // Green + Black
+        explosionSprite, // Sulfur Carbon 22
+        acidSprite,      // Sulfur Water  23
+        sootSprite,      // Carbon Water  24
 
-        Back // Card back when flipped
+        // Magic Metals  
+
+        voidsteelSprite, // Iron Voiddust 25
+        silverSprite,    // Iron Moonsalt 26
+        inertiumSprite,  // Iron Quicksilver 27
+        lithiumSprite,   // Copper Voiddust 28
+        verdigrisSprite, // Copper Moonsalt 29    
+        chromiumSprite,  // Copper Quicksilver 30
+        sandSprite,      // Nickel Voiddust 31
+        platinumSprite,  // Nickel Moonsalt 32
+        mirrorSprite,    // Nickel Quicksilver 33
+
+        // Alchemical Magic
+        gunpowderSprite, // Sulfur Voiddust 34
+        iridiumSprite,   // Sulfur Moonsalt 35
+        lavastoneSprite, // Sulfur Quicksilver 36
+        gloomcrumbSprite,// Carbon Voiddust 37
+        gleamtalcSprite, // Carbon Moonsalt 38
+        pewterSprite,    // Carbon Quicksilver 39
+        siltSprite,      // Water Voiddust 40
+        manatearsSprite, // Water Moonsalt 41
+        vaporSprite,     // Water Quicksilver 42
+
+        // Pure Magic
+        nothingSprite,   // Voiddust Moonsalt 43
+        blacksludgeSprite,  // Voiddust Quicksilver 44
+        glassSprite,     // Moonsalt Quicksilver 45
+
     }
 
-    public PaintCardTypes mySpecificType;
+    public ForgeCardTypes mySpecificType;
 
     public override int CardTypeID
     {
         get => (int)mySpecificType;
         set
         {
-            mySpecificType = (PaintCardTypes)value;
+            mySpecificType = (ForgeCardTypes)value;
             SetSprite();
         }
     }

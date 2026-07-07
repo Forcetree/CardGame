@@ -4,7 +4,7 @@ public class ForgePlaySpace : PlaySpace<ForgeMat>
 {
     public Transform[] spawns;
 
-    public void StartPaint()
+    public void StartForge()
     {
         GenerateField(spawns);
     }
