@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PaintCombiner : CombinerLogic<Color>
+public class ForgeCombiner : CombinerLogic<Color>
 {
     public override void SetupCombinations()
     {

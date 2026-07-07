@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PaintPlaySpace : PlaySpace<PaintMat>
+public class ForgePlaySpace : PlaySpace<ForgeMat>
 {
     public Transform[] spawns;
 

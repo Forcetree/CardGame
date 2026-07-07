@@ -14,8 +14,8 @@ public class PlayHandler : MonoBehaviour
     public PlayerHand hand;
     public Deck deck;
     public ManaPool manaPool;
-    public PaintPlaySpace Field; // Must be hard set to the PaintPlaySpace object in the scene
-
+    public PaintPlaySpace PaintField; // Must be hard set to the PaintPlaySpace object in the scene
+    public ForgePlaySpace ForgeField;  
     // Deprecated
     public GameObject Graveyard;
 
@@ -54,10 +54,10 @@ public class PlayHandler : MonoBehaviour
     public void StartPlay(int deckCount, int handLimit, int manaLimit)
     {
         // Initialize the Combiner Logic -> to be expanded to support dynamic logic selection based on game mode or player choice
-        CardCombiner.Initialize(new PaintCombiner());
+        CardCombiner.Initialize(new ForgeCombiner());
 
         // Create the Field -> to be expanded to support creating field from prefab? For now hard set to generate a PaintPlaySpace in the scene
-        Field.GenerateField(Field.spawns); // Allows for dynamic field generation based on the provided spawn points in the PaintPlaySpace object in scene
+        ForgeField.GenerateField(ForgeField.spawns); // Allows for dynamic field generation based on the provided spawn points in the PaintPlaySpace object in scene
 
         // Create and shuffle the deck -> to be expanded to support creating deck from prefab
         deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
