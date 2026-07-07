@@ -12,8 +12,10 @@ public class ForgeSpriteAssetHandler : MonoBehaviour
     public Sprite moonsaltSprite;
     public Sprite quicksilverSprite;
     public Sprite bronzeSprite;
-    public Sprite leadSprite;   
-    public Sprite brassSprite;  
+    public Sprite leadSprite;
+    public Sprite brassSprite;
+
+    /*  Commented out for now, Will be implemented later
     public Sprite gunmetalSprite;  
     public Sprite steelSprite;     
     public Sprite rustSprite;      
@@ -47,4 +49,5 @@ public class ForgeSpriteAssetHandler : MonoBehaviour
     public Sprite nothingSprite;   
     public Sprite blacksludgeSprite;  
     public Sprite glassSprite;     
+    */
 }

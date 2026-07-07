@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3526214653679285272}
   - component: {fileID: 1165077588377382285}
-  - component: {fileID: 5431872155658850742}
+  - component: {fileID: 6504280060226012219}
   m_Layer: 6
   m_Name: ForgeMatPrefab
   m_TagString: Untagged
@@ -91,7 +91,7 @@ PolygonCollider2D:
       - {x: -1.4, y: -2.5}
       - {x: 1.41, y: -2.5}
   m_UseDelaunayMesh: 1
---- !u!114 &5431872155658850742
+--- !u!114 &6504280060226012219
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,9 +100,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1401015475105511266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cf59e419aca2348b4aa56cf755decd, type: 3}
+  m_Script: {fileID: 11500000, guid: 6703271a0fc44064a94c00f8c0668808, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintMat
+  m_EditorClassIdentifier: Assembly-CSharp::ForgeMat
   Topper: {fileID: 8537925156848953910}
   _basicCardSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
   _highlightSprite: {fileID: 7944202395061093912, guid: f5cc5af51ecdaee4fa8c29c01d21c977, type: 3}

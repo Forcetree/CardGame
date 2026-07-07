@@ -6,7 +6,7 @@ public class ForgePlaySpace : PlaySpace<ForgeMat>
 
     public void StartForge()
     {
-        GenerateField(spawns);
+        // GenerateField(spawns);
     }
 
     public int ScoreOut()

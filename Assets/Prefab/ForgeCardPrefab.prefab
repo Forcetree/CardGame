@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7168643807824790975}
   - component: {fileID: -7762885606432500204}
   - component: {fileID: 5598778183534665448}
-  - component: {fileID: 7225503320909994610}
+  - component: {fileID: -3527374557397031934}
   m_Layer: 0
   m_Name: ForgeCardPrefab
   m_TagString: Untagged
@@ -105,7 +105,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7037730200098454068}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 2c00b3c0cbbb00f4da49408f83b17f99, type: 2}
   m_CullingMode: 0
@@ -201,7 +201,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7225503320909994610
+--- !u!114 &-3527374557397031934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,9 +210,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7037730200098454068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14ec66dd3067734682ea02059be9f80, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f823cab96249274793264ecbf7c8989, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintExampleCard
+  m_EditorClassIdentifier: Assembly-CSharp::ForgeCard
   PlayHandler: {fileID: 0}
   hovering: 0
   dragging: 0
@@ -237,7 +237,7 @@ MonoBehaviour:
   ValueRenderer: {fileID: 5075109201278941140}
   orbit: {x: 0, y: 0, z: 0, w: 1}
   numberOfTypesForDeck: 5
-  numberOfTotalTypes: 21
+  numberOfTotalTypes: 12
   mySpecificType: 0
 --- !u!1001 &5850179125697242284
 PrefabInstance:
