@@ -52,7 +52,7 @@ public class PlayHandler : MonoBehaviour
     }
 
     // Public Methods
-    public void StartPlay(int deckCount, int handLimit, int manaLimit)
+    public void StartPlay(int deckCount, int handLimit, int manaLimit) // Basic simple setup for the play session -> to be expanded to support dynamic setup based on game mode or player choice
     {
         // Initialize the Combiner Logic -> to be expanded to support dynamic logic selection based on game mode or player choice
         CardCombiner.Initialize(new NecroCombiner());
@@ -61,6 +61,7 @@ public class PlayHandler : MonoBehaviour
         NecroField.GenerateField(NecroField.spawns); // Allows for dynamic field generation based on the provided spawn points in the NecroPlaySpace object in scene
 
         // Create and shuffle the deck -> to be expanded to support creating deck from prefab
+        // Under reconstruction: Deck generation is currently hard set to generate a deck based on the provided card reference and the number of types for the deck, but will be expanded to support dynamic deck generation based on game mode or player choice (out of the prefab)
         deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
         deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck);
 
