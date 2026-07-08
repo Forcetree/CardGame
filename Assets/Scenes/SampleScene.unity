@@ -275,6 +275,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &53361253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 53361254}
+  m_Layer: 6
+  m_Name: Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &53361254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53361253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1769630757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &100302970
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +679,7 @@ Transform:
   - {fileID: 1476619223}
   - {fileID: 1236652351}
   - {fileID: 2068989993}
+  - {fileID: 1769630757}
   - {fileID: 1589039291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -666,9 +698,10 @@ MonoBehaviour:
   hand: {fileID: 1236652352}
   deck: {fileID: 1476619224}
   manaPool: {fileID: 1833003246}
-  Field: {fileID: 2068989994}
+  PaintField: {fileID: 2068989994}
+  ForgeField: {fileID: 1769630756}
   Graveyard: {fileID: 1589039290}
-  CardRef: {fileID: 7225503320909994610, guid: 1d2c641a34cf4da41831fd2db790ef68, type: 3}
+  CardRef: {fileID: -3527374557397031934, guid: 79e1c760723215043bbd001a64582a8e, type: 3}
   playActive: 0
   score: []
   graveyard: []
@@ -807,6 +840,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &751785767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751785769}
+  - component: {fileID: 751785768}
+  m_Layer: 0
+  m_Name: CardAssets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &751785768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751785767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d8636a6aa46cbc4ba6498fb9c691538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForgeSpriteAssetHandler
+  ironSprite: {fileID: -3448898858908596127, guid: 3c797e6b44765db42bd105aaca8fb795, type: 3}
+  copperSprite: {fileID: 4000519283856582652, guid: b51f53e23e34cc94297b0abf86633809, type: 3}
+  nickelSprite: {fileID: -5521316390597624560, guid: 3c2aba11b8a99c9458343d0d4bb2e360, type: 3}
+  sulfurSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  carbonSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  waterSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  voiddustSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  moonsaltSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  quicksilverSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  bronzeSprite: {fileID: 833645736694255512, guid: ec07d25e50aec804b932d575d0920a5d, type: 3}
+  leadSprite: {fileID: -1923552678918684219, guid: 9dc30d92ba1df694a90cfd0d31681df5, type: 3}
+  brassSprite: {fileID: -8383691360184257333, guid: faa1e3544d3a53840b201c57e0d5a2e6, type: 3}
+--- !u!4 &751785769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751785767}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.96256, y: -0.59111, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &953238330
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,6 +988,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1047085372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047085373}
+  m_Layer: 6
+  m_Name: Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1047085373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047085372}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1769630757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1200222404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,9 +1147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FinishPainting
   PlayHandler: {fileID: 520213724}
-  fieldMatLeft: {fileID: 0}
-  fieldMatCenter: {fileID: 0}
-  fieldMatRight: {fileID: 0}
   spriteRenderer: {fileID: 1262412926}
   myCollider: {fileID: 1262412925}
   turns: 0
@@ -1258,6 +1375,54 @@ Transform:
   - {fileID: 1458880290}
   m_Father: {fileID: 520213723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1769630755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1769630757}
+  - component: {fileID: 1769630756}
+  m_Layer: 6
+  m_Name: ForgeField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1769630756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769630755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071d19e9b367ae34293fd7770158ed57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForgePlaySpace
+  matPrefab: {fileID: 6504280060226012219, guid: c24cf812fc15d6641a086d10b84cbeb5, type: 3}
+  spawns: []
+--- !u!4 &1769630757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769630755}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1047085373}
+  - {fileID: 53361254}
+  m_Father: {fileID: 520213723}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1833003244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,7 +1480,7 @@ GameObject:
   - component: {fileID: 2068989993}
   - component: {fileID: 2068989994}
   m_Layer: 6
-  m_Name: Field
+  m_Name: PaintField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1442,4 +1607,5 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 2137661012}
+  - {fileID: 751785769}
   - {fileID: 520213723}

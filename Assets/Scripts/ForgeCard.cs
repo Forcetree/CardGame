@@ -81,9 +81,6 @@ public class ForgeCard : Card
         }
     }
 
-    // Should the sprites live here?
-    // Does a live instance accept <List<Sprite>>
-
     public override string CardTypeName => mySpecificType.ToString();
 
     public override void SetSprite()

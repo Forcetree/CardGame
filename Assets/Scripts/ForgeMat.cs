@@ -6,7 +6,7 @@ public class ForgeMat : FieldMat
 {
     protected override void PlayAnimation() // Overhauling for Animator controller additions 
     {
-        Color comboColor = CardCombiner.GetVisual<Color>(comboType);
+        Sprite cardSprite = CardCombiner.GetVisual<Sprite>(comboType);
 
         if (stack.Count == 0) // Clear Animation
         {
@@ -21,13 +21,18 @@ public class ForgeMat : FieldMat
 
             DOTween.Sequence()
                 .Append(Topper.transform.DOPunchScale(new Vector3(0.25f, 0.25f, 1), 0.3f, 1, 0)) // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
-                .Join(TopperRenderer.DOColor(comboColor, 0.3f).SetEase(Ease.InSine)); // Change to combo color (also unfades the topper because it was faded out)
+                .Join(TopperRenderer.DOColor(Color.white, 0.3f).SetEase(Ease.InSine)); // Change to combo color (also unfades the topper because it was faded out)
+
+            // Set the new sprite here
+            TopperRenderer.sprite = cardSprite; // Set the new sprite for the topper renderer
         }
         else // Combo Animation
         {
+            // Set Sprite for the topper renderer to the resolved combo sprite
+            TopperRenderer.sprite = cardSprite;
+
             DOTween.Sequence()
-                .Append(TopperRenderer.DOColor(comboColor, 0.3f).SetEase(Ease.InExpo)) // Change to combo color
-                .Join(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.3f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
+                .Append(Topper.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0), 0.3f, 1, 0)); // Add a punch scale for a more dynamic effect (vector size adjustment, time, vibrato, elasticity)
         }
     }
 

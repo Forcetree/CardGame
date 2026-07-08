@@ -107,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 7037730200098454068}
   m_Enabled: 0
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2c00b3c0cbbb00f4da49408f83b17f99, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
   myCollider: {fileID: -7762885606432500204}
   ValueRenderer: {fileID: 5075109201278941140}
   orbit: {x: 0, y: 0, z: 0, w: 1}
-  numberOfTypesForDeck: 5
+  numberOfTypesForDeck: 3
   numberOfTotalTypes: 12
   mySpecificType: 0
 --- !u!1001 &5850179125697242284
