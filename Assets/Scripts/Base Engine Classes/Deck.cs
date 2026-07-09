@@ -11,7 +11,7 @@ public abstract class Deck : MonoBehaviour
     [Tooltip("Set this for deal rate")]
     public float TimeBetweenDeals;
     [Tooltip("The focus value is where the cards are pushed to before flying to the hand")]
-    public Vector3 DrawFocusPos = new(-6, 1.5f, 0);
+    public Vector3 DrawFocusPos;
     [Tooltip("Set this for card speed on focus")]
     public float DealTime;
     [Tooltip("Set this for the type of focus movement")]
