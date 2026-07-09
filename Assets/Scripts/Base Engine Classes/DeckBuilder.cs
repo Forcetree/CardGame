@@ -6,6 +6,7 @@ using UnityEngine;
 public class DeckBuilder
 {
     public PlayHandler Handler { get; private set; }
+    public Card CardRef { get; private set; }
 
     public string? DeckName { get; private set; } = null;
     public bool? IsFinite { get; private set; } = null; // This setting decides if the deck is finite or infinite. If infinite, the deck will generate cards on the fly and will not have a set number of cards nor preset list (needs extention of public arcitecture to hide private variables and allow for dynamic generation of cards in the deck)
@@ -22,9 +23,10 @@ public class DeckBuilder
     public Ease? DealEase { get; private set; } = null; // The ease function for the deal animation (this should be configurable in the deck builder)
 
     // Required API
-    public DeckBuilder(PlayHandler handler)
+    public DeckBuilder(PlayHandler handler, Card cardRef)
     {
         this.Handler = handler;
+        this.CardRef = cardRef;
     }
 
     // Fluent API
