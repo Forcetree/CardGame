@@ -2,8 +2,8 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.XR;
 
 public abstract class Deck : MonoBehaviour
 {
@@ -92,35 +92,56 @@ public abstract class Deck : MonoBehaviour
     protected abstract void OnSettingsApplied(); // Is called after settings are all freshly applied on Updates
 
     // Considering removing both of these in favor of reading directly off the TypeDistribution instead (counting down if we are finite mode)
-    public virtual bool GenDeck() { return false; } // ?? Base class does not generate a deck, child classes should override this method to generate a special deck of cards
-    public virtual bool GenDeck(int deckCount , int typeCount) // Overload allows current functionality to be used in child classes that need to generate a deck of cards with a specific number of cards and types
-    {
-        for (int i = 0; i < deckCount; i++) // Need a static card method for handling this (encapsulate the card generation logic in the card class and call it from here) -> this will allow for better scalability and maintainability of the code
+    public virtual bool GenDeck() // Child classes can override this method to generate a special deck of cards
+    { 
+        if (this.IsFinite)
         {
-            Card nCard = Instantiate(CardRef, this.transform.position, Quaternion.identity);
+            if (this.DeckCount > this.TypeDistribution.Sum())
+            {
 
-            // Under Review -> Consider creating custom card constructor that takes required arguments and handles this in one line for better clarity in the PlayHandler code
+            }
+        }
+        else
+        {
 
-            nCard.gameObject.transform.parent = this.transform;
-            nCard.PlayHandler = this.PlayHandler;
+        }
 
-            nCard.playCost = 0; // Currently not used as all cards cost the same (this offers card scalability)
-
-            nCard.state = Card.cardState.Deck; // Start the card in the deck state (should this be set here or in prefab? -> cards could be initialized anywhere in the game and not always in the deck)
-
-            nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
-
-            nCard.CardTypeID = (i % typeCount); //Deck generates cards of a number of types based on the typeCount int 
-            nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";
-            nCard.title = $"{nCard.CardTypeName} Card";
-            nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
-
-            CardsInDeck.Add(nCard);
+        return false; 
+    } 
+    public virtual bool GenDeck(int depth) { return false; } // ?? Base class does not generate a deck using size parameter -> child classes should override this method to generate a special deck of cards
+    public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding
+    {
+        for (int i = 0; i < deckCount; i++)
+        {
+            CardsInDeck.Add(CreateCard(i, i % typeCount));
         }
 
         CardsInDeck.Shuffle();
 
         return true;
+    }
+
+    private Card CreateCard(int i, int type) // Ugly Temp SRP -> Need a static card method for handling this (encapsulate the card generation logic in the card class and call it from here) -> this will allow for better scalability and maintainability of the code
+    {
+        Card nCard = Instantiate(CardRef, this.transform.position, Quaternion.identity);
+
+        // Under Review -> Consider creating custom card constructor that takes required arguments and handles this in one line for better clarity in the code
+
+        nCard.gameObject.transform.parent = this.transform;
+        nCard.PlayHandler = this.PlayHandler;
+
+        nCard.playCost = 0; // Currently not used as all cards cost the same (this offers card scalability)
+
+        nCard.state = Card.cardState.Deck; // Start the card in the deck state (should this be set here or in prefab? -> cards could be initialized anywhere in the game and not always in the deck)
+
+        nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
+
+        nCard.CardTypeID = (type); //Deck generates cards of a number of types based on the typeCount int 
+        nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";
+        nCard.title = $"{nCard.CardTypeName} Card";
+        nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
+
+        return nCard;
     }
 
     private IEnumerator DealSequence(PlayerHand hand)
