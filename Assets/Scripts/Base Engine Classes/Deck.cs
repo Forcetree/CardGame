@@ -42,7 +42,7 @@ public abstract class Deck : MonoBehaviour
     {
         // Assumes the linking has been baked into the scene/prefab
     }
-    public void InitDeck(PlayHandler handler, Card cardRef, Action<DeckBuilder> configBlock) // Under Construction -> Introducing the Builder objects
+    public void InitDeck(PlayHandler handler, Card cardRef, Action<DeckBuilder> configBlock)
     {
         this.PlayHandler = handler;
         this.CardRef = cardRef;
@@ -92,71 +92,60 @@ public abstract class Deck : MonoBehaviour
     protected abstract void AssignDefaultValues(DeckBuilder builder); // Default Value assignation owned by class extention
     protected abstract void OnSettingsApplied(); // Is called after settings are all freshly applied on Updates
 
-    // Considering removing both of these in favor of reading directly off the TypeDistribution instead (counting down if we are finite mode)
-    public bool GenDeck(int depth)
-    {
-        this.DeckCount = depth;
-        return GenDeck();
-    }
-    
-    public bool GenDeck() // Child classes can override this method to generate a special deck of cards? -> clears the deck to nothing?
+    // Deck List Handlers
+    public bool GenDeck()
     { 
-        if (this.TypeDistribution == null) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with a TypeDistribution that was null.");
-        if (this.TypeDistribution.Length == 0) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with a TypeDistribution that was empty.");
-        if (this.IsFinite && this.DeckCount == 0) throw new InvalidOperationException($"[{this.GetType().Name}] [IsFinite: {IsFinite}] and called [{nameof(GenDeck)}] with [DeckCount: {DeckCount}]");
-
-        int total = this.TypeDistribution.Sum(); // Consider need with GenDeck(depth) overload
-        if (total == 0) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with [TypeDistribution Total: {total}]");
-
-        if (CardsInDeck.Count > 0)
-        {
-            Debug.LogWarning($"[{this.GetType().Name}] called [{nameof(GenDeck)}] when [CardsInDeck Count: {CardsInDeck.Count}] -> Clearing the deck and refeshing.");
-            CardsInDeck.Clear();
-        }
-
+        if (this.TypeDistribution == null) throw new InvalidOperationException("GenDeck failed: Null distribution.");
+        if (this.TypeDistribution.Length == 0) throw new InvalidOperationException("GenDeck failed: No elements in distribution.");
+        
         if (this.IsFinite)
         {
-            if (this.DeckCount % total > 0)
-            {
-                Debug.LogWarning($"[{this.GetType().Name}] [IsFinite: {IsFinite}] and called [{nameof(GenDeck)}] when [DeckCount: {DeckCount}] is not an even multiple of [TypeDistribution Total: {total}] -> distribution will cycle and will be uneven.");
-            }
-
-            // Fill deck? If we are initializing then its safe
-            if (this.DeckCount > total)
-            {
-                int[] prefix = new int[TypeDistribution.Length];
-                int running = 0;
-
-                for (int i = 0; i < TypeDistribution.Length; i++)
-                {
-                    running += TypeDistribution[i];
-                    prefix[i] = running;
-                }
-
-                for (int i = 0; i < this.DeckCount; i++)
-                {
-                    int pos = i % total;
-
-                    int typeIndex = 0;
-                    while (pos >= prefix[typeIndex]) typeIndex++;
-
-                    CardsInDeck.Add(CreateCard(i, typeIndex));
-                }
-            }
+            GenFiniteDeck(DeckCount);           
         }
-        else // Do we want to use the value DeckCount to define the pregenerated list depth to maintain the deck list object integrity? -> performance gains to be had by dropping the list -> testing potential and seed card inspector tweaks for editor if list is kept
+        else
         {
-            // For Infinite structure
+            FillDeck(DeckCount);
         }
 
         return false; 
-    } 
+    }
 
-    protected bool FillDeck(int depth) 
+    protected void GenFiniteDeck(int size)
+    {
+        if (size == 0) throw new InvalidOperationException("GenFiniteDeck failed: Size zero.");
+
+        int total = this.TypeDistribution.Sum();        
+        if (total == 0) throw new InvalidOperationException("GenFiniteDeck failed: Empty distribution.");
+
+        if (CardsInDeck.Count > 0) { Debug.LogWarning($"GenFiniteDeck: Non-empty deck. [Clearing deck] -> count={CardsInDeck.Count}", this); CardsInDeck.Clear(); }
+        if (size % total > 0) Debug.LogWarning($"GenFiniteDeck uneven: Not a multiple. [Proceeding] -> deckCount={DeckCount}, total={total}", this);
+
+        int[] prefix = new int[TypeDistribution.Length];
+        int running = 0;
+
+        for (int i = 0; i < TypeDistribution.Length; i++)
+        {
+            running += TypeDistribution[i];
+            prefix[i] = running;
+        }
+
+        for (int i = 0; i < size; i++)
+        {
+            int pos = i % total;
+
+            int typeIndex = 0;
+            while (pos >= prefix[typeIndex]) typeIndex++;
+
+            CardsInDeck.Add(CreateCard(i, typeIndex));
+        }
+
+        CardsInDeck.Shuffle();
+    }
+
+    public void FillDeck() => FillDeck(DeckCount);
+    protected void FillDeck(int bufferDepth) 
     {   
-        // Infinite typing?
-
-        return false; 
+        // Sudo random algorithm (not a functional deck but limitless)
     }
 
     public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding
@@ -171,6 +160,7 @@ public abstract class Deck : MonoBehaviour
         return true;
     }
 
+    // Temp Until Static Card Factory
     private Card CreateCard(int i, int type) // Ugly Temp SRP -> Need a static card method for handling this (encapsulate the card generation logic in the card class and call it from here) -> this will allow for better scalability and maintainability of the code
     {
         Card nCard = Instantiate(CardRef, this.transform.position, Quaternion.identity);
