@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -92,23 +93,72 @@ public abstract class Deck : MonoBehaviour
     protected abstract void OnSettingsApplied(); // Is called after settings are all freshly applied on Updates
 
     // Considering removing both of these in favor of reading directly off the TypeDistribution instead (counting down if we are finite mode)
-    public virtual bool GenDeck() // Child classes can override this method to generate a special deck of cards
+    public bool GenDeck(int depth)
+    {
+        this.DeckCount = depth;
+        return GenDeck();
+    }
+    
+    public bool GenDeck() // Child classes can override this method to generate a special deck of cards? -> clears the deck to nothing?
     { 
+        if (this.TypeDistribution == null) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with a TypeDistribution that was null.");
+        if (this.TypeDistribution.Length == 0) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with a TypeDistribution that was empty.");
+        if (this.IsFinite && this.DeckCount == 0) throw new InvalidOperationException($"[{this.GetType().Name}] [IsFinite: {IsFinite}] and called [{nameof(GenDeck)}] with [DeckCount: {DeckCount}]");
+
+        int total = this.TypeDistribution.Sum(); // Consider need with GenDeck(depth) overload
+        if (total == 0) throw new InvalidOperationException($"[{this.GetType().Name}] called [{nameof(GenDeck)}] with [TypeDistribution Total: {total}]");
+
+        if (CardsInDeck.Count > 0)
+        {
+            Debug.LogWarning($"[{this.GetType().Name}] called [{nameof(GenDeck)}] when [CardsInDeck Count: {CardsInDeck.Count}] -> Clearing the deck and refeshing.");
+            CardsInDeck.Clear();
+        }
+
         if (this.IsFinite)
         {
-            if (this.DeckCount > this.TypeDistribution.Sum())
+            if (this.DeckCount % total > 0)
             {
+                Debug.LogWarning($"[{this.GetType().Name}] [IsFinite: {IsFinite}] and called [{nameof(GenDeck)}] when [DeckCount: {DeckCount}] is not an even multiple of [TypeDistribution Total: {total}] -> distribution will cycle and will be uneven.");
+            }
 
+            // Fill deck? If we are initializing then its safe
+            if (this.DeckCount > total)
+            {
+                int[] prefix = new int[TypeDistribution.Length];
+                int running = 0;
+
+                for (int i = 0; i < TypeDistribution.Length; i++)
+                {
+                    running += TypeDistribution[i];
+                    prefix[i] = running;
+                }
+
+                for (int i = 0; i < this.DeckCount; i++)
+                {
+                    int pos = i % total;
+
+                    int typeIndex = 0;
+                    while (pos >= prefix[typeIndex]) typeIndex++;
+
+                    CardsInDeck.Add(CreateCard(i, typeIndex));
+                }
             }
         }
-        else
+        else // Do we want to use the value DeckCount to define the pregenerated list depth to maintain the deck list object integrity? -> performance gains to be had by dropping the list -> testing potential and seed card inspector tweaks for editor if list is kept
         {
-
+            // For Infinite structure
         }
 
         return false; 
     } 
-    public virtual bool GenDeck(int depth) { return false; } // ?? Base class does not generate a deck using size parameter -> child classes should override this method to generate a special deck of cards
+
+    protected bool FillDeck(int depth) 
+    {   
+        // Infinite typing?
+
+        return false; 
+    }
+
     public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding
     {
         for (int i = 0; i < deckCount; i++)
@@ -161,7 +211,7 @@ public abstract class Deck : MonoBehaviour
         hand.AssignSequentialValues();
     }
     
-    // Future abstraction in draw needed
+    // Future abstraction in draw needed?
     public void DrawHand(PlayerHand hand) // Draw if possible -> automatic adjustment of hand positions triggered when a valid card is dealt to the hand
     {
         // Check and fill hand with cards up to the hand limit (ensure to check number of cards currently in the deal buffer and cards available in the deck)
