@@ -1261,7 +1261,7 @@ GameObject:
   - component: {fileID: 1476619223}
   - component: {fileID: 1476619224}
   m_Layer: 0
-  m_Name: Deck
+  m_Name: PaintDeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1293,18 +1293,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1476619222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ce2f2fa1dace242bd1ea9f3ade42e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9495c9ea9d25a3541abfde27133a7661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintDeck
-  hand: {fileID: 0}
+  TimeBetweenDeals: 0
+  DrawFocusPos: {x: 0, y: 0, z: 0}
+  DealTime: 0
+  DealEase: 7
+  IsProcessingDealBuffer: 0
   PlayHandler: {fileID: 0}
   CardRef: {fileID: 0}
-  cardsInDeck: []
-  isProcessingDealBuffer: 0
-  timeBetweenDeals: 0.2
-  dealTime: 0.1
-  dealEase: 7
-  drawFocusPos: {x: -6, y: 1.5, z: 0}
+  DeckName: 
+  IsFinite: 0
+  DeckCount: 0
+  TypeDistribution: 
+  CardsInDeck: []
 --- !u!1 &1589039290
 GameObject:
   m_ObjectHideFlags: 0

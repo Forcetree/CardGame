@@ -12,7 +12,7 @@ public class PlayHandler : MonoBehaviour
 {
     // Objects
     public PlayerHand hand;
-    public Deck deck;
+    public PaintDeck deck;
     public ManaPool manaPool;
     public PaintPlaySpace PaintField; // Must be hard set to the PaintPlaySpace object in the scene
     public NecroPlaySpace NecroField; // Must be hard set to the NecroPlaySpace object in the scene
@@ -60,10 +60,10 @@ public class PlayHandler : MonoBehaviour
         // Create the Field -> to be expanded to support creating field from prefab? For now hard set to generate a PaintPlaySpace in the scene
         NecroField.GenerateField(NecroField.spawns); // Allows for dynamic field generation based on the provided spawn points in the NecroPlaySpace object in scene
 
-        // Create and shuffle the deck -> to be expanded to support creating deck from prefab
-        // Under reconstruction: Deck generation is currently hard set to generate a deck based on the provided card reference and the number of types for the deck, but will be expanded to support dynamic deck generation based on game mode or player choice (out of the prefab)
-        deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
-        deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck);
+        // New Deck Init methods
+        deck.InitDeck(this, CardRef, config => { }); // Uses all defaults assigned in the Deck child class
+
+        deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck); // Leaving for now
 
         // Initialize the hand and draw the starting hand -> to be expanded to support creating hand from prefab? (maybe not as we always want a hand in the scene)
         hand.InitHand(handLimit, deck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw

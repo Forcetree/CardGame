@@ -12,7 +12,7 @@ public class PaintDeck : Deck
         this.TimeBetweenDeals = builder.TimeBetweenDeals ?? 0.2f;
         this.DrawFocusPos = builder.DrawFocusPos ?? new(-6, 1.5f, 0);
         this.DealTime = builder.DealTime ?? 0.1f;
-        this.DealEase = builder.DealEase ?? Ease.InExpo; // Unsure if this is the one we were using...
+        this.DealEase = builder.DealEase ?? Ease.InOutQuad;
     }
 
     protected override void OnSettingsApplied()
