@@ -18,12 +18,6 @@ public abstract class Deck : MonoBehaviour
     [Tooltip("Set this for the type of focus movement")]
     public Ease DealEase;
 
-    [Header("Deck Vis Indicators")]
-    [Tooltip("Shows if we are processing a sequence of deals")]
-    public bool IsProcessingDealBuffer = false;
-    [SerializeField] protected Queue<Card> dealBuffer = new();
-
-    // Protected Attributes
     [Header("Deck Internal Settings")]
     [SerializeField] protected PlayHandler PlayHandler;
     [SerializeField] protected Card CardRef;
@@ -31,13 +25,17 @@ public abstract class Deck : MonoBehaviour
     [SerializeField] protected bool IsFinite;
     [SerializeField] protected int DeckCount;
     [SerializeField] protected int[] TypeDistribution;
+    [SerializeField] protected float KScalar;
 
-    [Header("Visual Lists")] // Likely to see reconstruction and removal
-    // Debating removal
-        // Some use cases need a deck object that does not need a list of cards in the deck (for example, a deck that is used to generate cards on the fly). This allows for a deck object to be created without needing to generate cards in the deck.
-        // Consider moving this down to the child class if required
+    [Header("Visual Lists")]
+    [SerializeField] protected float[] LiveDrawWeights;
     public List<Card> CardsInDeck = new();
-    
+
+    [Header("Deck Vis Indicators")]
+    [Tooltip("Shows if we are processing a sequence of deals")]
+    public bool IsProcessingDealBuffer = false;
+    [SerializeField] protected Queue<Card> dealBuffer = new();
+
     public virtual void InitDeck()
     {
         // Assumes the linking has been baked into the scene/prefab
@@ -145,7 +143,7 @@ public abstract class Deck : MonoBehaviour
     public void FillDeck() => FillDeck(DeckCount);
     protected void FillDeck(int bufferDepth) 
     {   
-        // Sudo random algorithm (not a functional deck but limitless)
+        
     }
 
     public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding

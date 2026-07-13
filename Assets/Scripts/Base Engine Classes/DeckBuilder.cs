@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class DeckBuilder
 {
+    // Required References
     public PlayHandler Handler { get; private set; }
     public Card CardRef { get; private set; }
 
+    // Deck Internal Settings
     public string? DeckName { get; private set; } = null;
-    public bool? IsFinite { get; private set; } = null; // This setting decides if the deck is finite or infinite. If infinite, the deck will generate cards on the fly and will not have a set number of cards nor preset list (needs extention of public arcitecture to hide private variables and allow for dynamic generation of cards in the deck)
-
+    public bool? IsFinite { get; private set; } = null; // This setting decides if the deck is finite or infinite. If infinite, the deck will generate cards on the fly and will not have a set number of cards nor preset list
     public int? DeckCount { get; private set; } = null; // How many cards appear in the deck (this should be configurable in the deck builder)
-
-    // Dynamic values for deck generation based on available types (this should be configurable in the deck builder) -> should be determined by the cardRef attached to the deck
     public int[]? TypeDistribution { get; private set; } = null; // This array will be used to determine the distribution of types in the deck (this should be configurable in the deck builder)
+    public float? KScalar { get; private set; } = null; // The Gain Factor of the debt algorithm
 
     // Functional Animation Settings
     public float? TimeBetweenDeals { get; private set; } = null; // How long to wait between dealing cards (this should be configurable in the deck builder)
@@ -63,6 +63,11 @@ public class DeckBuilder
     public DeckBuilder SetDealEase(Ease? ease)
     {
         this.DealEase = ease;
+        return this;
+    }
+    public DeckBuilder SetKScalar(float? K)
+    {
+        this.KScalar = K;
         return this;
     }
 
