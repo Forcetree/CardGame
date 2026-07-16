@@ -167,7 +167,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Mouse Detectors
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (dragLock || PlayHandler.deck.IsProcessingDealBuffer || dragging) // Currently blocking drags during deal animations to avoid bugs and other weird interactions -> need to consider a more robust solution for handling this type of issue
+        if (dragLock || PlayHandler.myDeck.IsProcessingDealBuffer || dragging) // Currently blocking drags during deal animations to avoid bugs and other weird interactions -> need to consider a more robust solution for handling this type of issue
         {
             return;
         }

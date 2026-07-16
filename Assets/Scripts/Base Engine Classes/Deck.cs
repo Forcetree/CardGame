@@ -35,7 +35,7 @@ public abstract class Deck : MonoBehaviour
     public bool IsProcessingDealBuffer = false;
     [SerializeField] protected Queue<Card> dealBuffer = new();
 
-    private PseudoDebtWeight _pdw;
+    private PseudoDebtWeight _pdw = new PseudoDebtWeight();
 
     public virtual void InitDeck()
     {
@@ -149,9 +149,9 @@ public abstract class Deck : MonoBehaviour
     public void FillDeck() => FillDeck(DeckCount);
     protected void FillDeck(int bufferDepth) 
     {
-        for (int i = 0; i < bufferDepth - CardsInDeck.Count; i++)
+        for (int i = 0; i <= bufferDepth - CardsInDeck.Count; i++)
         {
-            CardsInDeck.Add(CreateCard(i, i % _pdw.DrawCardTypeIndex()));
+            CardsInDeck.Add(CreateCard(i, _pdw.DrawCardTypeIndex()));
         }
     }
 

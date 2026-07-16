@@ -12,7 +12,7 @@ public class PlayHandler : MonoBehaviour
 {
     // Objects
     public PlayerHand hand;
-    public PaintDeck deck;
+    public Deck myDeck;
     public ManaPool manaPool;
     public PaintPlaySpace PaintField; // Must be hard set to the PaintPlaySpace object in the scene
     public NecroPlaySpace NecroField; // Must be hard set to the NecroPlaySpace object in the scene
@@ -61,12 +61,12 @@ public class PlayHandler : MonoBehaviour
         NecroField.GenerateField(NecroField.spawns); // Allows for dynamic field generation based on the provided spawn points in the NecroPlaySpace object in scene
 
         // New Deck Init methods
-        deck.InitDeck(this, CardRef, config => { }); // Uses all defaults assigned in the Deck child class
+        myDeck.InitDeck(this, CardRef, config => { }); // Temp override test
 
-        deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck); // Leaving for now
+        myDeck.GenDeck(); // Temp test of new gen method
 
         // Initialize the hand and draw the starting hand -> to be expanded to support creating hand from prefab? (maybe not as we always want a hand in the scene)
-        hand.InitHand(handLimit, deck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
+        hand.InitHand(handLimit, myDeck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
 
         manaPool.InitManaPool(manaLimit); // Initializes the mana pool with the specified limit -> currently creates mana points as children of the pool and positions them with spacing
 
