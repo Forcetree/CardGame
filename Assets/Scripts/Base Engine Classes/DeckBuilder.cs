@@ -14,7 +14,7 @@ public class DeckBuilder
     public bool? IsFinite { get; private set; } = null; // This setting decides if the deck is finite or infinite. If infinite, the deck will generate cards on the fly and will not have a set number of cards nor preset list
     public int? DeckCount { get; private set; } = null; // How many cards appear in the deck (this should be configurable in the deck builder)
     public int[]? TypeDistribution { get; private set; } = null; // This array will be used to determine the distribution of types in the deck (this should be configurable in the deck builder)
-    public float? KScalar { get; private set; } = null; // The Gain Factor of the debt algorithm
+    public int? KScalar { get; private set; } = null; // The Gain Factor of the debt algorithm
 
     // Functional Animation Settings
     public float? TimeBetweenDeals { get; private set; } = null; // How long to wait between dealing cards (this should be configurable in the deck builder)
@@ -65,7 +65,7 @@ public class DeckBuilder
         this.DealEase = ease;
         return this;
     }
-    public DeckBuilder SetKScalar(float? K)
+    public DeckBuilder SetKScalar(int? K)
     {
         this.KScalar = K;
         return this;
