@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-public class DebtDeckRandomizer
+public class PseudoDebtWeight
 {
     // Row indices for _dwc data matrix layout
         // 0 = Distribution
@@ -16,6 +16,8 @@ public class DebtDeckRandomizer
     private int _kScalar;
 
     private bool _isInitialized = false;
+
+    private System.Random rand = new System.Random();
 
     /// <summary>
     /// Initializes or resets the debt randomizer with a given cocktail recipe and K gain factor.
@@ -81,6 +83,22 @@ public class DebtDeckRandomizer
     {
         if (!_isInitialized) throw new InvalidOperationException("Attempted to get draw type from uninitialized DebtDeckRandomizer");
 
+        IncrementIdeal();
+        CalculateWeights();
+
+        int roll = RollWeights();
+        _dwc[2][roll] += _sumOfBaseParts; // Add the sum scaled amount to represent a draw (Increment Actual)
+
+        return roll;
+    }
+
+    private void IncrementIdeal()
+    {
+        for (int i = 0; i < _numberOfTypes; i++) _dwc[1][i] += _dwc[0][i]; // Add the raw distribution targets to the ideal matrix layer 
+    }
+
+    private void CalculateWeights()
+    {
         int[] distribution = _dwc[0];
         int[] ideal = _dwc[1];
         int[] actual = _dwc[2];
@@ -93,14 +111,17 @@ public class DebtDeckRandomizer
 
             weights[i] = variance < 0 ? 0 : variance; // Clamp the final weights to zero if debt exceeds the scalar
         }
+    }
 
-        // Roll random
-
-        // Linear Search
-
-        // Find type -> update actual draws as += _sumOfBaseParts
-
-        // Return found type
-        return 0;
+    private int RollWeights()
+    {
+        int roll = rand.Next(0, _dwc[3].Sum());
+        for (int i = 0; i < _numberOfTypes; i++)
+        {
+            roll -= _dwc[3][i];
+            if (roll < 0) return i;
+        }
+        // No debug log here for detecting if this happens
+        return rand.Next(0, _numberOfTypes); // Fallback pure random roll?
     }
 }
