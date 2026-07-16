@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Numerics.Tensors; // Need to get the dependancy added to the unity project
 
 public class DebtDeckRandomizer
 {
@@ -14,7 +13,7 @@ public class DebtDeckRandomizer
 
     private int _sumOfBaseParts;
     private int _numberOfTypes;
-    private float _kScalar;
+    private int _kScalar;
 
     private bool _isInitialized = false;
 
@@ -27,7 +26,7 @@ public class DebtDeckRandomizer
     /// </remarks>
     /// <param name="typeDistribution">The given card distribution to be used for the random distribution.</param>
     /// <param name="kScalar">Gain Factor for strength of the psuedo weight correction.</param>
-    public void Initialize(int[] typeDistribution, float kScalar)
+    public void Initialize(int[] typeDistribution, int kScalar)
     {
         _numberOfTypes = typeDistribution.Length;
         _kScalar = kScalar;
@@ -82,22 +81,26 @@ public class DebtDeckRandomizer
     {
         if (!_isInitialized) throw new InvalidOperationException("Attempted to get draw type from uninitialized DebtDeckRandomizer");
 
-        Span<int> distribution = _dwc[0];
-        Span<int> ideal = _dwc[1];
-        Span<int> actual = _dwc[2];
-        Span<int> weights = _dwc[3];
+        int[] distribution = _dwc[0];
+        int[] ideal = _dwc[1];
+        int[] actual = _dwc[2];
+        int[] weights = _dwc[3];
 
-        // TensorPrimitives.Multiply(distribution, _kScalar, weights); // Place scaled distribution into the weights
-        // TensorPrimitives.Add(weights, distribution, ideal); // Add expected raw draws
-        // TensorPrimitives.Subtract(weights, actual, weights); // Subtract the actual draws to solidify impact to intened distribution
+        for (int i = 0; i < _numberOfTypes; i++)
+        {
+            int scaledDist = distribution[i] * _kScalar; // Adjust the distribution spread upwards by scalar to keep pure integer math
+            int variance = scaledDist + (ideal[i] - actual[i]); // Determine and adjust the scaled distribution by the unscaled debt ratio between actual and ideal draws
 
-        // TensorPrimitives.Max(weights, 0, weights); // Clamp any resulting negative values to 0
+            weights[i] = variance < 0 ? 0 : variance; // Clamp the final weights to zero if debt exceeds the scalar
+        }
 
-        // Roll random -> 
-        // Linear Search ->
+        // Roll random
+
+        // Linear Search
+
         // Find type -> update actual draws as += _sumOfBaseParts
-        // Return found type -> 
 
+        // Return found type
         return 0;
     }
 }
