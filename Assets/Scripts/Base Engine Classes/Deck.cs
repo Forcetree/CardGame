@@ -24,7 +24,7 @@ public abstract class Deck : MonoBehaviour
     [SerializeField] protected bool IsFinite;
     [SerializeField] protected int DeckCount;
     [SerializeField] protected int[] TypeDistribution;
-    [SerializeField] protected float KScalar;
+    [SerializeField] protected int KScalar;
 
     [Header("Visual Lists")]
     [SerializeField] protected float[] LiveDrawWeights;
@@ -34,6 +34,8 @@ public abstract class Deck : MonoBehaviour
     [Tooltip("Shows if we are processing a sequence of deals")]
     public bool IsProcessingDealBuffer = false;
     [SerializeField] protected Queue<Card> dealBuffer = new();
+
+    private PseudoDebtWeight _pdw;
 
     public virtual void InitDeck()
     {
@@ -80,6 +82,11 @@ public abstract class Deck : MonoBehaviour
             this.DrawFocusPos = builder.DrawFocusPos ?? this.DrawFocusPos;
             this.DealTime = builder.DealTime ?? this.DealTime;
             this.DealEase = builder.DealEase ?? this.DealEase;
+        }
+
+        if (!this.IsFinite)
+        {
+            _pdw.Initialize(this.TypeDistribution, this.KScalar);
         }
 
         OnSettingsApplied();
@@ -141,8 +148,11 @@ public abstract class Deck : MonoBehaviour
 
     public void FillDeck() => FillDeck(DeckCount);
     protected void FillDeck(int bufferDepth) 
-    {   
-        
+    {
+        for (int i = 0; i < bufferDepth - CardsInDeck.Count; i++)
+        {
+            CardsInDeck.Add(CreateCard(i, i % _pdw.DrawCardTypeIndex()));
+        }
     }
 
     public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding
@@ -207,6 +217,11 @@ public abstract class Deck : MonoBehaviour
             Card dCard = CardsInDeck.Pop();
             dCard.gameObject.SetActive(true);
             dealBuffer.Enqueue(dCard);
+
+            if (!IsFinite)
+            {
+                FillDeck();
+            }
         }
         StartCoroutine(DealSequence(hand));
     }
