@@ -720,11 +720,11 @@ PlayerSettings:
   gcIncremental: 1
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform: {}
-  editorAssembliesCompatibilityLevel: 2
+  editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: CardGame
-  metroPackageVersion: 1.0.0.0
+  metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -732,7 +732,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: CardGame
   wsaImages: {}
-  metroTileShortName: CardGame
+  metroTileShortName: 
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -796,7 +796,7 @@ PlayerSettings:
   hmiCpuConfiguration: 
   hmiLogStartupTiming: 0
   qnxGraphicConfPath: 
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 6
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
