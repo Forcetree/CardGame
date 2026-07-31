@@ -122,11 +122,12 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
         CardBuilder builder = new CardBuilder();
         configBlock?.Invoke(builder);
 
-        // ApplySettings(builder)
+        nCard.ApplySettings(builder);
 
         return nCard;
     }
-
+    protected abstract void ApplySettings(CardBuilder builder);
+    
     // Abstracts
     public abstract int CardTypeID { get; set; }
     public int numberOfTypesForDeck;
