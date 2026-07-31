@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using System;
 
 public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -109,14 +110,30 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
         if (PlayHandler.manaPool.ManaCount > 0) { MatFocuser(); }
     }
 
+    // Card Creator and Abstraction
+    public static Card Create(Card cardRef, PlayHandler handler, GameObject deck, Action<CardBuilder> configBlock)
+    {
+        Card nCard = Instantiate(cardRef, deck.transform.position, Quaternion.identity);
+
+        nCard.PlayHandler = handler;
+
+        nCard.gameObject.transform.parent = deck.transform;
+
+        CardBuilder builder = new CardBuilder();
+        configBlock?.Invoke(builder);
+
+        // ApplySettings(builder)
+
+        return nCard;
+    }
+
     // Abstracts
     public abstract int CardTypeID { get; set; }
     public int numberOfTypesForDeck;
     public int numberOfTotalTypes;
-
     public abstract string CardTypeName { get; }
-    public abstract void SetSprite();
 
+    public abstract void SetSprite();
     protected abstract void PlayAnimation();
 
     // Animation and Movement Managers
