@@ -38,7 +38,7 @@ public class NecroCard : Card
         this.value = builder.Value ?? 0;
         this.CardTypeID = builder.CardTypeID ?? 10; // Default to Cardback if not specified
         this.state = builder.State ?? Card.cardState.Deck;
-        this.name = builder.Name ?? $"{CardTypeName} | Necro Card | num(?)";
+        this.name = builder.Name ?? $"{CardTypeName} | Necro Card | {PlayHandler.myDeck.CardCounter}";
         this.title = builder.Title ?? $"{CardTypeName} Necro Card";
         this.flavor = builder.Flavor ?? "Necronum Lorum Ipsum";
     }

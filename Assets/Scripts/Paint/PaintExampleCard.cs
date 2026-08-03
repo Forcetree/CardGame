@@ -63,7 +63,7 @@ public class PaintExampleCard : Card
         this.value = builder.Value ?? 0;
         this.CardTypeID = builder.CardTypeID ?? 20; // Default to Cardback if not specified
         this.state = builder.State ?? Card.cardState.Deck;
-        this.name = builder.Name ?? $"{CardTypeName} | Paint Card | num(?)";
+        this.name = builder.Name ?? $"{CardTypeName} | Paint Card | {PlayHandler.myDeck.CardCounter}";
         this.title = builder.Title ?? $"{CardTypeName} Paint Card";
         this.flavor = builder.Flavor ?? "Paintum Lorum Ipsum";
     }

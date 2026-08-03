@@ -7,7 +7,7 @@ public class NecroDeck : Deck
     {
         this.DeckName = builder.DeckName ?? "NecroDeck";
         this.IsFinite = builder.IsFinite ?? false;
-        this.DeckCount = builder.DeckCount ?? 6;
+        this.DeckCountLimit = builder.DeckCount ?? 6;
         this.KScalar = builder.KScalar ?? 20;
         this.TypeDistribution = builder.TypeDistribution ?? new int[] { 1, 0, 0, 0, 1, 0, 0, 3, 0 };
         this.TimeBetweenDeals = builder.TimeBetweenDeals ?? 0.2f;

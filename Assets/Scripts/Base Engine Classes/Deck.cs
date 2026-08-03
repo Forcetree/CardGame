@@ -21,10 +21,13 @@ public abstract class Deck : MonoBehaviour
     [SerializeField] protected PlayHandler PlayHandler;
     [SerializeField] protected Card CardRef;
     [SerializeField] protected string DeckName;
-    [SerializeField] protected bool IsFinite;
-    [SerializeField] protected int DeckCount;
+    [SerializeField] protected bool IsFinite;    
     [SerializeField] protected int[] TypeDistribution;
     [SerializeField] protected int KScalar;
+    [SerializeField] protected int DeckCountLimit;
+
+    // Deck Properties
+    public int CardCounter {get; private set;}
 
     [Header("Visual Lists")]
     [SerializeField] protected float[] LiveDrawWeights;
@@ -45,6 +48,8 @@ public abstract class Deck : MonoBehaviour
     {
         this.PlayHandler = handler;
         this.CardRef = cardRef;
+
+        this.CardCounter = 0;
 
         DeckBuilder builder = new DeckBuilder(PlayHandler, CardRef);
         configBlock?.Invoke(builder);
@@ -76,7 +81,7 @@ public abstract class Deck : MonoBehaviour
         {
             this.DeckName = builder.DeckName ?? this.DeckName;
             this.IsFinite = builder.IsFinite ?? this.IsFinite;
-            this.DeckCount = builder.DeckCount ?? this.DeckCount;
+            this.DeckCountLimit = builder.DeckCount ?? this.DeckCountLimit;
             this.TypeDistribution = builder.TypeDistribution ?? this.TypeDistribution;
             this.TimeBetweenDeals = builder.TimeBetweenDeals ?? this.TimeBetweenDeals;
             this.DrawFocusPos = builder.DrawFocusPos ?? this.DrawFocusPos;
@@ -104,11 +109,11 @@ public abstract class Deck : MonoBehaviour
         
         if (this.IsFinite)
         {
-            GenFiniteDeck(DeckCount);           
+            GenFiniteDeck(DeckCountLimit);           
         }
         else
         {
-            FillDeck(DeckCount);
+            FillDeck(DeckCountLimit);
         }
 
         return false; 
@@ -122,7 +127,7 @@ public abstract class Deck : MonoBehaviour
         if (total == 0) throw new InvalidOperationException("GenFiniteDeck failed: Empty distribution.");
 
         if (CardsInDeck.Count > 0) { Debug.LogWarning($"GenFiniteDeck: Non-empty deck. [Clearing deck] -> count={CardsInDeck.Count}", this); CardsInDeck.Clear(); }
-        if (size % total > 0) Debug.LogWarning($"GenFiniteDeck uneven: Not a multiple. [Proceeding] -> deckCount={DeckCount}, total={total}", this);
+        if (size % total > 0) Debug.LogWarning($"GenFiniteDeck uneven: Not a multiple. [Proceeding] -> deckCount={DeckCountLimit}, total={total}", this);
 
         int[] prefix = new int[TypeDistribution.Length];
         int running = 0;
@@ -146,7 +151,7 @@ public abstract class Deck : MonoBehaviour
         CardsInDeck.Shuffle();
     }
 
-    public void FillDeck() => FillDeck(DeckCount);
+    public void FillDeck() => FillDeck(DeckCountLimit);
     protected void FillDeck(int bufferDepth) 
     {
         for (int i = 0; i <= bufferDepth - CardsInDeck.Count; i++)
@@ -187,6 +192,8 @@ public abstract class Deck : MonoBehaviour
         nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";
         nCard.title = $"{nCard.CardTypeName} Card";
         nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
+
+        CardCounter++;
 
         return nCard;
     }

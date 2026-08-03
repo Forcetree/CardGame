@@ -7,7 +7,7 @@ public class PaintDeck : Deck
     {
         this.DeckName = builder.DeckName ?? "PaintDeck";
         this.IsFinite = builder.IsFinite ?? true;
-        this.DeckCount = builder.DeckCount ?? 60;
+        this.DeckCountLimit = builder.DeckCount ?? 60;
         this.KScalar = builder.KScalar ?? 20;
         this.TypeDistribution = builder.TypeDistribution ?? new int[] { 1, 1, 1, 1, 1 };
         this.TimeBetweenDeals = builder.TimeBetweenDeals ?? 0.2f;
