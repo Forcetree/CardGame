@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Deck : MonoBehaviour
@@ -170,6 +171,18 @@ public abstract class Deck : MonoBehaviour
         CardsInDeck.Shuffle();
 
         return true;
+    }
+
+    // Create Card
+    private Card CreateCard(int type)
+    {
+        CardCounter++;
+
+        Card nCard = Card.Create(CardRef, PlayHandler, this.gameObject, config => config
+            .SetCardTypeID(type)
+        );
+
+        return nCard;
     }
 
     // Temp Until Static Card Factory
