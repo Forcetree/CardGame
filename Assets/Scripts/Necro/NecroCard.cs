@@ -5,18 +5,17 @@ public class NecroCard : Card
 {
     public enum NecroCardTypes
     {
-        fireSprite,
-        growthSprite,
-        earthSprite,
-        ironSprite,
-        frostSprite,
-        waterSprite,
-        windSprite,
-        stormSprite,
-        blightSprite,
-        backSprite,
+        Fire,
+        Growth,
+        Earth,
+        Iron,
+        Frost,
+        Water,
+        Wind,
+        Storm,
+        Blight,
 
-        Back // Card back when flipped
+        CardBack  // Card back when flipped
     }
 
     public NecroCardTypes mySpecificType;
@@ -32,6 +31,17 @@ public class NecroCard : Card
     }
 
     public override string CardTypeName => mySpecificType.ToString();
+
+    protected override void AssignDefaultSettings(CardBuilder builder)
+    {
+        this.playCost = builder.PlayCost ?? 1;
+        this.value = builder.Value ?? 0;
+        this.CardTypeID = builder.CardTypeID ?? 10; // Default to Cardback if not specified
+        this.state = builder.State ?? Card.cardState.Deck;
+        this.name = builder.Name ?? $"{CardTypeName} | Necro Card | num(?)";
+        this.title = builder.Title ?? $"{CardTypeName} Necro Card";
+        this.flavor = builder.Flavor ?? "Necronum Lorum Ipsum";
+    }
 
     public override void SetSprite()
     {
