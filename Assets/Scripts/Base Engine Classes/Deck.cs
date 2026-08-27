@@ -31,7 +31,7 @@ public abstract class Deck : MonoBehaviour
 
     [Header("Visual Lists")]
     [SerializeField] protected float[] LiveDrawWeights;
-    public List<Card> CardsInDeck = new();
+    public Queue<Card> CardsInDeck = new();
 
     [Header("Deck Vis Indicators")]
     [Tooltip("Shows if we are processing a sequence of deals")]
@@ -138,6 +138,8 @@ public abstract class Deck : MonoBehaviour
             prefix[i] = running;
         }
 
+        List<Card> freshCards = new List<Card>(); // Temp internal list
+
         for (int i = 0; i < size; i++)
         {
             int pos = i % total;
@@ -145,10 +147,15 @@ public abstract class Deck : MonoBehaviour
             int typeIndex = 0;
             while (pos >= prefix[typeIndex]) typeIndex++;
 
-            CardsInDeck.Add(CreateCard(typeIndex));
+            freshCards.Add(CreateCard(typeIndex));
         }
 
-        CardsInDeck.Shuffle();
+        freshCards.Shuffle(); // Ficher-Yates shuffle list
+
+        foreach (Card card in freshCards)
+        {
+            CardsInDeck.Enqueue(card); // Set up public queue object for optimised use
+        }
     }
 
     public void FillDeck() => FillDeck(DeckCountLimit);
@@ -156,7 +163,7 @@ public abstract class Deck : MonoBehaviour
     {
         for (int i = 0; i <= bufferDepth - CardsInDeck.Count; i++)
         {
-            CardsInDeck.Add(CreateCard(_pdw.DrawCardTypeIndex()));
+            CardsInDeck.Enqueue(CreateCard(_pdw.DrawCardTypeIndex()));
         }
     }
 
@@ -195,7 +202,7 @@ public abstract class Deck : MonoBehaviour
         // Check and fill hand with cards up to the hand limit (ensure to check number of cards currently in the deal buffer and cards available in the deck)
         while ((CardsInDeck.Count > 0) && (hand.Count + dealBuffer.Count) < hand.handLimit)
         {
-            Card dCard = CardsInDeck.Pop();
+            Card dCard = CardsInDeck.Dequeue();
             dCard.gameObject.SetActive(true);
             dealBuffer.Enqueue(dCard);
 
