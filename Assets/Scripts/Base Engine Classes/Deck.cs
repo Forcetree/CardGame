@@ -145,7 +145,7 @@ public abstract class Deck : MonoBehaviour
             int typeIndex = 0;
             while (pos >= prefix[typeIndex]) typeIndex++;
 
-            CardsInDeck.Add(CreateCard(i, typeIndex));
+            CardsInDeck.Add(CreateCard(typeIndex));
         }
 
         CardsInDeck.Shuffle();
@@ -156,20 +156,8 @@ public abstract class Deck : MonoBehaviour
     {
         for (int i = 0; i <= bufferDepth - CardsInDeck.Count; i++)
         {
-            CardsInDeck.Add(CreateCard(i, _pdw.DrawCardTypeIndex()));
+            CardsInDeck.Add(CreateCard(_pdw.DrawCardTypeIndex()));
         }
-    }
-
-    public virtual bool GenDeck(int deckCount , int typeCount) // Old: Overload allows current functionality to avoid errors while rebuilding
-    {
-        for (int i = 0; i < deckCount; i++)
-        {
-            CardsInDeck.Add(CreateCard(i, i % typeCount));
-        }
-
-        CardsInDeck.Shuffle();
-
-        return true;
     }
 
     // Create Card
@@ -180,32 +168,6 @@ public abstract class Deck : MonoBehaviour
         Card nCard = Card.Create(CardRef, PlayHandler, this.gameObject, config => config
             .SetCardTypeID(type)
         );
-
-        return nCard;
-    }
-
-    // Temp Until Static Card Factory
-    private Card CreateCard(int i, int type) // Ugly Temp SRP -> Need a static card method for handling this (encapsulate the card generation logic in the card class and call it from here) -> this will allow for better scalability and maintainability of the code
-    {
-        Card nCard = Instantiate(CardRef, this.transform.position, Quaternion.identity);
-
-        // Under Review -> Consider creating custom card constructor that takes required arguments and handles this in one line for better clarity in the code
-
-        nCard.gameObject.transform.parent = this.transform;
-        nCard.PlayHandler = this.PlayHandler;
-
-        nCard.playCost = 0; // Currently not used as all cards cost the same (this offers card scalability)
-
-        nCard.state = Card.cardState.Deck; // Start the card in the deck state (should this be set here or in prefab? -> cards could be initialized anywhere in the game and not always in the deck)
-
-        nCard.value = 0; // Made safe with introduction of ValueDigitizer (0 does not display)
-
-        nCard.CardTypeID = (type); //Deck generates cards of a number of types based on the typeCount int 
-        nCard.name = $"Card | {i + 1} | {nCard.CardTypeName}";
-        nCard.title = $"{nCard.CardTypeName} Card";
-        nCard.flavor = "Lorum Ipsum"; // Do we need flavor text for the base cards? Should this be defined in a dictionary set in card class?
-
-        CardCounter++;
 
         return nCard;
     }
