@@ -8,22 +8,21 @@ assignees: Forcetree
 ---
 
 📖 **Bug Description:**
-
-
+_____________________________
 🐦‍🔥 **Resolution:**
 🔥 **Impact:**
 🪾 **Branches Impacted:**
-
+_____________________________
 👣 **Steps to Reproduce:**
 1) 
 2) Observe
-
+_____________________________
 🧪 **Frequency:**
-
+_____________________________
 🎯 **Expected Behavior:**
 💥 **Actual Behavior:**
-
+_____________________________
 📋 **Error Log:**
 N/A
-
+_____________________________
 📸 **Screenshot:**
