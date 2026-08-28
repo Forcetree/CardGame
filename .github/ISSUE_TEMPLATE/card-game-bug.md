@@ -2,7 +2,7 @@
 name: Card Game Bug
 about: Custom bug report for Card Game work
 title: "[Bug] [Class] Failure after Action while Condition"
-labels: bug, enhancement
+labels: bug
 assignees: Forcetree
 
 ---
@@ -14,10 +14,11 @@ assignees: Forcetree
 🔥 **Impact:**
 🪾 **Branches Impacted:**
 
-
 👣 **Steps to Reproduce:**
 1) 
 2) Observe
+
+🧪 **Frequency:**
 
 🎯 **Expected Behavior:**
 💥 **Actual Behavior:**
