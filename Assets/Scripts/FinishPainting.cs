@@ -20,10 +20,16 @@ public class FinishPainting : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData) // Dirty hook up to the finish button in the scene. This is not a good way to handle this, but it works for now.
     {
+        // Dirty Fix: For Necro Field -> Super bad
+
+        NecroPlaySpace myField = PlayHandler.NecroField;
+
         // Add score to the list from PlayHandler
-        PlayHandler.score.Add(new(PlayHandler.Field.RawValue, turns));
+        PlayHandler.score.Add(new(myField.RawValue, turns));
         turns = 0;
-        PlayHandler.Field.ClearField();
+        myField.ClearField();
+
+        
     }
 
 

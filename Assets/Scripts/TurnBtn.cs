@@ -15,7 +15,7 @@ public class TurnBtn : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         // Handle mana and counts here
-        PlayHandler.deck.DrawHand(PlayHandler.hand);
+        PlayHandler.myDeck.DrawHand(PlayHandler.hand);
         PlayHandler.manaPool.FillManaPool();
         finisher.turns += 1;
         // Need to check deck state?

@@ -37,7 +37,7 @@ public class PaintExampleCard : Card
         Lava, // Orange + Black
         Serpenite, // Green + Black
 
-        Back // Card back when flipped
+        CardBack // Card back when flipped
     }
 
     public PaintCardTypes mySpecificType;
@@ -56,6 +56,17 @@ public class PaintExampleCard : Card
     // Does a live instance accept <List<Sprite>>
 
     public override string CardTypeName => mySpecificType.ToString();
+
+    protected override void AssignDefaultSettings(CardBuilder builder)
+    {
+        this.playCost = builder.PlayCost ?? 1;
+        this.value = builder.Value ?? 0;
+        this.CardTypeID = builder.CardTypeID ?? 20; // Default to Cardback if not specified
+        this.state = builder.State ?? Card.cardState.Deck;
+        this.name = builder.Name ?? $"{CardTypeName} | Paint Card | {PlayHandler.myDeck.CardCounter}";
+        this.title = builder.Title ?? $"{CardTypeName} Paint Card";
+        this.flavor = builder.Flavor ?? "Paintum Lorum Ipsum";
+    }
 
     public override void SetSprite()
     {

@@ -12,9 +12,10 @@ public class PlayHandler : MonoBehaviour
 {
     // Objects
     public PlayerHand hand;
-    public Deck deck;
+    public Deck myDeck;
     public ManaPool manaPool;
-    public PaintPlaySpace Field; // Must be hard set to the PaintPlaySpace object in the scene
+    public PaintPlaySpace PaintField; // Must be hard set to the PaintPlaySpace object in the scene
+    public NecroPlaySpace NecroField; // Must be hard set to the NecroPlaySpace object in the scene
 
     // Deprecated
     public GameObject Graveyard;
@@ -51,20 +52,21 @@ public class PlayHandler : MonoBehaviour
     }
 
     // Public Methods
-    public void StartPlay(int deckCount, int handLimit, int manaLimit)
+    public void StartPlay(int deckCount, int handLimit, int manaLimit) // Basic simple setup for the play session -> to be expanded to support dynamic setup based on game mode or player choice
     {
         // Initialize the Combiner Logic -> to be expanded to support dynamic logic selection based on game mode or player choice
-        CardCombiner.Initialize(new PaintCombiner());
+        CardCombiner.Initialize(new NecroCombiner());
 
         // Create the Field -> to be expanded to support creating field from prefab? For now hard set to generate a PaintPlaySpace in the scene
-        Field.GenerateField(Field.spawns); // Allows for dynamic field generation based on the provided spawn points in the PaintPlaySpace object in scene
+        NecroField.GenerateField(NecroField.spawns); // Allows for dynamic field generation based on the provided spawn points in the NecroPlaySpace object in scene
 
-        // Create and shuffle the deck -> to be expanded to support creating deck from prefab
-        deck.InitDeck(CardRef, this); // Allows for dynamic deck generation based on the provided card reference
-        deck.GenDeck(deckCount, CardRef.numberOfTypesForDeck);
+        // New Deck Init methods
+        myDeck.InitDeck(this, CardRef, config => { }); // Temp override test
+
+        myDeck.GenDeck(); // Temp test of new gen method
 
         // Initialize the hand and draw the starting hand -> to be expanded to support creating hand from prefab? (maybe not as we always want a hand in the scene)
-        hand.InitHand(handLimit, deck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
+        hand.InitHand(handLimit, myDeck); // Allows for dynamic hand limits and linking to the deck for drawing -> currently auto starts draw
 
         manaPool.InitManaPool(manaLimit); // Initializes the mana pool with the specified limit -> currently creates mana points as children of the pool and positions them with spacing
 

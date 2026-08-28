@@ -1,0 +1,216 @@
+using DG.Tweening;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public abstract class Deck : MonoBehaviour
+{
+    [Header("Deck Settings: Prefab Parameters -> Can be set by code internal")]
+    [Tooltip("Set this for deal rate")]
+    public float TimeBetweenDeals;
+    [Tooltip("The focus value is where the cards are pushed to before flying to the hand")]
+    public Vector3 DrawFocusPos;
+    [Tooltip("Set this for card speed on focus")]
+    public float DealTime;
+    [Tooltip("Set this for the type of focus movement")]
+    public Ease DealEase;
+
+    [Header("Deck Internal Settings")]
+    [SerializeField] protected PlayHandler PlayHandler;
+    [SerializeField] protected Card CardRef;
+    [SerializeField] protected string DeckName;
+    [SerializeField] protected bool IsFinite;    
+    [SerializeField] protected int[] TypeDistribution;
+    [SerializeField] protected int KScalar;
+    [SerializeField] protected int DeckCountLimit;
+
+    // Deck Properties
+    public int CardCounter {get; private set;}
+
+    [Header("Visual Lists")]
+    [SerializeField] protected float[] LiveDrawWeights;
+    public Queue<Card> CardsInDeck = new();
+
+    [Header("Deck Vis Indicators")]
+    [Tooltip("Shows if we are processing a sequence of deals")]
+    public bool IsProcessingDealBuffer = false;
+    [SerializeField] protected Queue<Card> dealBuffer = new();
+
+    private PseudoDebtWeight _pdw = new PseudoDebtWeight();
+
+    public virtual void InitDeck()
+    {
+        // Assumes the linking has been baked into the scene/prefab
+    }
+    public void InitDeck(PlayHandler handler, Card cardRef, Action<DeckBuilder> configBlock)
+    {
+        this.PlayHandler = handler;
+        this.CardRef = cardRef;
+
+        this.CardCounter = 0;
+
+        DeckBuilder builder = new DeckBuilder(PlayHandler, CardRef);
+        configBlock?.Invoke(builder);
+
+        ApplySettings(builder, isInitialSetup: true);
+    }
+
+    public void UpdateSettings(Action<DeckBuilder> updateBlock)
+    {
+        if (PlayHandler == null)
+        {
+            Debug.LogError($"Deck on {gameObject.name} cannot be updated before initialization!");
+            return;
+        }
+
+        DeckBuilder builder = new DeckBuilder(PlayHandler, CardRef);
+        updateBlock?.Invoke(builder);
+
+        ApplySettings(builder, isInitialSetup: false);
+    }
+
+    private void ApplySettings(DeckBuilder builder, bool isInitialSetup)
+    {
+        if (isInitialSetup)
+        {            
+            AssignDefaultValues(builder);
+        }
+        else // If parameter is provided override value else leave current
+        {
+            this.DeckName = builder.DeckName ?? this.DeckName;
+            this.IsFinite = builder.IsFinite ?? this.IsFinite;
+            this.DeckCountLimit = builder.DeckCount ?? this.DeckCountLimit;
+            this.TypeDistribution = builder.TypeDistribution ?? this.TypeDistribution;
+            this.TimeBetweenDeals = builder.TimeBetweenDeals ?? this.TimeBetweenDeals;
+            this.DrawFocusPos = builder.DrawFocusPos ?? this.DrawFocusPos;
+            this.DealTime = builder.DealTime ?? this.DealTime;
+            this.DealEase = builder.DealEase ?? this.DealEase;
+        }
+
+        if (!this.IsFinite)
+        {
+            _pdw.Initialize(this.TypeDistribution, this.KScalar);
+        }
+
+        OnSettingsApplied();
+    }
+
+    // Abstractions
+    protected abstract void AssignDefaultValues(DeckBuilder builder); // Default Value assignation owned by class extention
+    protected abstract void OnSettingsApplied(); // Is called after settings are all freshly applied on Updates
+
+    // Deck List Handlers
+    public bool GenDeck()
+    { 
+        if (this.TypeDistribution == null) throw new InvalidOperationException("GenDeck failed: Null distribution.");
+        if (this.TypeDistribution.Length == 0) throw new InvalidOperationException("GenDeck failed: No elements in distribution.");
+        
+        if (this.IsFinite)
+        {
+            GenFiniteDeck(DeckCountLimit);           
+        }
+        else
+        {
+            FillDeck(DeckCountLimit);
+        }
+
+        return false; 
+    }
+
+    protected void GenFiniteDeck(int size)
+    {
+        if (size == 0) throw new InvalidOperationException("GenFiniteDeck failed: Size zero.");
+
+        int total = this.TypeDistribution.Sum();        
+        if (total == 0) throw new InvalidOperationException("GenFiniteDeck failed: Empty distribution.");
+
+        if (CardsInDeck.Count > 0) { Debug.LogWarning($"GenFiniteDeck: Non-empty deck. [Clearing deck] -> count={CardsInDeck.Count}", this); CardsInDeck.Clear(); }
+        if (size % total > 0) Debug.LogWarning($"GenFiniteDeck uneven: Not a multiple. [Proceeding] -> deckCount={DeckCountLimit}, total={total}", this);
+
+        int[] prefix = new int[TypeDistribution.Length];
+        int running = 0;
+
+        for (int i = 0; i < TypeDistribution.Length; i++)
+        {
+            running += TypeDistribution[i];
+            prefix[i] = running;
+        }
+
+        List<Card> freshCards = new List<Card>(); // Temp internal list
+
+        for (int i = 0; i < size; i++)
+        {
+            int pos = i % total;
+
+            int typeIndex = 0;
+            while (pos >= prefix[typeIndex]) typeIndex++;
+
+            freshCards.Add(CreateCard(typeIndex));
+        }
+
+        freshCards.Shuffle(); // Ficher-Yates shuffle list
+
+        foreach (Card card in freshCards)
+        {
+            CardsInDeck.Enqueue(card); // Set up public queue object for optimised use
+        }
+    }
+
+    public void FillDeck() => FillDeck(DeckCountLimit);
+    protected void FillDeck(int bufferDepth) 
+    {
+        for (int i = 0; i <= bufferDepth - CardsInDeck.Count; i++)
+        {
+            CardsInDeck.Enqueue(CreateCard(_pdw.DrawCardTypeIndex()));
+        }
+    }
+
+    // Create Card
+    private Card CreateCard(int type)
+    {
+        CardCounter++;
+
+        Card nCard = Card.Create(CardRef, PlayHandler, this.gameObject, config => config
+            .SetCardTypeID(type)
+        );
+
+        return nCard;
+    }
+
+    private IEnumerator DealSequence(PlayerHand hand)
+    {
+        IsProcessingDealBuffer = true;
+
+        while (dealBuffer.Count > 0)
+        {
+            Card dCard = dealBuffer.Dequeue();
+            dCard.destinationsBuffer.Enqueue((DrawFocusPos, DealTime, DealEase));
+            hand.AddCardToHand(dCard);
+
+            yield return new WaitForSeconds(TimeBetweenDeals);
+        }
+
+        IsProcessingDealBuffer = false;
+        hand.AssignSequentialValues();
+    }
+    
+    // Future abstraction in draw needed?
+    public void DrawHand(PlayerHand hand) // Draw if possible -> automatic adjustment of hand positions triggered when a valid card is dealt to the hand
+    {
+        // Check and fill hand with cards up to the hand limit (ensure to check number of cards currently in the deal buffer and cards available in the deck)
+        while ((CardsInDeck.Count > 0) && (hand.Count + dealBuffer.Count) < hand.handLimit)
+        {
+            Card dCard = CardsInDeck.Dequeue();
+            dCard.gameObject.SetActive(true);
+            dealBuffer.Enqueue(dCard);
+
+            if (!IsFinite)
+            {
+                FillDeck();
+            }
+        }
+        StartCoroutine(DealSequence(hand));
+    }
+}

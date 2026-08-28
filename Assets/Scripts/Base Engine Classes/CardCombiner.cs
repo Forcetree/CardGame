@@ -28,7 +28,6 @@ public static class CardCombiner
             // Temporary fix and debug: Initialize with default logic if not initialized?
         }
     }
-
     public static bool TryResolve(IEnumerable<int> types, out int resolved)
     {
         EnsureInit();

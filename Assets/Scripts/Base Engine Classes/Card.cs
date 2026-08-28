@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using System;
 
 public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -14,6 +15,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
     // Sprites
     // public Sprite[] valueSprites; // Moved to digitizer class
+        // Moved sprite controller to CardCombiner class -> under review for how to handle sprite management in the future
 
     // Under review -> Interaction Handles
     public bool hovering = false;
@@ -49,7 +51,8 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     public string title;
     public int playCost; // not utilized
     public string flavor; // not utilized
-    
+
+    [Tooltip("Don't change this in inspector or the value will not update")]
     [SerializeField] private int _value;
     public int value
     {
@@ -98,25 +101,43 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Runtime
     public void Update()
     {
-        // SetSprite();        
+
     }
+
     public void FixedUpdate()
     {
         Mover();
         if (PlayHandler.manaPool.ManaCount > 0) { MatFocuser(); }
     }
 
+    // Card Creator and Abstraction
+    public static Card Create(Card cardRef, PlayHandler handler, GameObject deck, Action<CardBuilder> configBlock)
+    {
+        Card nCard = Instantiate(cardRef, deck.transform.position, Quaternion.identity);
+
+        nCard.PlayHandler = handler;
+
+        nCard.gameObject.transform.parent = deck.transform;
+
+        CardBuilder builder = new CardBuilder();
+        configBlock?.Invoke(builder);
+
+        nCard.AssignDefaultSettings(builder);
+
+        return nCard;
+    }
+    protected abstract void AssignDefaultSettings(CardBuilder builder);
+    
     // Abstracts
     public abstract int CardTypeID { get; set; }
     public int numberOfTypesForDeck;
     public int numberOfTotalTypes;
-
     public abstract string CardTypeName { get; }
-    public abstract void SetSprite();
 
+    public abstract void SetSprite();
     protected abstract void PlayAnimation();
 
-    // Runtime Managers
+    // Animation and Movement Managers
     private void Mover()
     {
         InFlight = DOTween.IsTweening(transform);
@@ -164,7 +185,7 @@ public abstract class Card : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     // Mouse Detectors
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (dragLock || PlayHandler.deck.isProcessingDealBuffer || dragging) // Currently blocking drags during deal animations to avoid bugs and other weird interactions -> need to consider a more robust solution for handling this type of issue
+        if (dragLock || PlayHandler.myDeck.IsProcessingDealBuffer || dragging) // Currently blocking drags during deal animations to avoid bugs and other weird interactions -> need to consider a more robust solution for handling this type of issue
         {
             return;
         }

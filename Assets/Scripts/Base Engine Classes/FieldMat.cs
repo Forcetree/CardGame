@@ -85,7 +85,6 @@ public abstract class FieldMat : MonoBehaviour
         highlighted = false;
         matIsFull = true;  
     }
-
     protected abstract void PlayAnimation();
 
     public void ClearMat() // No need to expand (we will process the data out of the stack before we clear it using the abstract and child class definitions)
@@ -103,6 +102,5 @@ public abstract class FieldMat : MonoBehaviour
 
         PlayAnimation(); // Can determine that the mat was cleared
     }
-
     
 }
