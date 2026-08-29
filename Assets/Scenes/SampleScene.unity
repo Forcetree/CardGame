@@ -807,13 +807,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171407e6af6290e4ea0bcb1916bd2715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayHandler
+  currentGameMode: 1
   hand: {fileID: 1236652352}
-  myDeck: {fileID: 1052509232}
+  myDeck: {fileID: 1476619224}
+  PaintDeck: {fileID: 1476619224}
+  NecroDeck: {fileID: 1052509232}
   manaPool: {fileID: 1833003246}
   PaintField: {fileID: 2068989994}
   NecroField: {fileID: 252180319}
   Graveyard: {fileID: 1589039290}
-  CardRef: {fileID: 6445121948122075995, guid: 0e4b65d070bf11d4b8fde2fc072fe871, type: 3}
+  myCardRef: {fileID: 7225503320909994610, guid: 1d2c641a34cf4da41831fd2db790ef68, type: 3}
+  necroCardRef: {fileID: 6445121948122075995, guid: 0e4b65d070bf11d4b8fde2fc072fe871, type: 3}
   playActive: 0
   score: []
   graveyard: []
@@ -1124,16 +1128,15 @@ MonoBehaviour:
   TimeBetweenDeals: 0
   DrawFocusPos: {x: 0, y: 0, z: 0}
   DealTime: 0
-  DealEase: 0
+  DealEase: 7
   PlayHandler: {fileID: 0}
   CardRef: {fileID: 0}
   DeckName: 
   IsFinite: 0
-  DeckCount: 0
   TypeDistribution: 
   KScalar: 0
+  DeckCountLimit: 0
   LiveDrawWeights: []
-  CardsInDeck: []
   IsProcessingDealBuffer: 0
 --- !u!1 &1200222404
 GameObject:
@@ -1457,11 +1460,10 @@ MonoBehaviour:
   CardRef: {fileID: 0}
   DeckName: 
   IsFinite: 0
-  DeckCount: 0
   TypeDistribution: 
   KScalar: 0
+  DeckCountLimit: 0
   LiveDrawWeights: []
-  CardsInDeck: []
   IsProcessingDealBuffer: 0
 --- !u!1 &1500943366
 GameObject:
@@ -1599,7 +1601,7 @@ GameObject:
   - component: {fileID: 1612581355}
   - component: {fileID: 1612581354}
   m_Layer: 0
-  m_Name: CardAssets
+  m_Name: NecroCardAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1767,7 +1769,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintPlaySpace
   matPrefab: {fileID: 5431872155658850742, guid: 17ab67ca3dc166c418f165c131bf8c52, type: 3}
-  spawns: []
+  spawns:
+  - {fileID: 215035184}
+  - {fileID: 1200222405}
+  - {fileID: 378802694}
 --- !u!1 &2137661009
 GameObject:
   m_ObjectHideFlags: 0

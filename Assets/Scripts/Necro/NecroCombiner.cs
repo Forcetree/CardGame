@@ -4,7 +4,7 @@ public class NecroCombiner : CombinerLogic<Sprite>
 {
     public override void SetupCombinations()
     {
-        NecroCardSpriteAssetHandler NecroSprites = GameObject.Find("CardAssets").GetComponent<NecroCardSpriteAssetHandler>();
+        NecroCardSpriteAssetHandler NecroSprites = Object.FindAnyObjectByType<NecroCardSpriteAssetHandler>();
 
         AddCombo(new[] { 0 }, 0);
         AddCombo(new[] { 1 }, 1);

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5598778183534665448}
   - component: {fileID: 7225503320909994610}
   m_Layer: 0
-  m_Name: CardPrefab
+  m_Name: PaintCardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
