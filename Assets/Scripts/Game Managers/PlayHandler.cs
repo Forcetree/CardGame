@@ -7,9 +7,9 @@ public class PlayHandler : MonoBehaviour
     // Members
     public enum GameMode
     {
-        Necro,
         Paint,
-        Forge
+        Forge,
+        Necro
     }
 
     public GameMode currentGameMode = GameMode.Paint; // Default to Paint mode -> can be changed in the inspector or via code
