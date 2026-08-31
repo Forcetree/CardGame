@@ -1,23 +1,86 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BattleHandler : MonoBehaviour
 {
+    // Game Manager
+    public PlayHandler PlayHandler; // Reference to the PlayHandler instance -> hard set in the inspector
 
-    public void StartBattle()
+    // Prefabs
+    public NecroEnemy enemyPrefab; // Reference to the enemy prefab
+
+    // Objects
+    public Transform[] spawns;
+    private Queue<NecroEnemy>[] enemies; // Array of queues to hold the enemies for each spawn point
+
+    // Controllers
+    public int[] battleClock { get; private set; } // BattleClock is an array of integers that represent the turn order for attacks.
+
+    public void StartBattle(/*battleObject*/)
     {
         // Implement the logic to start the battle
         Debug.Log("Battle started!");
+
+        // CreateBattleField
+            // -> Implement battle object(?)
+        CreateBattleField();
+
+        BattleTurn();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void EndBattle()
     {
-        
+        // Implement the logic to end the battle
+        Debug.Log("Battle ended!");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BattleTurn()
     {
-        
+        // Implement the logic for a battle turn
+        Debug.Log("Battle turn start!");
+
+        for (int i = 0; i < enemies.Length; i++) // Should only be 3, but this is more flexible for future expansion
+        {
+            NecroEnemy cEnemy = enemies[i].Peek(); // Get the next enemy in the queue
+
+            if (cEnemy.isSpawned)
+            {
+                cEnemy.Spawn();
+                battleClock[i] = cEnemy.turnCycle; // Set the battle clock for the enemy
+            }
+
+            if (battleClock[i] > 0) 
+            {
+                battleClock[i]--; // Decrement the battle clock for the enemy
+                return; 
+            }
+
+            if (battleClock[i] < 0) { cEnemy.Attack(PlayHandler.NecroField.activeMats[i]); } // Associated with the PlaySpace field that the enemy is aligned with by INDEX (no hard association with the PlaySpace field object itself)
+        }
+
+    }
+
+    public void BattleEndTurn()
+    {
+        // Implement the logic to end the battle turn -> this method can be queued into the animation system to allow for a delay before the next turn starts
+        Debug.Log("Battle turn end!");
+
+        // Reactivate the buttons and UI (need to introduce a game play freeze so player can see the results of the turn before they can take their next action)
+    }
+
+    private void CreateBattleField()
+    {
+        // Implement the logic to create the battle field
+        Debug.Log("Creating battle field!");
+
+        for (int i = 0; i < 3; i++) // Instantiate enemies and set their properties based on the battleObject (3 wide based on the PlaySpace)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                NecroEnemy nEnemy = Instantiate(enemyPrefab, spawns[i].position, Quaternion.identity); // Spawns based on x value alignment with PlaySpace fields
+                nEnemy.Initialize(26, j, NecroCard.NecroCardTypes.Fire, 3); // Intro values -> set attack to j for fun variation
+                enemies[i].Enqueue(nEnemy);
+            }
+        }
     }
 }

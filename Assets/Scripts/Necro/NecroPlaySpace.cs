@@ -5,10 +5,13 @@ public class NecroPlaySpace : PlaySpace<NecroMat>
     public Transform[] spawns;
     public BattleHandler battleHandler;
 
+    // private list of battleObjects(?)
+
     public void StartNecro()
     {
         GenerateField(spawns);
-        battleHandler.StartBattle();
+        // Determine what battleObject to use based on the current game state or player choice -> a dungeon run will be a list of possible battleObjects and the player will choose one to fight against. The battleObject will be a struct that holds the enemy data and any other relevant information for the battle.
+        battleHandler.StartBattle(/*battleObject*/);
     }
 
     public int ScoreOut()
