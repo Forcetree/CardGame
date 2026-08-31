@@ -29,6 +29,7 @@ public class PlayHandler : MonoBehaviour
     // Play Spaces
     public PaintPlaySpace PaintField; // Must be hard set to the PaintPlaySpace object in the scene
     public NecroPlaySpace NecroField; // Must be hard set to the NecroPlaySpace object in the scene
+    public ForgePlaySpace ForgeField; // Must be hard set to the ForgePlaySpace object in the scene
 
     // Deprecated
     public GameObject Graveyard;
@@ -89,7 +90,7 @@ public class PlayHandler : MonoBehaviour
             case GameMode.Forge:
                 // Setup for Forge mode
                 //CardCombiner.Initialize(new ForgeCombiner());
-                //ForgeField.GenerateField(ForgeField.spawns); // Allows for dynamic field generation based on the provided spawn points in the ForgePlaySpace object in scene
+                ForgeField.GenerateField(ForgeField.spawns); // Allows for dynamic field generation based on the provided spawn points in the ForgePlaySpace object in scene
                 //myDeck = ForgeDeck; // Set the deck to the ForgeDeck for this game mode
                 //myCardRef = forgeCardRef; // Update the card reference for this game mode
                 break;

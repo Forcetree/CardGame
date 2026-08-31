@@ -791,6 +791,7 @@ Transform:
   - {fileID: 1476619223}
   - {fileID: 1236652351}
   - {fileID: 2068989993}
+  - {fileID: 8868460117716743432}
   - {fileID: 252180318}
   - {fileID: 1589039291}
   m_Father: {fileID: 0}
@@ -815,6 +816,7 @@ MonoBehaviour:
   manaPool: {fileID: 1833003246}
   PaintField: {fileID: 2068989994}
   NecroField: {fileID: 252180319}
+  ForgeField: {fileID: 2687233537403519621}
   Graveyard: {fileID: 1589039290}
   myCardRef: {fileID: 7225503320909994610, guid: 1d2c641a34cf4da41831fd2db790ef68, type: 3}
   necroCardRef: {fileID: 6445121948122075995, guid: 0e4b65d070bf11d4b8fde2fc072fe871, type: 3}
@@ -1690,6 +1692,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ManaPool
   ManaRef: {fileID: 969396550572113778, guid: de11d6564685e2b4bb65bbdf2ea75c18, type: 3}
   manaPoints: []
+--- !u!1 &1914769861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914769862}
+  - component: {fileID: 1914769863}
+  m_Layer: 0
+  m_Name: ForgeCardAssets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1914769862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914769861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914769863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914769861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4717046c257f16948b8f3b6dc634ec29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForgeSpriteAssetHandler
+  ironSprite: {fileID: -3448898858908596127, guid: a2d53d9298054aa47a1cf4365f6ef7c9, type: 3}
+  copperSprite: {fileID: 4000519283856582652, guid: 8fce51b5810a6f140bc26dfdb7e15a9e, type: 3}
+  nickelSprite: {fileID: -5521316390597624560, guid: fa80e7dbf2d600742876c86decb160e9, type: 3}
+  sulfurSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  carbonSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  waterSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  voiddustSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  moonsaltSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  quicksilverSprite: {fileID: 21300000, guid: 338d2555342f810408d049958437b1b6, type: 3}
+  bronzeSprite: {fileID: 833645736694255512, guid: e22f2a479a777fa45b1ec8206e224e2c, type: 3}
+  leadSprite: {fileID: -1923552678918684219, guid: 161cefcf0ab3983449dfed7595d841b0, type: 3}
+  brassSprite: {fileID: -8383691360184257333, guid: ed700a567cb8a074187a26e2d3ebe79c, type: 3}
 --- !u!1 &1961944300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1852,6 +1910,148 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1517129351574569900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4851549219815305313}
+  m_Layer: 6
+  m_Name: Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2473859488250674009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3388962119579001835}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8868460117716743432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2687233537403519621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974865277825953909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea2deb523e27cd4ab1155d895802a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForgePlaySpace
+  matPrefab: {fileID: 6504280060226012219, guid: 9b4efcd9b2e3e67499a7c59f1aa389c4, type: 3}
+  spawns: []
+--- !u!1 &3388962119579001835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2473859488250674009}
+  m_Layer: 6
+  m_Name: Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &3798699829600107052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7061687068652385035}
+  m_Layer: 6
+  m_Name: Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4851549219815305313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517129351574569900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8868460117716743432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4974865277825953909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8868460117716743432}
+  - component: {fileID: 2687233537403519621}
+  m_Layer: 6
+  m_Name: ForgeField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7061687068652385035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798699829600107052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8868460117716743432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &8868460117716743432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974865277825953909}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4851549219815305313}
+  - {fileID: 7061687068652385035}
+  - {fileID: 2473859488250674009}
+  m_Father: {fileID: 520213723}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1860,4 +2060,5 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 2137661012}
   - {fileID: 1612581355}
+  - {fileID: 1914769862}
   - {fileID: 520213723}
