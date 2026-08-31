@@ -82,9 +82,9 @@ public class PlayHandler : MonoBehaviour
             case GameMode.Necro:
                 // Setup for Necro mode
                 CardCombiner.Initialize(new NecroCombiner());
-                NecroField.GenerateField(NecroField.spawns); // Allows for dynamic field generation based on the provided spawn points in the NecroPlaySpace object in scene
                 myDeck = NecroDeck; // Set the deck to the NecroDeck for this game mode
                 myCardRef = necroCardRef; // Update the card reference for this game mode
+                NecroField.StartNecro(); // Allows for dynamic field generation based on Necro Implementation
                 break;
             case GameMode.Forge:
                 // Setup for Forge mode

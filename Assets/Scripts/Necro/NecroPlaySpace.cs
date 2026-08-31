@@ -3,11 +3,12 @@ using UnityEngine;
 public class NecroPlaySpace : PlaySpace<NecroMat>
 {
     public Transform[] spawns;
+    public BattleHandler battleHandler;
 
     public void StartNecro()
     {
-        // GenerateField(spawns);
-        // Here is how we start the Necro PlayHandling to determine what and who to spawn
+        GenerateField(spawns);
+        battleHandler.StartBattle();
     }
 
     public int ScoreOut()
