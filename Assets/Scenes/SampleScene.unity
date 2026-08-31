@@ -807,7 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171407e6af6290e4ea0bcb1916bd2715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayHandler
-  currentGameMode: 1
+  currentGameMode: 0
   hand: {fileID: 1236652352}
   myDeck: {fileID: 1476619224}
   PaintDeck: {fileID: 1476619224}
