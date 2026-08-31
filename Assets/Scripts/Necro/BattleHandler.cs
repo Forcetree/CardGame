@@ -39,7 +39,7 @@ public class BattleHandler : MonoBehaviour
         // Implement the logic for a battle turn
         Debug.Log("Battle turn start!");
 
-        for (int i = 0; i < enemies.Length; i++) // Should only be 3, but this is more flexible for future expansion
+        for (int i = 0; i < enemies.Length; i++) // Should only be 2, but this is more flexible for future expansion
         {
             NecroEnemy cEnemy = enemies[i].Peek(); // Get the next enemy in the queue
 
@@ -86,7 +86,7 @@ public class BattleHandler : MonoBehaviour
         // Implement the logic to create the battle field
         Debug.Log("Creating battle field!");
 
-        for (int i = 0; i < 3; i++) // Instantiate enemies and set their properties based on the battleObject (3 wide based on the PlaySpace)
+        for (int i = 0; i < 2; i++) // Instantiate enemies and set their properties based on the battleObject (2 wide based on the PlaySpace)
         {
             for (int j = 0; j < 3; j++)
             {
