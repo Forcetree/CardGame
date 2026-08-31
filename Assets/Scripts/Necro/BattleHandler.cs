@@ -68,6 +68,19 @@ public class BattleHandler : MonoBehaviour
         // Reactivate the buttons and UI (need to introduce a game play freeze so player can see the results of the turn before they can take their next action)
     }
 
+    public void PlayerTurn()
+    {
+        // Implement the logic for the player's turn -> This triggers when the player has completed their turn and the game is ready to process the next turn in the battle sequence (attack sequence)
+        Debug.Log("Player turn ended!");
+
+        for (int i = 0; i < PlayHandler.NecroField.activeMats.Count; i++)
+        {
+
+        }
+
+        BattleTurn();
+    }
+
     private void CreateBattleField()
     {
         // Implement the logic to create the battle field

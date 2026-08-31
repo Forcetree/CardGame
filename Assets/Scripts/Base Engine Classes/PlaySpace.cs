@@ -7,11 +7,10 @@ public abstract class PlaySpace<MatType> : MonoBehaviour where MatType : FieldMa
     [Header("PlaySpace Mat Typing")]
     [SerializeField] protected MatType matPrefab;
 
-    protected readonly List<MatType> _activeMats = new();
-    public IReadOnlyList<MatType> activeMats => _activeMats;
+    public List<MatType> activeMats = new();
 
     // Properties
-    public virtual int RawValue => _activeMats.Sum(mat => mat.value);
+    public virtual int RawValue => activeMats.Sum(mat => mat.value);
 
     // Public Methods
     public virtual void GenerateField(Transform[] spawnLocations)
@@ -24,13 +23,13 @@ public abstract class PlaySpace<MatType> : MonoBehaviour where MatType : FieldMa
 
     public virtual void DestroyField() // Destroys all the active mats in the field
     {
-        foreach (var mat in _activeMats) Destroy(mat.gameObject);
-        _activeMats.Clear();
+        foreach (var mat in activeMats) Destroy(mat.gameObject);
+        activeMats.Clear();
     }
 
     public virtual void ClearField() // Resets the active mats in the field (empties the mat)
     {
-        foreach (var mat in _activeMats) mat.ClearMat();
+        foreach (var mat in activeMats) mat.ClearMat();
     }
 
     // Protected Methods
@@ -38,6 +37,6 @@ public abstract class PlaySpace<MatType> : MonoBehaviour where MatType : FieldMa
     {
         MatType newMat = Instantiate(matPrefab, spawnLocation.position, Quaternion.identity);
         newMat.gameObject.transform.parent = this.transform;
-        _activeMats.Add(newMat);
+        activeMats.Add(newMat);
     }
 }
