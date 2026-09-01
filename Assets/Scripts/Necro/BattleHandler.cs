@@ -92,6 +92,10 @@ public class BattleHandler : MonoBehaviour
             {
                 NecroEnemy nEnemy = Instantiate(enemyPrefab, spawns[i].position, Quaternion.identity); // Spawns based on x value alignment with PlaySpace fields
                 nEnemy.Initialize(26, j, NecroCard.NecroCardTypes.Fire, 3); // Intro values -> set attack to j for fun variation
+
+                nEnemy.transform.SetParent(this.transform); // Set the parent of the enemy to the BattleHandler for organization in the hierarchy
+                nEnemy.name = $"Temp Enemy {i}-{j}"; // Name the enemy based on its spawn point and index
+
                 enemies[i].Enqueue(nEnemy);
             }
         }
