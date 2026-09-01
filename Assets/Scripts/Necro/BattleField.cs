@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BattleHandler : MonoBehaviour
+public class BattleField : MonoBehaviour
 {
     // Game Manager
     public PlayHandler PlayHandler; // Reference to the PlayHandler instance -> hard set in the inspector

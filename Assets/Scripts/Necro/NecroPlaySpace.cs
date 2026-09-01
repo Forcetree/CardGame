@@ -3,7 +3,7 @@ using UnityEngine;
 public class NecroPlaySpace : PlaySpace<NecroMat>
 {
     public Transform[] spawns;
-    public BattleHandler battleHandler;
+    public BattleField battleField;
 
     // private list of battleObjects(?)
 
@@ -11,7 +11,7 @@ public class NecroPlaySpace : PlaySpace<NecroMat>
     {
         GenerateField(spawns);
         // Determine what battleObject to use based on the current game state or player choice -> a dungeon run will be a list of possible battleObjects and the player will choose one to fight against. The battleObject will be a struct that holds the enemy data and any other relevant information for the battle.
-        battleHandler.StartBattle(/*battleObject*/);
+        battleField.StartBattle(/*battleObject*/);
     }
 
     public int ScoreOut()
