@@ -6,12 +6,12 @@ public class NecroEnemy : MonoBehaviour
     private int MaxHealth; // Maximum health of the enemy
 
     // Public Read-Only Fields for the NecroEnemy class
-    public bool isSpawned { get; private set; } // Check if the enemy is spawned}
-    public bool isAlive { get; private set; } // Check if the enemy is alive
-    public int health { get; private set; } // Health of the enemy
-    public int attack { get; private set; } // Attack power
-    public int turnCycle { get; private set; } // Turn cycle for the enemy
-    public NecroCard.NecroCardTypes type { get; private set; } // Type of the enemy(?) [dual types?]
+    public bool isSpawned; // Check if the enemy is spawned}
+    public bool isAlive; // Check if the enemy is alive
+    public int health; // Health of the enemy
+    public int attack; // Attack power
+    public int turnCycle; // Turn cycle for the enemy
+    public NecroCard.NecroCardTypes type; // Type of the enemy(?) [dual types?]
 
     // Objects
     public SpriteRenderer spriteRenderer; // Sprite renderer for the enemy
