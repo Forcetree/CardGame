@@ -42,13 +42,7 @@ public class BattleField : MonoBehaviour
 
         for (int i = 0; i < enemies.Length; i++) // Should only be 2, but this is more flexible for future expansion
         {
-            Debug.Log($"Checking for enemy slots in field. Length of enemies: {enemies.Length}");
-            Debug.Log($"Checking for enemies in spawn point. Length of queue @ {i}: {enemies[i].Count}");
-
             NecroEnemy cEnemy = enemies[i].Peek(); // Get the next enemy in the queue
-
-            Debug.Log($"Found Enemy: {cEnemy.name}");
-            Debug.Log($"Enemy {i} turn cycle: {cEnemy.turnCycle}, battle clock: {battleClock[i]}");
             
             if (!cEnemy.isSpawned)
             {
@@ -78,7 +72,7 @@ public class BattleField : MonoBehaviour
 
         for (int i = 0; i < PlayHandler.NecroField.activeMats.Count; i++)
         {
-
+            
         }
 
         BattleTurn();
