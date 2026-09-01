@@ -11,7 +11,7 @@ public class BattleField : MonoBehaviour
 
     // Objects
     public Transform[] spawns;
-    private Queue<NecroEnemy>[] enemies; // Array of queues to hold the enemies for each spawn point
+    private Queue<NecroEnemy>[] enemies = new Queue<NecroEnemy>[2]; // Array of queues to hold the enemies for each spawn point (currently hard set to 2 spawn points, but can be expanded in the future)
 
     // Controllers
     public int[] battleClock { get; private set; } // BattleClock is an array of integers that represent the turn order for attacks.
@@ -86,14 +86,19 @@ public class BattleField : MonoBehaviour
         // Implement the logic to create the battle field
         Debug.Log("Creating battle field!");
 
+        battleClock = new int[enemies.Length]; // Initialize the battle clock array to hold the turn order for each enemy (currently hard set to 2 spawn points, but can be expanded in the future)
+
         for (int i = 0; i < 2; i++) // Instantiate enemies and set their properties based on the battleObject (2 wide based on the PlaySpace)
         {
+
+            enemies[i] = new Queue<NecroEnemy>();
+
             for (int j = 0; j < 3; j++)
             {
                 NecroEnemy nEnemy = Instantiate(enemyPrefab, spawns[i].position, Quaternion.identity); // Spawns based on x value alignment with PlaySpace fields
                 nEnemy.Initialize(26, j, NecroCard.NecroCardTypes.Fire, 3); // Intro values -> set attack to j for fun variation
 
-                nEnemy.transform.SetParent(this.transform); // Set the parent of the enemy to the BattleHandler for organization in the hierarchy
+                nEnemy.gameObject.transform.parent = this.transform; // Set the parent of the enemy to the BattleHandler for organization in the hierarchy
                 nEnemy.name = $"Temp Enemy {i}-{j}"; // Name the enemy based on its spawn point and index
 
                 enemies[i].Enqueue(nEnemy);

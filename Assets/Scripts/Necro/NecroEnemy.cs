@@ -32,7 +32,7 @@ public class NecroEnemy : MonoBehaviour
         // Set the sprite based on the type
         // SetSprite();
 
-        this.gameObject.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 
     public void Spawn()
