@@ -41,6 +41,9 @@ public class BattleField : MonoBehaviour
 
         for (int i = 0; i < enemies.Length; i++) // Should only be 2, but this is more flexible for future expansion
         {
+            Debug.Log($"Checking for enemies in field. Length of enemies: {enemies.Length}");
+            Debug.Log($"Checking for enemies in spawn point. Length of queue @ {i}: {enemies[i].Count}");
+
             NecroEnemy cEnemy = enemies[i].Peek(); // Get the next enemy in the queue
 
             Debug.Log($"Found Enemy: {cEnemy.name}");
@@ -52,11 +55,7 @@ public class BattleField : MonoBehaviour
                 battleClock[i] = cEnemy.turnCycle; // Set the battle clock for the enemy
             }
 
-            if (battleClock[i] > 0) 
-            {
-                battleClock[i]--; // Decrement the battle clock for the enemy
-                return; 
-            }
+            if (battleClock[i] > 0) { battleClock[i]--; } // Decrement the battle clock for the enemy
 
             if (battleClock[i] <= 0) { cEnemy.Attack(PlayHandler.NecroField.activeMats[i]); } // Associated with the PlaySpace field that the enemy is aligned with by INDEX (no hard association with the PlaySpace field object itself)
         }
