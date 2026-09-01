@@ -43,7 +43,10 @@ public class BattleField : MonoBehaviour
         {
             NecroEnemy cEnemy = enemies[i].Peek(); // Get the next enemy in the queue
 
-            if (cEnemy.isSpawned)
+            Debug.Log($"Found Enemy: {cEnemy.name}");
+            Debug.Log($"Enemy {i} turn cycle: {cEnemy.turnCycle}, battle clock: {battleClock[i]}");
+            
+            if (!cEnemy.isSpawned)
             {
                 cEnemy.Spawn();
                 battleClock[i] = cEnemy.turnCycle; // Set the battle clock for the enemy
@@ -55,7 +58,7 @@ public class BattleField : MonoBehaviour
                 return; 
             }
 
-            if (battleClock[i] < 0) { cEnemy.Attack(PlayHandler.NecroField.activeMats[i]); } // Associated with the PlaySpace field that the enemy is aligned with by INDEX (no hard association with the PlaySpace field object itself)
+            if (battleClock[i] <= 0) { cEnemy.Attack(PlayHandler.NecroField.activeMats[i]); } // Associated with the PlaySpace field that the enemy is aligned with by INDEX (no hard association with the PlaySpace field object itself)
         }
 
     }

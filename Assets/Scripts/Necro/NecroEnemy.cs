@@ -49,12 +49,14 @@ public class NecroEnemy : MonoBehaviour
 
     public void TakeDamage(NecroDamage damage)
     {
+        Debug.Log($"{this.name} is taking {damage.damage} damage of type {damage.type}!");
         // How best to handle this?
         // Need to determine how the stack will be handled, and how the damage will be applied to the enemy
     }
 
     public void Attack(NecroMat stack)
     {
+        Debug.Log($"{this.name} is attacking with {this.attack} damage against {stack.name}!");
         // How are we going to handle the attack? We need to read the stack and adjust the values inside it based on the type of each entry?
         // Need to finish designing this interaction to finalize the design of the attack method. This will be a key part of the game mechanics, and we need to ensure that it is balanced and fun for the player.
     }
