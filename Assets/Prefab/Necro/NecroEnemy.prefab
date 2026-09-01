@@ -131,6 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025016706b4faef46abd35cdcd086c06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NecroEnemy
+  isSpawned: 0
+  isAlive: 0
+  health: 0
+  attack: 0
+  turnCycle: 0
+  type: 0
   spriteRenderer: {fileID: 8497431540829810067}
   animator: {fileID: 4610540986292535937}
   portraitRenderer: {fileID: 1417771665388669046}
@@ -296,7 +302,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4643449511154568301, guid: 252270898054f6f4d8890dc534b6fc14, type: 3}
   m_Color: {r: 0.6509434, g: 0.20943527, b: 0, a: 1}
