@@ -44,7 +44,7 @@ public class NecroMat : FieldMat
 
     public override bool TryTarget(Card cCard) // Location for additional rules to enforce on a mat beyond valid combos. Returns true if the card can be played on this mat, false otherwise.
     {
-        if (stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct().Count() > 2) return false; // Necro Mat can only hold 3 distinct card types at a time. If the stack is full, return false. Current set to 1 for debugging
+        if (stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct().Count() > 3) return false; // Necro Mat can only hold 3 distinct card types at a time. If the stack is full, return false. Current set to 1 for debugging
         
         // Determine if the incoming type is already in the stack
         if (stack.Any(c => c.CardTypeID == cCard.CardTypeID))

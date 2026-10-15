@@ -7,7 +7,7 @@ public abstract class CombinerLogic
 
     public abstract void SetupCombinations();
 
-    public bool TryResolve(IEnumerable<int> types, out int resolved)
+    public virtual bool TryResolve(IEnumerable<int> types, out int resolved)
     {
         int mask = ToMask(types);
         return Combos.TryGetValue(mask, out resolved);
