@@ -45,8 +45,6 @@ public class NecroEnemy : MonoBehaviour
         this.isSpawned = true;
     }
 
-
-
     public void TakeDamage(NecroDamage damage)
     {
         Debug.Log($"{this.name} is taking {damage.damage} damage of type {damage.type}!");
