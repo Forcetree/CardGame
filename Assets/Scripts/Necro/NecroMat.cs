@@ -1,12 +1,12 @@
 using DG.Tweening;
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class NecroMat : FieldMat
 {
-
-    public int[,] stackValues = new int[3, 2]; // 2 distinct value sets for the stack -> type and total value (0: Fire, 1: Growth, 2: Earth, 3: Iron, 4: Frost, 5: Water, 6: Wind, 7: Storm, 8: Blight, 9: Empty)
-
+    public int[] stackValues = new int[9]; // Distinct value sets for the stack -> total value by index (0: Fire, 1: Growth, 2: Earth, 3: Iron, 4: Frost, 5: Water, 6: Wind, 7: Storm, 8: Blight)
+    
     protected override void PlayAnimation() // Overhauling for Animator controller additions 
     {
         Sprite cardSprite = CardCombiner.GetVisual<Sprite>(comboType);
@@ -44,31 +44,34 @@ public class NecroMat : FieldMat
 
     public override bool TryTarget(Card cCard) // Location for additional rules to enforce on a mat beyond valid combos. Returns true if the card can be played on this mat, false otherwise.
     {
-        if (stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct().Count() > 3) return false; // Necro Mat can only hold 3 distinct card types at a time. If the stack is full, return false. Current set to 1 for debugging
-        
-        // Determine if the incoming type is already in the stack
-        if (stack.Any(c => c.CardTypeID == cCard.CardTypeID))
-        {
-            
-        }
-        else
-        {
-
-        }
-
-        var prospective = stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct(); // Create a list of the available card types, including the new card, and remove duplicates
-
-        // Might completely skip the combiner logic if it does not support overloading the try target -> This is because we need to compare the total stack values to determine the highest type value and set the stack to represent that value.
-        return CardCombiner.TryResolve(prospective, out _); // Returns if comb is valid and discards the resolved type since we don't need it here. If the prospective list is invalid, this will return false.
+        return (stack.Select(c => c.CardTypeID).Append(cCard.CardTypeID).Distinct().Count() <= 3); // Returns if stack can take additional card based on distinct types in the stack. If the count is greater than 3, return false (cannot play), otherwise true (can play).
     }
 
-    // New flow needed:
-        /* Stack determines its type based on what is inside the stack (3 distinct value sets)
-            * ~ Actual stack is a list of card objects, we need an interim object to parse the cards into value sets to determine the highest value type (and then set the stack to represent that value) public override bool TryGetTarget(Card cCard)?
-            * Damage is calced against the intrim object of set values (not against the actual stack)
-         * Based on type determine the damage value incoming
-         * Method to take in the damage value and parse against the value set
-        */
+    public override void AddToStack(Card nCard)
+    {
+        stack.Add(nCard);
+        nCard.transform.SetParent(this.transform);
+        nCard.state = Card.cardState.Field; // Set the card state to Field when it is placed on the mat
+
+        nCard.dragLock = true; // Should change the destination buffer mover method to NOT unlock drag state if the card is in state = Field
+
+        stackValues[nCard.CardTypeID] += nCard.value; // Add the value of the incoming card to the corresponding index in the stackValues array based on its CardTypeID
+        value = stackValues.Sum();
+         
+        if (stack.Count == 1) { comboType = nCard.CardTypeID; } // If this is the first card in the stack, set the comboType to the CardTypeID of the incoming card
+        if (stackValues[(int)comboType] < stackValues.Max()) { comboType = Array.IndexOf(stackValues, stackValues.Max()); } // Update the comboType to the index of the maximum value in stackValues if the current comboType's value is less than the maximum value in stackValues
+
+        PlayAnimation(); // Can independantly determine the animation to play based on the comboType and the current stack of cards on the mat. This will allow for more dynamic animations based on the combo type and the number of cards in the stack.
+
+        for (int i = 0; i < stack.Count; i++) // Fix the card sorting on the layer
+        {
+            stack[i].cardSortOrder = i; // Using our controlled order to set sorting order
+            valueRenderer.UpdateRenderSorting();
+        }
+
+        highlighted = false;
+        matIsFull = true;
+    }
 
     public NecroDamage CalculateDamage()
     {

@@ -6,17 +6,6 @@ public class NecroCombiner : CombinerLogic<Sprite>
     {
         NecroCardSpriteAssetHandler NecroSprites = Object.FindAnyObjectByType<NecroCardSpriteAssetHandler>();
 
-        AddCombo(new[] { 0 }, 0);
-        AddCombo(new[] { 1 }, 1);
-        AddCombo(new[] { 2 }, 2);
-        AddCombo(new[] { 3 }, 3);
-        AddCombo(new[] { 4 }, 4);
-        AddCombo(new[] { 5 }, 5);
-        AddCombo(new[] { 6 }, 6);
-        AddCombo(new[] { 7 }, 7);
-        AddCombo(new[] { 8 }, 8);
-        AddCombo(new[] { 9 }, 9);
-
         // Add Sprites to the Combiner Logic
         VisualMatrix[0] = NecroSprites.fireSprite;
         VisualMatrix[1] = NecroSprites.growthSprite;

@@ -60,7 +60,7 @@ public abstract class FieldMat : MonoBehaviour
 
     public abstract bool TryTarget(Card cCard); // Abstracting the rules for targeting a mat with a card. Each mat type will have its own rules for what cards can be placed on it.
 
-    public void AddToStack(Card nCard)
+    public virtual void AddToStack(Card nCard)
     {
         stack.Add(nCard);
         nCard.transform.SetParent(this.transform);
